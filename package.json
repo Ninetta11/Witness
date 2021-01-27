@@ -1,0 +1,26 @@
+{
+  "name": "witness",
+  "version": "1.0.0",
+  "description": "Statutory Declaration generator and witness",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ninetta11/Witness.git"
+  },
+  "author": "Nina Welsh",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ninetta11/Witness/issues"
+  },
+  "homepage": "https://github.com/Ninetta11/Witness#readme",
+  "dependencies": {
+    "@iota/converter": "^1.0.0-beta.30",
+    "@iota/core": "^1.0.0-beta.30",
+    "@iota/extract-json": "^1.0.0-beta.30",
+    "axios": "^0.21.1"
+  }
+}
