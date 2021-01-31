@@ -41,28 +41,33 @@ function User() {
                     </Menu>
 
                 </Sider >
-                <Content>
-                    <div className="content" style={{ marginTop: '50px' }}>
-                        <Row>
-                            <Col span={20} offset={2}>
-                                <Switch>
-                                    <Route path="/update">
-                                        <UpdateDetailsForm />
-                                    </Route>
-                                    <Route path="/document/:hash">
-                                        <Document />
-                                    </Route>
-                                    <Route path="/declarationform">
-                                        <DeclarationForm />
-                                    </Route>
-                                    <Route path="/request">
-                                        <RequestForm />
-                                    </Route>
-                                </Switch>
-                            </Col>
-                        </Row>
-                    </div>
+                <Content className="content" style={{ marginTop: '50px' }}>
+                    <Row>
+                        <Col span={20} offset={2}>
+                            <Switch>
+                                <Route exact path="/update">
+                                    <UpdateDetailsForm />
+                                </Route>
+                                <Route exact path="/document/:hash">
+                                    <Document />
+                                </Route>
+                                <Route exact path="/declarationform">
+                                    <DeclarationForm />
+                                </Route>
+                                <Route exact path="/request">
+                                    <RequestForm />
+                                </Route>
+                            </Switch>
+                        </Col>
+                    </Row>
                 </Content>
+                <Footer style={{
+                    position: "fixed",
+                    left: "0",
+                    bottom: "0", textAlign: 'center', fontSize: '10px', width: "100%",
+                }}>
+                    <h2>Witness ©2021 Created by Nina Welsh</h2>
+                </Footer>
             </Router>
         </Layout >
     )

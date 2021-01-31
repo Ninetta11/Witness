@@ -40,9 +40,6 @@ function App() {
                     <Route exact path="/signup">
                         <SignupForm />
                     </Route>
-                    <Footer style={{ textAlign: 'center', fontSize: '10px' }}>
-                        <h2>Witness ©2021 Created by Nina Welsh</h2>
-                    </Footer>
                 </Layout>
             </StoreProvider>
         </Router>

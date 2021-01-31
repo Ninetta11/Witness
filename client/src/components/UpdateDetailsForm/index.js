@@ -2,10 +2,10 @@ import { Form, Space, Input, Typography } from 'antd';
 import 'antd/dist/antd.css';
 import { useStoreContext } from '../../utils/GlobalState';
 
-const { Paragraph, Title, Text } = Typography;
+const { Paragraph, Title } = Typography;
 const layout = {
-    labelCol: { span: 8, },
-    wrapperCol: { span: 16, },
+    labelCol: { span: 7, },
+    wrapperCol: { span: 15, },
 };
 
 
@@ -20,7 +20,7 @@ function UpdateDetailsForm() {
         // onFinish={onFinish}
         // onFinishFailed={onFinishFailed}
         >
-            <Title level={2}>Update Details</Title>
+            <Title level={2} style={{ paddingBottom: '25px' }}>Update Details</Title>
             <Space direction="vertical">
                 <Form.Item
                     label="Address:"
