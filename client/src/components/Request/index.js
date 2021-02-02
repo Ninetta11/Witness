@@ -8,7 +8,7 @@ const { Title, Text } = Typography;
 const { Option } = Select;
 
 
-function RequestForm() {
+function Request() {
     const [state, dispatch] = useStoreContext();
 
     return (
@@ -51,4 +51,4 @@ function RequestForm() {
     )
 }
 
-export default RequestForm;
+export default Request;

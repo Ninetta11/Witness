@@ -1,10 +1,29 @@
 import React, { createContext, useReducer, useContext } from "react";
+import { isEmpty } from 'lodash';
+import { GET_ERRORS, SET_CURRENT_USER, USER_LOADING } from '../actions/types';
+import jwt_decode from 'jwt-decode';
 
 const UserContext = createContext();
 const { Provider } = UserContext;
 
 const reducer = (state, action) => {
     switch (action.type) {
+        case SET_CURRENT_USER:
+            console.log('appStore/reducer/setciurrentuser');
+            return {
+                ...state,
+                isAuthenticated: !isEmpty(action.payload),
+                user: action.payload,
+            };
+        case USER_LOADING:
+            console.log('appStore/reducer/userloading');
+            return {
+                ...state,
+                loading: true,
+            };
+        case GET_ERRORS:
+            console.log('appStore/reducer/geterrors');
+            return action.payload;
         case "SHOW DETAILS":
             return {
                 ...state,

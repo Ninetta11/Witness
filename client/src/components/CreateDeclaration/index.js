@@ -1,14 +1,13 @@
 import DayJS from 'react-dayjs';
 import { Form, Input, Button, Typography, Space } from 'antd';
 import { PlusOutlined, SendOutlined } from '@ant-design/icons';
-import 'antd/dist/antd.css';
 import { useStoreContext } from "../../utils/GlobalState";
 
 const { TextArea } = Input;
 const { Title, Text } = Typography;
 
 
-function DeclarationForm() {
+function CreateDeclaration() {
     const [state, dispatch] = useStoreContext();
 
     return (
@@ -39,4 +38,4 @@ function DeclarationForm() {
     )
 };
 
-export default DeclarationForm;
+export default CreateDeclaration;

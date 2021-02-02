@@ -8,6 +8,12 @@ module.exports = function validateRegisterInput(data) {
   data.first_name = !isEmpty(data.first_name) ? data.first_name : "";
   data.last_name = !isEmpty(data.last_name) ? data.last_name : "";
   data.email = !isEmpty(data.email) ? data.email : "";
+  data.state = !isEmpty(data.state) ? data.state : "";
+  data.postcode = !isEmpty(data.postcode) ? data.postcode : "";
+  data.suburb = !isEmpty(data.suburb) ? data.suburb : "";
+  data.street = !isEmpty(data.street) ? data.street : "";
+  data.street_no = !isEmpty(data.street_no) ? data.street_no : "";
+  data.occupation = !isEmpty(data.occupation) ? data.occupation : "";
   data.password = !isEmpty(data.password) ? data.password : "";
   // data.password2 = !isEmpty(data.password2) ? data.password2 : "";
 
@@ -43,6 +49,28 @@ module.exports = function validateRegisterInput(data) {
   // if (!Validator.equals(data.password, data.password2)) {
   //   errors.password2 = "Passwords must match";
   // }
+
+  // Address checks
+  if (Validator.isEmpty(data.state)) {
+    errors.state = "State is required";
+  }
+  if (Validator.isEmpty(data.postcode)) {
+    errors.postcode = "Postcode is required";
+  }
+  if (Validator.isEmpty(data.suburb)) {
+    errors.suburb = "Suburb is required";
+  }
+  if (Validator.isEmpty(data.street)) {
+    errors.street = "Street is required";
+  }
+  if (Validator.isEmpty(data.street_no)) {
+    errors.street_no = "Street number is required";
+  }
+
+  // Occupation checks
+  if (Validator.isEmpty(data.occupation)) {
+    errors.occupation = "Occupation is required";
+  }
 
   return {
     errors,

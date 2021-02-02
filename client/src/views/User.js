@@ -1,14 +1,13 @@
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
 import { Row, Col, Layout, Menu } from 'antd';
 import { UserOutlined, FileOutlined, LogoutOutlined, IdcardOutlined, FileAddOutlined, MailOutlined } from '@ant-design/icons';
-import DeclarationForm from '../components/DeclarationForm';
-import UpdateDetailsForm from '../components/UpdateDetailsForm';
+import CreateDeclaration from '../components/CreateDeclaration';
+import UpdateDetails from '../components/UpdateDetails';
 import Document from '../components/Document';
-import RequestForm from '../components/RequestForm';
+import Request from '../components/Request';
 import { useStoreContext } from '../utils/GlobalState';
 
-const { Content } = Layout;
-const { Sider } = Layout;
+const { Content, Sider, Footer } = Layout;
 const { SubMenu } = Menu;
 
 
@@ -35,27 +34,26 @@ function User() {
                                 <Menu.Item key={document.hash}><Link to="/document/:hash">{document.hash}</Link></Menu.Item>
                             )}
                         </SubMenu>
-                        < Menu.Item key="3" icon={<FileAddOutlined />}><Link to="/declarationform">Create New Document</Link></Menu.Item>
+                        < Menu.Item key="3" icon={<FileAddOutlined />}><Link to="/declaration">Create New Document</Link></Menu.Item>
                         < Menu.Item key="4" icon={<MailOutlined />}><Link to="/request">Request Document</Link></Menu.Item>
                         < Menu.Item key="5" icon={<LogoutOutlined />}><Link to="/">Logout</Link></Menu.Item>
                     </Menu>
-
                 </Sider >
                 <Content className="content" style={{ marginTop: '50px' }}>
                     <Row>
                         <Col span={20} offset={2}>
                             <Switch>
                                 <Route exact path="/update">
-                                    <UpdateDetailsForm />
+                                    <UpdateDetails />
                                 </Route>
                                 <Route exact path="/document/:hash">
                                     <Document />
                                 </Route>
-                                <Route exact path="/declarationform">
-                                    <DeclarationForm />
+                                <Route exact path="/declaration">
+                                    <CreateDeclaration />
                                 </Route>
                                 <Route exact path="/request">
-                                    <RequestForm />
+                                    <Request />
                                 </Route>
                             </Switch>
                         </Col>

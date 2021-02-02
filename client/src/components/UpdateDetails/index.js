@@ -1,5 +1,4 @@
 import { Form, Space, Input, Typography } from 'antd';
-import 'antd/dist/antd.css';
 import { useStoreContext } from '../../utils/GlobalState';
 
 const { Paragraph, Title } = Typography;
@@ -9,7 +8,7 @@ const layout = {
 };
 
 
-function UpdateDetailsForm() {
+function UpdateDetails() {
     const [state, dispatch] = useStoreContext();
 
     return (
@@ -99,4 +98,4 @@ function UpdateDetailsForm() {
     )
 }
 
-export default UpdateDetailsForm;
+export default UpdateDetails;

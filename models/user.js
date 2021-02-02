@@ -10,9 +10,10 @@ const UserSchema = new Schema({
   street: { type: String, required: true },
   street_no: { type: Number, required: true },
   occupation: { type: String, required: true },
-  login: { type: Schema.Types.Mixed, required: true, immutable: true },
+  email: { type: Schema.Types.Mixed, required: true, immutable: true },
   password: { type: Schema.Types.Mixed, required: true },
-  generated_IOTA_address: { type: Schema.Types.Mixed, required: true, immutable: true },
+  IOTA_address: { type: Schema.Types.Mixed, required: true, immutable: true },
+  IOTA_seed: { type: Schema.Types.Mixed, required: true, immutable: true },
   date: { type: Date, default: Date.now }
 });
 
