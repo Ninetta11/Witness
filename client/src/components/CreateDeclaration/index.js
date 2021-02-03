@@ -1,14 +1,14 @@
 import DayJS from 'react-dayjs';
 import { Form, Input, Button, Typography, Space } from 'antd';
 import { PlusOutlined, SendOutlined } from '@ant-design/icons';
-import { useStoreContext } from "../../utils/GlobalState";
+import { useAppContext } from '../../store';
 
 const { TextArea } = Input;
 const { Title, Text } = Typography;
 
 
 function CreateDeclaration() {
-    const [state, dispatch] = useStoreContext();
+    const [state, appDispatch] = useAppContext();
 
     return (
         <Form
@@ -16,7 +16,7 @@ function CreateDeclaration() {
         >
             <Space direction="vertical">
                 <Title level={2} style={{ textAlign: 'center', paddingBottom: '25px' }}>Statutory Declaration</Title>
-                <Text>I, <strong>{state.currentUser.first_name} {state.currentUser.last_name}</strong> residing at <strong>{state.currentUser.street_no} {state.currentUser.street}, {state.currentUser.suburb} {state.currentUser.state} {state.currentUser.postcode}</strong> and having the occupation of <strong>{state.currentUser.occupation}</strong>, make the following statutory declaration under the <strong>Oaths and Affirmations Act 2018:</strong></Text>
+                <Text>I, <strong>{state.user.first_name} {state.user.last_name}</strong> residing at <strong>{state.user.street_no} {state.user.street}, {state.user.suburb} {state.user.state} {state.user.postcode}</strong> and having the occupation of <strong>{state.user.occupation}</strong>, make the following statutory declaration under the <strong>Oaths and Affirmations Act 2018:</strong></Text>
                 <br></br>
                 <Text type="secondary">Set out matter declared to in numbered paragraphs.</Text>
                 <Form.Item label="1." name="Declaration">

@@ -2,14 +2,14 @@ import { Form, Space, Input, Button, Select, Typography } from 'antd';
 import { SendOutlined } from '@ant-design/icons';
 import 'antd/dist/antd.css';
 import TextArea from 'antd/lib/input/TextArea';
-import { useStoreContext } from '../../utils/GlobalState';
+import { useAppContext } from '../../store';
 
 const { Title, Text } = Typography;
 const { Option } = Select;
 
 
 function Request() {
-    const [state, dispatch] = useStoreContext();
+    const [state, appDispatch] = useAppContext();
 
     return (
         <Form

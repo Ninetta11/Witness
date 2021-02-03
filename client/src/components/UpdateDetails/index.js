@@ -1,5 +1,5 @@
 import { Form, Space, Input, Typography } from 'antd';
-import { useStoreContext } from '../../utils/GlobalState';
+import { useAppContext } from '../../store';
 
 const { Paragraph, Title } = Typography;
 const layout = {
@@ -9,7 +9,7 @@ const layout = {
 
 
 function UpdateDetails() {
-    const [state, dispatch] = useStoreContext();
+    const [state, appDispatch] = useAppContext();
 
     return (
         <Form
@@ -30,8 +30,8 @@ function UpdateDetails() {
                             noStyle
                             rules={[{ required: true, message: 'Please enter a street number' }]}>
                             <Paragraph
-                                editable={{ onChange: dispatch("SET_STREET_NUMBER") }}>
-                                {state.currentUser.street_no}
+                                editable={{ onChange: appDispatch("SET_STREET_NUMBER") }}>
+                                {state.user.street_no}
                             </Paragraph>
                         </Form.Item>
                         <Form.Item
@@ -39,8 +39,8 @@ function UpdateDetails() {
                             noStyle
                             rules={[{ required: true, message: 'Please enter a street' }]}>
                             <Paragraph
-                                editable={{ onChange: dispatch("SET_STREET") }}>
-                                {state.currentUser.street}
+                                editable={{ onChange: appDispatch("SET_STREET") }}>
+                                {state.user.street}
                             </Paragraph>
                         </Form.Item>
                         <Form.Item
@@ -48,8 +48,8 @@ function UpdateDetails() {
                             noStyle
                             rules={[{ required: true, message: 'Please enter a suburb' }]}>
                             <Paragraph
-                                editable={{ onChange: dispatch("SET_SUBURB") }}>
-                                {state.currentUser.suburb}
+                                editable={{ onChange: appDispatch("SET_SUBURB") }}>
+                                {state.user.suburb}
                             </Paragraph>
                         </Form.Item>
                         <Form.Item
@@ -57,8 +57,8 @@ function UpdateDetails() {
                             noStyle
                             rules={[{ required: true, message: 'Please enter a state' }]}>
                             <Paragraph
-                                editable={{ onChange: dispatch("SET_STATE") }}>
-                                {state.currentUser.state}
+                                editable={{ onChange: appDispatch("SET_STATE") }}>
+                                {state.user.state}
                             </Paragraph>
                         </Form.Item>
                         <Form.Item
@@ -66,8 +66,8 @@ function UpdateDetails() {
                             noStyle
                             rules={[{ required: true, message: 'Please enter a postcode' }]}>
                             <Paragraph
-                                editable={{ onChange: dispatch("SET_POSTCODE") }}>
-                                {state.currentUser.postcode}
+                                editable={{ onChange: appDispatch("SET_POSTCODE") }}>
+                                {state.user.postcode}
                             </Paragraph>
                         </Form.Item>
                     </Input.Group>
@@ -79,8 +79,8 @@ function UpdateDetails() {
                     rules={[{ required: true, message: 'Please enter an occupation' }]}
                 >
                     <Paragraph
-                        editable={{ onChange: dispatch("SET_OCCUPATION") }}>
-                        {state.currentUser.occupation}
+                        editable={{ onChange: appDispatch("SET_OCCUPATION") }}>
+                        {state.user.occupation}
                     </Paragraph>
                 </Form.Item>
 
@@ -89,8 +89,8 @@ function UpdateDetails() {
                     name="password"
                     rules={[{ required: true, message: 'Please enter a password' }]}>
                     <Paragraph
-                        editable={{ onChange: dispatch("SET_PASSWORD") }}>
-                        {state.currentUser.password}
+                        editable={{ onChange: appDispatch("SET_PASSWORD") }}>
+                        {state.user.password}
                     </Paragraph>
                 </Form.Item>
             </Space>

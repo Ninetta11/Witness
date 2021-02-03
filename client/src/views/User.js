@@ -5,14 +5,17 @@ import CreateDeclaration from '../components/CreateDeclaration';
 import UpdateDetails from '../components/UpdateDetails';
 import Document from '../components/Document';
 import Request from '../components/Request';
-import { useStoreContext } from '../utils/GlobalState';
+import { useAppContext } from '../store';
+import { useLoginCheck } from '../utils/setAuthToken';
 
 const { Content, Sider, Footer } = Layout;
 const { SubMenu } = Menu;
 
 
 function User() {
-    const [state, dispatch] = useStoreContext();
+    const [state, appDispatch] = useAppContext();
+
+    useLoginCheck(appDispatch);
 
     return (
         <Layout>
@@ -26,13 +29,13 @@ function User() {
                         defaultSelectedKeys={['1']}
                         defaultOpenKeys={['sub1']}
                         style={{ height: '100%' }}
-                    >  <SubMenu key="sub1" icon={<UserOutlined />} title={state.currentUser.first_name + ' ' + state.currentUser.last_name}>
+                    >  <SubMenu key="sub1" icon={<UserOutlined />} title={state.user.first_name + ' ' + state.user.last_name}>
                             <Menu.Item key="2" icon={<IdcardOutlined />}><Link to="/user/update">Update Details</Link></Menu.Item>
                         </SubMenu>
                         <SubMenu key="sub2" icon={<FileOutlined />} title="Documents">
-                            {state.currentUserDocuments.map(document =>
+                            {/* {state.currentUserDocuments.map(document =>
                                 <Menu.Item key={document.hash}><Link to="/user/document/:hash">{document.hash}</Link></Menu.Item>
-                            )}
+                            )} */}
                         </SubMenu>
                         < Menu.Item key="3" icon={<FileAddOutlined />}><Link to="/user/declaration">Create New Document</Link></Menu.Item>
                         < Menu.Item key="4" icon={<MailOutlined />}><Link to="/user/request">Request Document</Link></Menu.Item>
