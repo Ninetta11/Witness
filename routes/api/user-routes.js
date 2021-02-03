@@ -52,6 +52,7 @@ router.post('/api/register', (req, res) => {
                     occupation: req.body.occupation,
                     created: today
                 }
+                console.log(req.body);
                 bcrypt.hash(req.body.password, 10, (err, hash) => {
                     if (err) throw err;
                     userData.password = hash;

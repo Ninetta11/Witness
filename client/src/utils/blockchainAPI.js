@@ -56,15 +56,17 @@ export default {
             });
     },
 
-    generateNewAddress: (seed) => {
-        iota.getNewAddress(seed, { index: 0, securityLevel: securityLevel, total: 1 })
-            .then(address => {
-                console.log('Your address is: ' + address);
-                return address
-            })
-            .catch(err => {
-                console.log(err);
-                return err
-            });
+    generateNewAddress: function (seed) {
+        return new Promise((function (resolve, reject) {
+            iota.getNewAddress(seed, { index: 0, securityLevel: securityLevel, total: 1 })
+                .then(address => {
+                    console.log('Your address is: ' + address);
+                    resolve(address)
+                })
+                .catch(err => {
+                    console.log(err);
+                    reject(err)
+                });
+        }))
     }
 }

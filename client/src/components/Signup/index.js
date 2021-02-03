@@ -4,14 +4,17 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { registerUser, getUsers } from '../../utils/userFunctions';
 import AlertMessage from '../AlertMessage';
+import states from '../../data/states.json';
+import occupations from '../../data/occupationlist.json';
 import API from '../../utils/blockchainAPI';
+
 const { ErrorBoundary } = Alert;
 const { Option } = Select;
 const { Content } = Layout;
 const { Title } = Typography;
 const layout = {
     labelCol: {
-        span: 6,
+        span: 8,
     },
     wrapperCol: {
         span: 14,
@@ -38,7 +41,9 @@ function Signup(props) {
         street: '',
         street_no: '',
         occupation: '',
-        alerts: '',
+        IOTA_seed: '',
+        IOTA_address: '',
+        errors: '',
         formIsValid: true,
     });
 
@@ -47,30 +52,29 @@ function Signup(props) {
         setRegisterState({ ...registerState, [event.target.name]: event.target.value });
     };
 
-    // const selectOnChange = (value) => {
-    //     console.log(value);
-    //     setRegisterState({ ...registerState, [name]: value });
-    // };
+    // updates global state when data is selected from any of the select options
+    const OnSelect = (value) => {
+        (value.key.length > 3) ?
+            setRegisterState({ ...registerState, occupation: value.key })
+            :
+            setRegisterState({ ...registerState, state: value.key })
+    };
 
-    // generates a unique IOTA blockchain address
-    const generateNewAddress = () => {
-        // IOTA seed must be 81 characters and can include letters and numbers
+    // generates random seed
+    const generateSeed = () => {
+        // IOTA seed must be 81 characters and can include letters and the number 9
         const options = '9ABCDEFGHIJKLMNOPQRSTUVWXYZ';
         let seed = '';
         // randomised selection
         for (let i = 0; i < 81; i++) {
             seed += options.charAt(parseInt(Math.random() * options.length))
         };
-        console.log(seed.length);
-        // an IOTA blockchain address is generated from the random seed
-        let address = API.generateNewAddress(seed);
-        setRegisterState({ ...registerState, IOTA_seed: seed, IOTA_address: address });
-        console.log(registerState)
+        return seed;
     }
 
     // on form submit
     const onSubmit = () => {
-        let alerts = {};
+        let errors = '';
         const userData = {
             first_name: registerState.first_name,
             last_name: registerState.last_name,
@@ -83,43 +87,40 @@ function Signup(props) {
             postcode: registerState.postcode,
             occupation: registerState.occupation
         };
-        // if information entered into the form is validated at the frontend
-        if (registerState.formIsValid) {
-            // current registered user information is pulled from the database
-            getUsers().then((data) => {
-                // compares all current registered user emails against inputted email
-                var alreadyRegisteredUser = data
-                    .find((element) => element.email === registerState.email)
-                // if imputted email does not exist in the database
-                if (!alreadyRegisteredUser) {
-                    // 
-                    generateNewAddress();
-                    // console.log('seed' + seed);
-                    // console.log('address' + address);
-                    // userData.IOTA_address = address;
-                    // userData.IOTA_seed = seed;
-                    console.log(userData);
-                    registerUser(userData).then((res) => {
-                        alerts = { type: 'success', message: 'Your registration was successful' };
-                        console.log(res)
-                        //history.push('/login');
-                    });
-                    console.log('Form submitted');
-                } else {
-                    alerts = { type: 'error', message: 'This user already exists' };
-                    setRegisterState({ ...registerState, alerts });
-                }
-            });
-        } else {
-            console.log('Form has errors.' + JSON.stringify(alerts));
-        }
-    };
+        // current registered user information is pulled from the database
+        getUsers().then((data) => {
+            // compares all current registered user emails against inputted email
+            var alreadyRegisteredUser = data
+                .find((element) => element.email === registerState.email)
+            // if email does not exist in the database
+            if (!alreadyRegisteredUser) {
+                // generate random seed for new user 
+                let seed = generateSeed();
+                // generate an IOTA blockchain address from seed
+                API.generateNewAddress(seed)
+                    .then((address) => {
+                        userData.IOTA_seed = seed;
+                        userData.IOTA_address = address;
 
-    const onFinish = (values) => {
-        console.log('Success:', values);
+                        // registers user 
+                        registerUser(userData).then((res) => {
+                            errors = { type: 'success', message: 'Your registration was successful' };
+                            console.log(res)
+                            //history.push('/login');
+                        });
+                        console.log('Form submitted');
+                    })
+            } else {
+                errors = { type: 'error', message: 'This user already exists' };
+                setRegisterState({ ...registerState, errors });
+            }
+        });
     };
 
     const onFinishFailed = (errorInfo) => {
+        let errors = {};
+        errors = { type: 'error', message: 'Please complete all form fields' };
+        setRegisterState({ ...registerState, errors });
         console.log('Failed:', errorInfo);
     };
 
@@ -131,34 +132,28 @@ function Signup(props) {
                         noValidate
                         {...layout}
                         name="basic"
-                        initialValues={{ remember: true, }}
-
                         onFinish={onSubmit}
                         onFinishFailed={onFinishFailed}
                     >
                         <Title level={2} style={{ textAlign: 'center', paddingBottom: '25px' }}>Sign up</Title>
                         <ErrorBoundary>
-                            {registerState.alerts ?
-                                <AlertMessage type={registerState.alerts.type} message={registerState.alerts.message} />
+                            {registerState.errors ?
+                                <AlertMessage type={registerState.errors.type} message={registerState.errors.message} />
                                 :
                                 <h2></h2>}
                         </ErrorBoundary>
+
                         <Form.Item
-                            label="First Name"
                             name="first_name"
+                            label="First Name"
                             rules={[
                                 {
                                     type: 'string',
-                                    message: 'Please enter a valid name'
-                                },
-                                {
                                     required: true,
                                     message: 'Please input your first name!',
                                 },
-
                             ]}
-                        >
-                            <Input
+                        ><Input
                                 name="first_name"
                                 placeholder="Enter First Name"
                                 value={registerState.first_name}
@@ -166,20 +161,16 @@ function Signup(props) {
                         </Form.Item>
 
                         <Form.Item
-                            label="Last Name"
                             name="last_name"
+                            label="Last Name"
                             rules={[
                                 {
                                     type: 'string',
-                                    message: 'Please enter a valid surname'
-                                },
-                                {
                                     required: true,
                                     message: 'Please input your last name!',
-                                }
+                                },
                             ]}
-                        >
-                            <Input
+                        ><Input
                                 name="last_name"
                                 placeholder="Enter Last Name"
                                 value={registerState.last_name}
@@ -187,17 +178,15 @@ function Signup(props) {
                         </Form.Item>
 
                         <Form.Item
-                            label="Street No."
                             name="street_no"
+                            label="Street No."
                             rules={[
                                 {
                                     required: true,
                                     message: 'Please input your street number!',
                                 },
-
                             ]}
-                        >
-                            <Input
+                        ><Input
                                 style={{ width: 120 }}
                                 name="street_no"
                                 value={registerState.street_no}
@@ -205,43 +194,34 @@ function Signup(props) {
                         </Form.Item>
 
                         <Form.Item
-                            label="Street"
                             name="street"
+                            label="Street"
                             rules={[
                                 {
                                     type: 'string',
-                                    message: 'Please enter a valid street name'
-                                },
-                                {
                                     required: true,
                                     message: 'Please input your street!',
                                 },
-
                             ]}
-                        >
-                            <Input
+                        ><Input
                                 name="street"
                                 placeholder="Enter Street Name"
                                 value={registerState.street}
-                                onChange={onChange} />
+                                onChange={onChange}
+                            />
                         </Form.Item>
 
                         <Form.Item
-                            label="Suburb"
                             name="suburb"
+                            label="Suburb"
                             rules={[
                                 {
                                     type: 'string',
-                                    message: 'Please enter a valid suburb'
-                                },
-                                {
                                     required: true,
                                     message: 'Please input your suburb!',
                                 },
-
                             ]}
-                        >
-                            <Input
+                        ><Input
                                 name="suburb"
                                 placeholder="Enter Suburb"
                                 value={registerState.suburb}
@@ -249,126 +229,90 @@ function Signup(props) {
                         </Form.Item>
 
                         <Form.Item
-                            label="State"
                             name="state"
+                            label="State"
                             rules={[
                                 {
-                                    type: 'string',
-                                    message: 'Please enter a valid state'
-                                },
-                                {
                                     required: true,
-                                    message: 'Please input your state!',
+                                    message: 'Please select your state!',
                                 },
-
                             ]}
-                        ><Input
-                                name="state"
-                                value={registerState.state}
-                                onChange={onChange} />
-                            {/*  <Select
-                                refs="state"
-                                name="state"
-                                defaultValue="VIC"
-                                style={{ width: 120 }}
-                                onChange={selectOnChange}>
-                                <Option value="VIC">VIC</Option>
-                                <Option value="NSW">NSW</Option>
-                                <Option value="ACT">ACT</Option>
-                                <Option value="QLD">QLD</Option>
-                                <Option value="WA">WA</Option>
-                                <Option value="SA">SA</Option>
-                                <Option value="NT">NT</Option>
-                                <Option value="TAS">TAS</Option>
+                        ><Select
+                            style={{ width: 120 }}
+                            labelInValue
+                            name="state"
+                            onChange={OnSelect}>
+                                {states.map(state =>
+                                    <Option value={state}>{state}</Option>
+                                )}
                             </Select>
-                           */}
                         </Form.Item>
 
                         <Form.Item
-                            label="Postcode"
                             name="postcode"
+                            label="Postcode"
                             rules={[
                                 {
                                     required: true,
-                                    message: 'Please enter a valid postcode!',
+                                    message: 'Please enter your postcode!',
                                 },
-
                             ]}
-                        >
-                            <Input
+                        ><Input
+                                style={{ width: 120 }}
                                 name="postcode"
                                 value={registerState.postcode}
                                 onChange={onChange} />
                         </Form.Item>
 
                         <Form.Item
-                            label="Occupation"
                             name="occupation"
+                            label="Occupation"
                             rules={[
                                 {
                                     required: true,
                                     message: 'Please select your occupation!',
                                 },
                             ]}
-                        ><Input
-                                name="occupation"
-                                value={registerState.occupation}
-                                onChange={onChange} />
-                            {/* <Select
-                                refs="occupation"
-                                defaultValue="Student"
-                                onChange={selectOnChange}>
-                                <Option name="occupation" value="Student">Student</Option>
-                                {/* // Prefill with API
-                                <Option value="NSW">NSW</Option>
-                                <Option value="ACT">ACT</Option>
-                                <Option value="QLD">QLD</Option>
-                                <Option value="WA">ACT</Option>
-                                <Option value="SA">QLD</Option>
-                                <Option value="NT">ACT</Option>
-                                <Option value="TAS">QLD</Option> 
+                        ><Select
+                            labelInValue
+                            name="occupation"
+                            onChange={OnSelect}>
+                                {occupations.map(occupation =>
+                                    <Option value={occupation}>{occupation}</Option>
+                                )}
                             </Select>
-                            */}
-
                         </Form.Item>
 
                         <Form.Item
-                            label="Email"
                             name="email"
+                            label="Email"
                             rules={[
                                 {
                                     type: 'email',
-                                    message: 'Please enter a valid Email',
-                                },
-                                {
                                     required: true,
                                     message: 'Please input your email!',
                                 },
-
                             ]}
-                        >
-                            <Input
+                        ><Input
                                 name="email"
-                                placeholder="Enter Email"
+                                placeholder="Enter Email Address"
                                 value={registerState.email}
                                 onChange={onChange} />
                         </Form.Item>
 
                         <Form.Item
-                            label="Password"
                             name="password"
+                            label="Password"
                             rules={[
                                 {
+                                    min: 8,
                                     required: true,
-                                    message: 'Please input your password!',
+                                    message: 'Please input a valid password',
                                 },
-
                             ]}
-                            hasFeedback
-                        >
-                            <Input.Password
+                        ><Input.Password
                                 name="password"
-                                placeholder="Enter Password"
+                                placeholder="Must contain min 8 mixed characters"
                                 value={registerState.password}
                                 onChange={onChange} />
                         </Form.Item>
@@ -393,8 +337,8 @@ function Signup(props) {
                                     },
                                 }),
                             ]}
-                        >
-                            <Input.Password />
+                        ><Input.Password
+                                placeholder="Confirm Password" />
                         </Form.Item>
 
                         <Form.Item {...tailLayout}>
