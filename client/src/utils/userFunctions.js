@@ -1,7 +1,6 @@
 import axios from 'axios';
 
 export const registerUser = (userData) => {
-    console.log('register user with userFunction');
     return axios.post('/api/register', {
         first_name: userData.first_name,
         last_name: userData.last_name,
@@ -19,7 +18,6 @@ export const registerUser = (userData) => {
 };
 
 export const loginUser = (userData) => {
-    console.log('login user with userFunction');
     return axios.post('/api/login', {
         email: userData.email,
         password: userData.password,
@@ -27,6 +25,5 @@ export const loginUser = (userData) => {
 };
 
 export const getUsers = () => {
-    console.log('getusers');
     return axios.get('/api/displayusers').then((res) => res.data);
 };

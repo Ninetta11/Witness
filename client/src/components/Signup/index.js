@@ -100,13 +100,12 @@ function Signup(props) {
                     .then((address) => {
                         userData.IOTA_seed = seed;
                         userData.IOTA_address = address;
-                        // registers user 
+                        // registers user and redirects to login page
                         registerUser(userData).then((res) => {
-                            console.log(res)
+                            alerts = { type: 'success', message: 'Your registration was successful' };
+                            console.log('Form submitted' + res);
                             history.push('/login');
                         });
-                        alerts = { type: 'success', message: 'Your registration was successful' };
-                        console.log('Form submitted');
                     })
             } else {
                 // If user already exists, alerts user

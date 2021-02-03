@@ -25,7 +25,6 @@ router.post('/api/register', (req, res) => {
     if (!isValid) {
         return res.status(400).json(alerts);
     }
-    console.log('register route');
     User.findOne({
         email: req.body.email
     })
@@ -35,7 +34,6 @@ router.post('/api/register', (req, res) => {
                 return res.send("Email already exists");
             }
             else {
-                console.log('does it make it this far');
                 const today = new Date()
                 const userData = {
                     first_name: req.body.first_name,
@@ -75,12 +73,12 @@ router.post('/api/login', (req, res) => {
     console.log("login route");
     //Not sure if this bit is right - need to test!!!!
     // Form validation
-    const { alerts, isValid } = validateLoginInput(req.body);
+    // const { alerts, isValid } = validateLoginInput(req.body);
 
-    // Check validation
-    if (!isValid) {
-        return res.status(400).json(alerts);
-    }
+    // // Check validation
+    // if (!isValid) {
+    //     return res.status(400).json(alerts);
+    // }
 
     User.findOne({
         email: req.body.email
@@ -110,11 +108,11 @@ router.post('/api/login', (req, res) => {
                     res.send(token)
                 }
                 else {
-                    res.status(400).json({ error: "User does not exist" });
+                    res.status(400).send({ type: 'error', message: 'Your password is incorrect' });
                 }
             }
             else {
-                res.status(400).json({ error: "User does not exist" });
+                res.status(400).send({ type: 'error', message: 'There are no users registered under that email address. Please register now.' });
             }
         })
         .catch(err => {

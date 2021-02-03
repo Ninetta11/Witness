@@ -27,15 +27,15 @@ function User() {
                         defaultOpenKeys={['sub1']}
                         style={{ height: '100%' }}
                     >  <SubMenu key="sub1" icon={<UserOutlined />} title={state.currentUser.first_name + ' ' + state.currentUser.last_name}>
-                            <Menu.Item key="2" icon={<IdcardOutlined />}><Link to="/update">Update Details</Link></Menu.Item>
+                            <Menu.Item key="2" icon={<IdcardOutlined />}><Link to="/user/update">Update Details</Link></Menu.Item>
                         </SubMenu>
                         <SubMenu key="sub2" icon={<FileOutlined />} title="Documents">
                             {state.currentUserDocuments.map(document =>
-                                <Menu.Item key={document.hash}><Link to="/document/:hash">{document.hash}</Link></Menu.Item>
+                                <Menu.Item key={document.hash}><Link to="/user/document/:hash">{document.hash}</Link></Menu.Item>
                             )}
                         </SubMenu>
-                        < Menu.Item key="3" icon={<FileAddOutlined />}><Link to="/declaration">Create New Document</Link></Menu.Item>
-                        < Menu.Item key="4" icon={<MailOutlined />}><Link to="/request">Request Document</Link></Menu.Item>
+                        < Menu.Item key="3" icon={<FileAddOutlined />}><Link to="/user/declaration">Create New Document</Link></Menu.Item>
+                        < Menu.Item key="4" icon={<MailOutlined />}><Link to="/user/request">Request Document</Link></Menu.Item>
                         < Menu.Item key="5" icon={<LogoutOutlined />}><Link to="/">Logout</Link></Menu.Item>
                     </Menu>
                 </Sider >
@@ -43,16 +43,16 @@ function User() {
                     <Row>
                         <Col span={20} offset={2}>
                             <Switch>
-                                <Route exact path="/update">
+                                <Route exact path="/user/update">
                                     <UpdateDetails />
                                 </Route>
-                                <Route exact path="/document/:hash">
+                                <Route exact path="/user/document/:hash">
                                     <Document />
                                 </Route>
-                                <Route exact path="/declaration">
+                                <Route exact path="/user/declaration">
                                     <CreateDeclaration />
                                 </Route>
-                                <Route exact path="/request">
+                                <Route exact path="/user/request">
                                     <Request />
                                 </Route>
                             </Switch>

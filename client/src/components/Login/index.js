@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import jwt_decode from 'jwt-decode';
+import { Layout, Row, Col, Form, Input, Button, Alert, Typography } from 'antd';
+import { RightCircleOutlined } from '@ant-design/icons';
 import { GET_ERRORS, SET_CURRENT_USER } from '../../actions/types';
 import { useAppContext } from '../../store';
 import { loginUser } from '../../utils/userFunctions';
 import { setAuthToken } from '../../utils/setAuthToken';
-import { useHistory } from 'react-router-dom';
-import jwt_decode from 'jwt-decode';
-import { Layout, Row, Col, Form, Input, Button, Checkbox, Typography } from 'antd';
-import { RightCircleOutlined } from '@ant-design/icons';
 
+const { ErrorBoundary } = Alert;
 const { Content } = Layout;
 const { Title } = Typography;
 const layout = {
@@ -31,6 +32,7 @@ function Login() {
     const [formState, setFormState] = useState({
         email: '',
         password: '',
+        alerts: ''
     });
 
     const [, appDispatch] = useAppContext();
@@ -43,7 +45,6 @@ function Login() {
     };
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
         const user = {
             email: formState.email,
             password: formState.password,
@@ -58,8 +59,10 @@ function Login() {
             const decodedToken = jwt_decode(token);
             // Set current user
             appDispatch({ type: SET_CURRENT_USER, payload: decodedToken });
-            history.push('/dashboard');
+            history.push('/user');
         } catch (error) {
+            let alerts = { type: error.response.data.type, message: error.response.data.message };
+            setFormState({ ...formState, alerts });
             appDispatch({
                 type: GET_ERRORS,
                 payload: error,
@@ -67,11 +70,9 @@ function Login() {
         }
     };
 
-    const onFinish = (values) => {
-        console.log('Success:', values);
-    };
-
     const onFinishFailed = (errorInfo) => {
+        let alerts = { type: 'error', message: 'Please complete all form fields' };
+        setFormState({ ...formState, alerts });
         console.log('Failed:', errorInfo);
     };
 
@@ -84,11 +85,23 @@ function Login() {
                         {...layout}
                         name="basic"
                         initialValues={{ remember: true, }}
-                        onSubmit={handleSubmit}
-                        onFinish={onFinish}
+                        onFinish={handleSubmit}
                         onFinishFailed={onFinishFailed}
                     >
                         <Title level={2} style={{ textAlign: 'center', paddingBottom: '25px' }}>Log in</Title>
+
+                        <ErrorBoundary >
+                            {formState.alerts ?
+                                <Alert
+                                    message={formState.alerts.message}
+                                    type={formState.alerts.type}
+                                    showIcon
+                                />
+                                :
+                                <br></br>
+                            }
+                        </ErrorBoundary>
+
                         <Form.Item
                             label="Email"
                             name="email"
@@ -98,10 +111,10 @@ function Login() {
                                     message: 'Please input your email!',
                                 },
                             ]}
-                            value={formState.email}
-                            onChange={onChange}
-                        >
-                            <Input />
+                        ><Input
+                                name="email"
+                                value={formState.email}
+                                onChange={onChange} />
                         </Form.Item>
 
                         <Form.Item
@@ -113,14 +126,11 @@ function Login() {
                                     message: 'Please input your password!',
                                 },
                             ]}
-                            value={formState.password}
-                            onChange={onChange}
-                        >
-                            <Input.Password />
-                        </Form.Item>
 
-                        <Form.Item {...tailLayout} name="remember" valuePropName="checked">
-                            <Checkbox>Remember me</Checkbox>
+                        ><Input.Password
+                                name="password"
+                                value={formState.password}
+                                onChange={onChange} />
                         </Form.Item>
 
                         <Form.Item {...tailLayout}>

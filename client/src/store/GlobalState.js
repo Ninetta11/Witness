@@ -15,7 +15,7 @@ export const appInitialState = {
     isAuthenticated: false,
     user: getToken(),
     loading: false,
-    errors: {}
+    alerts: {}
 };
 
 export function appReducer(state, action) {
