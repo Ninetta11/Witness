@@ -26,7 +26,7 @@ const tailLayout = {
     },
 };
 
-function Signup(props) {
+function Signup() {
     const history = useHistory();
 
     const [registerState, setRegisterState] = useState({
@@ -129,7 +129,6 @@ function Signup(props) {
                     <Form
                         noValidate
                         {...layout}
-                        name="basic"
                         onFinish={onSubmit}
                         onFinishFailed={onFinishFailed}
                     >
