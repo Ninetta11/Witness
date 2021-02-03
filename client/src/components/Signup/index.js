@@ -3,7 +3,6 @@ import { RightCircleOutlined } from '@ant-design/icons';
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { registerUser, getUsers } from '../../utils/userFunctions';
-import AlertMessage from '../AlertMessage';
 import states from '../../data/states.json';
 import occupations from '../../data/occupationlist.json';
 import API from '../../utils/blockchainAPI';
@@ -43,7 +42,7 @@ function Signup(props) {
         occupation: '',
         IOTA_seed: '',
         IOTA_address: '',
-        errors: '',
+        alerts: '',
         formIsValid: true,
     });
 
@@ -74,7 +73,7 @@ function Signup(props) {
 
     // on form submit
     const onSubmit = () => {
-        let errors = '';
+        let alerts = '';
         const userData = {
             first_name: registerState.first_name,
             last_name: registerState.last_name,
@@ -101,26 +100,26 @@ function Signup(props) {
                     .then((address) => {
                         userData.IOTA_seed = seed;
                         userData.IOTA_address = address;
-
                         // registers user 
                         registerUser(userData).then((res) => {
-                            errors = { type: 'success', message: 'Your registration was successful' };
                             console.log(res)
-                            //history.push('/login');
+                            history.push('/login');
                         });
+                        alerts = { type: 'success', message: 'Your registration was successful' };
                         console.log('Form submitted');
                     })
             } else {
-                errors = { type: 'error', message: 'This user already exists' };
-                setRegisterState({ ...registerState, errors });
+                // If user already exists, alerts user
+                alerts = { type: 'error', message: 'This user already exists' };
+                setRegisterState({ ...registerState, alerts });
             }
         });
     };
 
     const onFinishFailed = (errorInfo) => {
-        let errors = {};
-        errors = { type: 'error', message: 'Please complete all form fields' };
-        setRegisterState({ ...registerState, errors });
+        let alerts = {};
+        alerts = { type: 'error', message: 'Please complete all form fields' };
+        setRegisterState({ ...registerState, alerts });
         console.log('Failed:', errorInfo);
     };
 
@@ -136,12 +135,6 @@ function Signup(props) {
                         onFinishFailed={onFinishFailed}
                     >
                         <Title level={2} style={{ textAlign: 'center', paddingBottom: '25px' }}>Sign up</Title>
-                        <ErrorBoundary>
-                            {registerState.errors ?
-                                <AlertMessage type={registerState.errors.type} message={registerState.errors.message} />
-                                :
-                                <h2></h2>}
-                        </ErrorBoundary>
 
                         <Form.Item
                             name="first_name"
@@ -340,6 +333,18 @@ function Signup(props) {
                         ><Input.Password
                                 placeholder="Confirm Password" />
                         </Form.Item>
+
+                        <ErrorBoundary>
+                            {registerState.alerts ?
+                                <Alert
+                                    message={registerState.alerts.message}
+                                    type={registerState.alerts.type}
+                                    showIcon
+                                />
+                                :
+                                <br></br>
+                            }
+                        </ErrorBoundary>
 
                         <Form.Item {...tailLayout}>
                             <Button type="primary" shape="round" icon={<RightCircleOutlined />} htmlType="submit" >

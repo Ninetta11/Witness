@@ -17,13 +17,13 @@ process.env.SECRET_KEY = 'secret';
 
 router.post('/api/register', (req, res) => {
     // Form validation
-    const { errors, isValid } = validateRegisterInput(req.body);
-    console.log(errors);
+    const { alerts, isValid } = validateRegisterInput(req.body);
+    console.log(alerts);
     console.log(isValid);
 
     // Check validation
     if (!isValid) {
-        return res.status(400).json(errors);
+        return res.status(400).json(alerts);
     }
     console.log('register route');
     User.findOne({
@@ -75,11 +75,11 @@ router.post('/api/login', (req, res) => {
     console.log("login route");
     //Not sure if this bit is right - need to test!!!!
     // Form validation
-    const { errors, isValid } = validateLoginInput(req.body);
+    const { alerts, isValid } = validateLoginInput(req.body);
 
     // Check validation
     if (!isValid) {
-        return res.status(400).json(errors);
+        return res.status(400).json(alerts);
     }
 
     User.findOne({

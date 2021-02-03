@@ -8,7 +8,7 @@ const UserSchema = new Schema({
   postcode: { type: Number, required: true, minlength: 4, maxlength: 4 },
   suburb: { type: String, required: true },
   street: { type: String, required: true },
-  street_no: { type: Number, required: true },
+  street_no: { type: Schema.Types.Mixed, required: true },
   occupation: { type: String, required: true },
   email: { type: Schema.Types.Mixed, required: true, immutable: true },
   password: { type: Schema.Types.Mixed, required: true },
