@@ -12,32 +12,33 @@ const securityLevel = 2;
 
 export default {
     sendToBlockchain: (address, seed, declaration) => {
-        const message = JSON.stringify({ "message": declaration });
-        const messageInTrytes = Converter.asciiToTrytes(message);
+        return new Promise((function (resolve, reject) {
+            const message = JSON.stringify({ "message": declaration });
+            const messageInTrytes = Converter.asciiToTrytes(message);
 
-        const transfers = [
-            {
-                value: 0,
-                address: address,
-                message: messageInTrytes
-            }
-        ];
+            const transfers = [
+                {
+                    value: 0,
+                    address: address,
+                    message: messageInTrytes
+                }
+            ];
 
-        iota.prepareTransfers(seed, transfers)
+            iota.prepareTransfers(seed, transfers)
 
-            .then(trytes => {
-                return iota.sendTrytes(trytes, depth, minimumWeightMagnitude);
-            })
-            .then(bundle => {
-                // need to save this hash to the users database records for retrieving saved data from the blockchain
-                console.log(bundle[0].hash);
-                return bundle[0].hash
-            })
-            .catch(err => {
-                console.error(err)
-                return err
-            });
-
+                .then(trytes => {
+                    return iota.sendTrytes(trytes, depth, minimumWeightMagnitude);
+                })
+                .then(bundle => {
+                    // need to save this hash to the users database records for retrieving saved data from the blockchain
+                    console.log(bundle[0].hash);
+                    resolve(bundle[0].hash)
+                })
+                .catch(err => {
+                    console.error(err)
+                    reject(err)
+                });
+        }))
     },
 
     extractFromBlockchain: (tailTransactionHash) => {

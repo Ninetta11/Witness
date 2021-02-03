@@ -27,8 +27,8 @@ function CreateDeclaration() {
     const onSubmit = () => {
         const details = {
             first_name: state.user.first_name,
-            last_name: state.userlast_name,
-            street_no: state.userstreet_no,
+            last_name: state.user.last_name,
+            street_no: state.user.street_no,
             street: state.user.street,
             suburb: state.user.suburb,
             state: state.user.state,
@@ -40,6 +40,7 @@ function CreateDeclaration() {
             location: documentState.location
         }
         const declaration = generateMarkdown(details);
+        console.log(declaration);
         API.sendToBlockchain(state.user.IOTA_address, state.user.IOTA_seed, declaration).then((hash) => {
             // send returned hash to database)
         }
@@ -58,13 +59,14 @@ function CreateDeclaration() {
                 <Text type="secondary">Set out matter declared to in numbered paragraphs.</Text>
                 <Form.Item
                     label="1."
-                    name="Declaration"
+                    name="content"
                     rules={[
                         {
                             required: true,
                             message: "Enter your declaration"
                         }
                     ]}><TextArea
+                        name="content"
                         placeholder="Enter Declaration Here"
                         rows={10}
                         value={documentState.content}
@@ -80,13 +82,14 @@ function CreateDeclaration() {
                 <Text strong>I declare that the contents of this statutory declaration are true and correct and I make it knowing that making a statutory declaration that I know to be untrue is an offence.</Text>
                 <Form.Item
                     label="Signature:"
-                    name="Signature"
+                    name="signature"
                     rules={[
                         {
                             required: true,
                             message: "Enter your Full Name to sign your declaration"
                         }
                     ]}><Input
+                        name="signature"
                         style={{ width: 250 }}
                         placeholder="Sign Here"
                         value={documentState.signature}
@@ -98,7 +101,8 @@ function CreateDeclaration() {
                     <Button
                         type="primary"
                         shape="round"
-                        icon={<SendOutlined />}>Submit</Button>
+                        icon={<SendOutlined />}
+                        htmlType="submit" >Submit</Button>
                 </Form.Item>
             </Space>
         </Form>

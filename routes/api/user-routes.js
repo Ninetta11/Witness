@@ -16,15 +16,6 @@ router.use(cors())
 process.env.SECRET_KEY = 'secret';
 
 router.post('/api/register', (req, res) => {
-    // Form validation
-    const { alerts, isValid } = validateRegisterInput(req.body);
-    console.log(alerts);
-    console.log(isValid);
-
-    // Check validation
-    if (!isValid) {
-        return res.status(400).json(alerts);
-    }
     User.findOne({
         email: req.body.email
     })
@@ -70,16 +61,6 @@ router.post('/api/register', (req, res) => {
 })
 
 router.post('/api/login', (req, res) => {
-    console.log("login route");
-    //Not sure if this bit is right - need to test!!!!
-    // Form validation
-    // const { alerts, isValid } = validateLoginInput(req.body);
-
-    // // Check validation
-    // if (!isValid) {
-    //     return res.status(400).json(alerts);
-    // }
-
     User.findOne({
         email: req.body.email
     })
@@ -151,6 +132,17 @@ router.get('/api/displayusers', (req, res) => {
         .catch(err => {
             res.send('error: ' + err);
         })
+})
+
+router.post('/api/document', (req, res) => {
+    User.findOneAndUpdate({
+        // searches database for user with same IOTA address
+        IOTA_address: req.body.IOTA_address
+        // updates hash with returned hash 
+    }, { $set: { hash: req.body.hash } }
+    ).then(response => {
+
+    })
 })
 
 module.exports = router;
