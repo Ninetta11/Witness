@@ -1,10 +1,11 @@
-import { HashRouter as Router, Route, Link } from "react-router-dom";
-import { StoreProvider } from "./utils/GlobalState";
-import { Row, Col, Layout, Menu } from 'antd';
+import { HashRouter as Router, Route, Link } from 'react-router-dom';
+import { StoreProvider } from './store';
+import { Row, Col, Layout } from 'antd';
 import Home from './views/Home';
-import User from './views/User';
+import User from './views/Dashboard';
 import Login from './components/Login';
-import Signup from "./components/Signup";
+import Signup from './components/Signup';
+import Navbar from './components/Navbar';
 
 const { Header } = Layout;
 
@@ -19,12 +20,7 @@ function App() {
                             <Col span={8}>
                                 <Link to="/"><h1 style={{ color: '#d4b483' }} >Witness</h1></Link>
                             </Col>
-                            <Col span={8} offset={8}>
-                                <Menu className="menu" theme="dark" mode="horizontal" style={{ backgroundColor: '#274156', textAlign: 'right' }} defaultSelectedKeys={['2']}>
-                                    <Menu.Item key="1"><Link to="/login">Log in</Link></Menu.Item>
-                                    <Menu.Item key="2"><Link to="/register">Sign Up</Link></Menu.Item>
-                                </Menu>
-                            </Col>
+                            <Navbar />
                         </Row>
                     </Header>
                     <Route exact path={["/", "/home"]}>

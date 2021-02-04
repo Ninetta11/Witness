@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useEffect } from 'react';
 import jwt_decode from 'jwt-decode';
-import { SET_CURRENT_USER } from '../actions/types';
+import { SET_CURRENT_USER } from '../utils/types';
 
 export const setAuthToken = (token) => {
     if (token) {

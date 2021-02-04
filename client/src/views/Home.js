@@ -1,4 +1,4 @@
-import { HashRouter as Router, Route, Link } from "react-router-dom";
+import { HashRouter as Link } from "react-router-dom";
 import { Layout, Row, Col, Typography, Image, Button } from 'antd';
 import { RightCircleOutlined } from '@ant-design/icons';
 

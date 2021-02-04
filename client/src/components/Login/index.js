@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
 import { Layout, Row, Col, Form, Input, Button, Alert, Typography } from 'antd';
 import { RightCircleOutlined } from '@ant-design/icons';
-import { GET_ERRORS, SET_CURRENT_USER } from '../../actions/types';
+import { GET_ERRORS, SET_CURRENT_USER } from '../../utils/types';
 import { useAppContext } from '../../store';
 import { loginUser } from '../../utils/userFunctions';
 import { setAuthToken } from '../../utils/setAuthToken';
