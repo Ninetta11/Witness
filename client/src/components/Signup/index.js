@@ -265,9 +265,12 @@ function Signup() {
                                 },
                             ]}
                         ><Select
+                            showSearch
                             labelInValue
                             name="occupation"
-                            onChange={OnSelect}>
+                            placeholder="Select an occupation"
+                            onChange={OnSelect}
+                            filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}>
                                 {occupations.map(occupation =>
                                     <Option value={occupation}>{occupation}</Option>
                                 )}
