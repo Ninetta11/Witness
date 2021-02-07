@@ -1,11 +1,13 @@
 import DayJS from 'react-dayjs';
-import { Form, Input, Button, Typography, Space } from 'antd';
+import { Form, Input, Button, Typography, Space, Alert } from 'antd';
 import { PlusOutlined, SendOutlined } from '@ant-design/icons';
-import { useAppContext } from '../../store';
 import { useState } from 'react';
+import { useAppContext } from '../../store';
+import { saveDocument } from '../../utils/documentFunctions';
 import generateMarkdown from '../../utils/generateMarkdown';
 import API from '../../utils/blockchainAPI';
 
+const { ErrorBoundary } = Alert;
 const { TextArea } = Input;
 const { Title, Text } = Typography;
 
@@ -17,7 +19,8 @@ function CreateDeclaration() {
         content: '',
         signature: '',
         date: Date.now(),
-        location: ''
+        location: '',
+        alerts: ''
     })
 
     const onChange = (event) => {
@@ -25,9 +28,12 @@ function CreateDeclaration() {
     };
 
     const onSubmit = () => {
+        let alerts = {};
         const details = {
             first_name: state.user.first_name,
             last_name: state.user.last_name,
+            IOTA_address: state.user.IOTA_address[0],
+            IOTA_seed: state.user.IOTA_seed,
             street_no: state.user.street_no,
             street: state.user.street,
             suburb: state.user.suburb,
@@ -35,16 +41,25 @@ function CreateDeclaration() {
             postcode: state.user.postcode,
             occupation: state.user.occupation,
             content: documentState.content,
-            signature: documentState.content,
+            signature: documentState.signature,
             date: documentState.date,
             location: documentState.location
         }
         const declaration = generateMarkdown(details);
         console.log(declaration);
-        API.sendToBlockchain(state.user.IOTA_address, state.user.IOTA_seed, declaration).then((hash) => {
-            // send returned hash to database)
-        }
-        )
+        API.sendToBlockchain(details.IOTA_address, details.IOTA_seed, declaration)
+            .then((hash) => {
+                details.hash = hash;
+                console.log(hash);
+
+                // send returned hash to database
+                saveDocument(details).then((res) => {
+                    alerts = { type: 'success', message: 'Your statutory declaration has been submitted and saved' };
+                    setDocumentState({ ...documentState, alerts });
+                    console.log('Stat dec submitted' + res);
+                })
+            }
+            )
     }
 
     return (
@@ -54,6 +69,17 @@ function CreateDeclaration() {
         >
             <Space direction="vertical">
                 <Title level={2} style={{ textAlign: 'center', paddingBottom: '25px' }}>Statutory Declaration</Title>
+                <ErrorBoundary>
+                    {documentState.alerts ?
+                        <Alert
+                            message={documentState.alerts.message}
+                            type={documentState.alerts.type}
+                            showIcon
+                        />
+                        :
+                        <br></br>
+                    }
+                </ErrorBoundary>
                 <Text>I, <strong>{state.user.first_name} {state.user.last_name}</strong> residing at <strong>{state.user.street_no} {state.user.street}, {state.user.suburb} {state.user.state} {state.user.postcode}</strong> and having the occupation of <strong>{state.user.occupation}</strong>, make the following statutory declaration under the <strong>Oaths and Affirmations Act 2018:</strong></Text>
                 <br></br>
                 <Text type="secondary">Set out matter declared to in numbered paragraphs.</Text>

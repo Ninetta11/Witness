@@ -134,9 +134,9 @@ router.post('/api/document', (req, res) => {
         // searches database for user with same IOTA address
         IOTA_address: req.body.IOTA_address
         // updates hash with returned hash 
-    }, { $set: { hash: req.body.hash } }
+    }, { $set: { documents: req.body.hash } }
     ).then(response => {
-
+        console.log(response);
     })
 })
 

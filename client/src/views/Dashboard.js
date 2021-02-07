@@ -3,7 +3,7 @@ import { Row, Col, Layout, Menu } from 'antd';
 import { UserOutlined, FileOutlined, IdcardOutlined, FileAddOutlined, MailOutlined } from '@ant-design/icons';
 import CreateDeclaration from '../components/CreateDeclaration';
 import UpdateDetails from '../components/UpdateDetails';
-import Document from '../components/Document';
+import DisplayDeclaration from '../components/DisplayDeclaration';
 import Request from '../components/Request';
 import { useAppContext } from '../store';
 import { useLoginCheck } from '../utils/setAuthToken';
@@ -54,7 +54,7 @@ function Dashboard() {
                                     <UpdateDetails />
                                 </Route>
                                 <Route exact path="/user/document/:hash">
-                                    <Document />
+                                    <DisplayDeclaration />
                                 </Route>
                                 <Route exact path="/user/declaration">
                                     <CreateDeclaration />

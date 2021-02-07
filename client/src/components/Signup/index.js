@@ -103,6 +103,7 @@ function Signup() {
                         // registers user and redirects to login page
                         registerUser(userData).then((res) => {
                             alerts = { type: 'success', message: 'Your registration was successful' };
+                            setRegisterState({ ...registerState, alerts });
                             console.log('Form submitted' + res);
                             history.push('/login');
                         });
