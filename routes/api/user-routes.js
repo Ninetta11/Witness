@@ -96,6 +96,7 @@ router.post('/api/login', (req, res) => {
         })
 })
 
+// I dont think i need this?????
 router.get('/api/profile', (req, res) => {
     var decoded = jwt.verify(req.headers['authorization'], process.env.SECRET_KEY)
     User.findOne({
@@ -133,10 +134,12 @@ router.post('/api/document', (req, res) => {
     User.findOneAndUpdate({
         // searches database for user with same IOTA address
         IOTA_address: req.body.IOTA_address
-        // updates hash with returned hash 
-    }, { $set: { documents: req.body.hash } }
+        // updates documents with returned hash 
+    }, { $push: { documents: req.body.hash } },
+        { new: true }
     ).then(response => {
         console.log(response);
+        res.send({ type: 'success', message: 'Your document has been saved' });
     })
 })
 

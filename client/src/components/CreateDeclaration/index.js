@@ -50,16 +50,15 @@ function CreateDeclaration() {
         API.sendToBlockchain(details.IOTA_address, details.IOTA_seed, declaration)
             .then((hash) => {
                 details.hash = hash;
-                console.log(hash);
-
                 // send returned hash to database
                 saveDocument(details).then((res) => {
+                    let content = '';
+                    let signature = '';
                     alerts = { type: 'success', message: 'Your statutory declaration has been submitted and saved' };
-                    setDocumentState({ ...documentState, alerts });
+                    setDocumentState({ ...documentState, content, signature, alerts });
                     console.log('Stat dec submitted' + res);
                 })
-            }
-            )
+            })
     }
 
     return (

@@ -20,7 +20,7 @@ const UserSchema = new Schema({
   password: { type: Schema.Types.Mixed, required: true },
   IOTA_address: { type: Schema.Types.Mixed, required: true, immutable: true },
   IOTA_seed: { type: Schema.Types.Mixed, required: true, immutable: true },
-  documents: { type: [documentSchema], default: undefined },
+  documents: { type: [] },
   date: { type: Date, default: Date.now }
 });
 
