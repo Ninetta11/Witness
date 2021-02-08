@@ -72,7 +72,7 @@ function Signup() {
     }
 
     // on form submit
-    const onSubmit = () => {
+    const handleSubmit = async () => {
         let alerts = '';
         const userData = {
             first_name: registerState.first_name,
@@ -91,6 +91,7 @@ function Signup() {
             // compares all current registered user emails against inputted email
             var alreadyRegisteredUser = data
                 .find((element) => element.email === registerState.email)
+
             // if email does not exist in the database
             if (!alreadyRegisteredUser) {
                 // generate random seed for new user 
@@ -101,19 +102,28 @@ function Signup() {
                         userData.IOTA_seed = seed;
                         userData.IOTA_address = address;
                         // registers user and redirects to login page
-                        registerUser(userData).then((res) => {
-                            alerts = { type: 'success', message: 'Your registration was successful' };
-                            setRegisterState({ ...registerState, alerts });
-                            console.log('Form submitted' + res);
-                            history.push('/login');
-                        });
+                        registerUser(userData)
+                            .then((res) => {
+                                console.log(res);
+                                alerts = { type: res.data.type, message: res.data.message };
+                                setRegisterState({ ...registerState, alerts });
+                                console.log('Form submitted' + res);
+                                history.push('/login');
+                            })
+                            .catch((error) => {
+                                alerts = { type: error.response.data.type, message: error.response.data.message };
+                                setRegisterState({ ...registerState, alerts });
+                            })
                     })
-            } else {
-                // If user already exists, alerts user
-                alerts = { type: 'error', message: 'This user already exists' };
-                setRegisterState({ ...registerState, alerts });
             }
-        });
+        }).catch((error) => {
+            // If user already exists, alerts user
+            console.log(error);
+            alerts = { type: error.response.data.type, message: error.response.data.message };
+            setRegisterState({ ...registerState, alerts });
+        })
+
+
     };
 
     const onFinishFailed = (errorInfo) => {
@@ -130,7 +140,7 @@ function Signup() {
                     <Form
                         noValidate
                         {...layout}
-                        onFinish={onSubmit}
+                        onFinish={handleSubmit}
                         onFinishFailed={onFinishFailed}
                     >
                         <Title level={2} style={{ textAlign: 'center', paddingBottom: '25px' }}>Sign up</Title>

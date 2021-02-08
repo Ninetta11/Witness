@@ -46,7 +46,6 @@ function CreateDeclaration() {
             location: documentState.location
         }
         const declaration = generateMarkdown(details);
-        console.log(declaration);
         API.sendToBlockchain(details.IOTA_address, details.IOTA_seed, declaration)
             .then((hash) => {
                 details.hash = hash;

@@ -2,7 +2,7 @@ import { HashRouter as Router, Route, Link } from 'react-router-dom';
 import { StoreProvider } from './store';
 import { Row, Col, Layout } from 'antd';
 import Home from './views/Home';
-import User from './views/Dashboard';
+import Dashboard from './views/Dashboard';
 import Login from './components/Login';
 import Signup from './components/Signup';
 import Navbar from './components/Navbar';
@@ -27,7 +27,7 @@ function App() {
                         <Home />
                     </Route>
                     <Route exact path="/user" >
-                        <User />
+                        <Dashboard />
                     </Route>
                     <Route exact path="/login">
                         <Login />

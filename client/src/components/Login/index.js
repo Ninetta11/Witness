@@ -44,7 +44,7 @@ function Login() {
         });
     };
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async () => {
         const user = {
             email: formState.email,
             password: formState.password,

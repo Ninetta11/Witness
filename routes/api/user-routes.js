@@ -16,8 +16,7 @@ router.post('/api/register', (req, res) => {
     })
         .then(response => {
             if (response) {
-                res.status(400).json({ email: "Email already exists" });
-                return res.send("Email already exists");
+                res.status(400).send({ type: 'error', message: 'This user already exists' });
             }
             else {
                 const today = new Date()
@@ -36,19 +35,15 @@ router.post('/api/register', (req, res) => {
                     occupation: req.body.occupation,
                     created: today
                 }
-                console.log(req.body);
                 bcrypt.hash(req.body.password, 10, (err, hash) => {
                     if (err) throw err;
                     userData.password = hash;
-                    console.log('just before create user');
                     User.create(userData)
                         .then(user => {
-                            console.log('adds to database');
-                            res.json(user);
+                            res.status(200).send({ type: 'success', message: 'Your registration was successful' });
                         })
                         .catch(err => {
-                            console.log('cant connect to database');
-                            console.log(err);
+                            res.status(400).send({ type: 'error', message: 'There is an issue saving your information with the database. Please check your details and resubmit' });
                         })
                 })
             }
@@ -76,6 +71,7 @@ router.post('/api/login', (req, res) => {
                         street: response.street,
                         street_no: response.street_no,
                         occupation: response.occupation,
+                        documents: response.documents
                     }
                     let token = jwt.sign(payload, process.env.SECRET_KEY, {
                         // 1 year in seconds
