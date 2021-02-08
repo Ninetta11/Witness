@@ -1,26 +1,14 @@
-// import { useState } from 'react';
-// import { Document, Page } from 'react-pdf';
+import { Typography } from 'antd';
 
-// function displayDeclaration(document) {
-//     const [numPages, setNumPages] = useState(null);
-//     const [pageNumber, setPageNumber] = useState(1);
+const { Title, Text } = Typography;
 
-//     function onDocumentLoadSuccess({ numPages }) {
-//         setNumPages(numPages);
-//     }
+function DisplayDeclaration({ hash, content }) {
+    return (
+        <div>
+            <Text >{hash}</Text>
+            <Title level={5}>{content}</Title>
+        </div>
+    )
+}
 
-//     return (
-//         <div>
-//             <Document
-//                 file={document}
-//                 //"somefile.pdf"
-//                 onLoadSuccess={onDocumentLoadSuccess}
-//             >
-//                 <Page pageNumber={pageNumber} />
-//             </Document>
-//             <p>Page {pageNumber} of {numPages}</p>
-//         </div>
-//     );
-// }
-
-// export default displayDeclaration;
+export default DisplayDeclaration;

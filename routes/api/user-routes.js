@@ -88,43 +88,43 @@ router.post('/api/login', (req, res) => {
             }
         })
         .catch(err => {
-            res.send('error: ' + err);
+            res.send({ type: 'error', message: 'There was a problem. Please try again' });
         })
 })
 
 // I dont think i need this?????
-router.get('/api/profile', (req, res) => {
-    var decoded = jwt.verify(req.headers['authorization'], process.env.SECRET_KEY)
-    User.findOne({
-        _id: decoded._id
-    })
-        .then(response => {
-            if (response) {
-                res.json(response)
-            }
-            else {
-                res.status(400).json({ error: "User does not exist" });
-            }
-        })
-        .catch(err => {
-            res.send('error: ' + err);
-        })
-})
+// router.get('/api/profile', (req, res) => {
+//     var decoded = jwt.verify(req.headers['authorization'], process.env.SECRET_KEY)
+//     User.findOne({
+//         _id: decoded._id
+//     })
+//         .then(response => {
+//             if (response) {
+//                 res.json(response)
+//             }
+//             else {
+//                 res.status(400).json({ error: "User does not exist" });
+//             }
+//         })
+//         .catch(err => {
+//             res.send('error: ' + err);
+//         })
+// })
 
-router.get('/api/displayusers', (req, res) => {
-    User.find()
-        .then(response => {
-            if (response) {
-                res.json(response)
-            }
-            else {
-                res.status(400).json({ error: "Users do not exist" });
-            }
-        })
-        .catch(err => {
-            res.send('error: ' + err);
-        })
-})
+// router.get('/api/displayusers', (req, res) => {
+//     User.find()
+//         .then(response => {
+//             if (response) {
+//                 res.json(response)
+//             }
+//             else {
+//                 res.status(400).json({ error: "Users do not exist" });
+//             }
+//         })
+//         .catch(err => {
+//             res.send('error: ' + err);
+//         })
+// })
 
 router.post('/api/document', (req, res) => {
     User.findOneAndUpdate({
@@ -138,5 +138,12 @@ router.post('/api/document', (req, res) => {
         res.send({ type: 'success', message: 'Your document has been saved' });
     })
 })
+
+router.get('/user/document/:hash', (req, res) => {
+    const documentHash = req.params.hash
+    console.log(documentHash)
+    res(documentHash)
+})
+
 
 module.exports = router;

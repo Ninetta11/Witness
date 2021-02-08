@@ -39,16 +39,15 @@ export default {
     },
 
     extractFromBlockchain: (tailTransactionHash) => {
-        iota.getBundle(tailTransactionHash)
-            .then(bundle => {
-                // this is the message which will have to be 
-                console.log(JSON.parse(Extract.extractJson(bundle)));
-                return JSON.parse(Extract.extractJson(bundle))
-            })
-            .catch(err => {
-                console.error(err);
-                return err
-            });
+        return new Promise((function (resolve, reject) {
+            iota.getBundle(tailTransactionHash)
+                .then(bundle => {
+                    resolve(JSON.parse(Extract.extractJson(bundle)))
+                })
+                .catch(err => {
+                    reject(err)
+                });
+        }))
     },
 
     generateNewAddress: function (seed) {

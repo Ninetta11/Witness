@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { BrowserRouter as Router, Route, Link, Switch, useHistory } from 'react-router-dom';
 import { Row, Col, Layout, Menu } from 'antd';
 import { UserOutlined, FileOutlined, IdcardOutlined, FileAddOutlined, MailOutlined } from '@ant-design/icons';
@@ -7,6 +8,7 @@ import DisplayDeclaration from '../components/DisplayDeclaration';
 import Request from '../components/Request';
 import { useAppContext } from '../store';
 import { useLoginCheck } from '../utils/setAuthToken';
+import API from '../utils/blockchainAPI';
 
 const { Content, Sider, Footer } = Layout;
 const { SubMenu } = Menu;
@@ -15,8 +17,22 @@ const { SubMenu } = Menu;
 function Dashboard() {
     const history = useHistory();
     const [state, appDispatch] = useAppContext();
-    console.log(state);
+
+    const [documentState, setDocumentState] = useState({
+        hash: '',
+        content: ''
+    });
+
     useLoginCheck(appDispatch);
+
+    const handleDocumentSelect = (e) => {
+        const hash = e.key;
+
+        API.extractFromBlockchain(hash).then((document) => {
+            const content = document.message
+            setDocumentState({ ...documentState, hash, content })
+        })
+    }
 
     return (
         <Layout>
@@ -37,7 +53,7 @@ function Dashboard() {
                         <SubMenu key="sub2" icon={<FileOutlined />} title="Documents">
                             {(state.user.documents ?
                                 state.user.documents.map(document =>
-                                    <Menu.Item key={document}><Link to="/user/document/:hash">{document}</Link></Menu.Item>)
+                                    <Menu.Item key={document} onClick={handleDocumentSelect}><Link to="/user/document">{document}</Link></Menu.Item>)
                                 :
                                 <Menu.Item key="noDocuments">You have no documents</Menu.Item>
                             )}
@@ -53,8 +69,10 @@ function Dashboard() {
                                 <Route exact path="/user/update">
                                     <UpdateDetails />
                                 </Route>
-                                <Route exact path="/user/document/:hash">
-                                    <DisplayDeclaration />
+                                <Route exact path="/user/document">
+                                    <DisplayDeclaration
+                                        hash={documentState.hash}
+                                        content={documentState.content} />
                                 </Route>
                                 <Route exact path="/user/declaration">
                                     <CreateDeclaration />
