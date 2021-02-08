@@ -1,4 +1,4 @@
-import { HashRouter as Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Layout, Row, Col, Typography, Image, Button } from 'antd';
 import { RightCircleOutlined } from '@ant-design/icons';
 
@@ -14,7 +14,7 @@ function Home() {
                     <Col span={10} offset={4}>
                         <Title>Catch Phrase Here</Title>
                         <Title level={4}>some smaller text explaining the idea in a succinct way.</Title>
-                        <Link to="/login"> <Button type="primary" shape="round" icon={<RightCircleOutlined />} size="large">
+                        <Link to="/login"><Button type="primary" shape="round" icon={<RightCircleOutlined />} size="large" >
                             Create a Stat Dec
                         </Button></Link>
                     </Col>

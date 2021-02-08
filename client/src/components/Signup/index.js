@@ -72,7 +72,7 @@ function Signup() {
     }
 
     // on form submit
-    const handleSubmit = async () => {
+    const handleSubmit = () => {
         let alerts = '';
         const userData = {
             first_name: registerState.first_name,
@@ -118,7 +118,6 @@ function Signup() {
             }
         }).catch((error) => {
             // If user already exists, alerts user
-            console.log(error);
             alerts = { type: error.response.data.type, message: error.response.data.message };
             setRegisterState({ ...registerState, alerts });
         })

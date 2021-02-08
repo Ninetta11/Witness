@@ -10,7 +10,7 @@ import { getLocation } from '../../utils/geocodingAPI';
 
 const { ErrorBoundary } = Alert;
 const { TextArea } = Input;
-const { Title, Text } = Typography;
+const { Title, Text, Paragraph } = Typography;
 
 
 function CreateDeclaration() {
@@ -26,7 +26,7 @@ function CreateDeclaration() {
 
     useEffect(() => {
         getCurrentLocation()
-    });
+    }, []);
 
     const getCurrentLocation = () => {
         if (navigator.geolocation) {
@@ -40,12 +40,15 @@ function CreateDeclaration() {
     const showPosition = (position) => {
         getLocation(position.coords.latitude, position.coords.longitude).then((location) => {
             setDocumentState({ ...documentState, location });
-            console.log(documentState.location)
         })
     }
 
     const onChange = (event) => {
         setDocumentState({ ...documentState, [event.target.name]: event.target.value });
+    };
+
+    const changeLocation = (value) => {
+        setDocumentState({ ...documentState, location: value });
     };
 
     const onSubmit = () => {
@@ -67,15 +70,16 @@ function CreateDeclaration() {
             location: documentState.location
         }
         const declaration = generateMarkdown(details);
+        let content = '';
+        let signature = '';
         API.sendToBlockchain(details.IOTA_address, details.IOTA_seed, declaration)
             .then((hash) => {
+                console.log(hash);
                 details.hash = hash;
                 // send returned hash to database
                 saveDocument(details).then((res) => {
-                    let content = '';
-                    let signature = '';
                     alerts = { type: 'success', message: 'Your statutory declaration has been submitted and saved' };
-                    setDocumentState({ ...documentState, content, signature, alerts });
+                    setDocumentState({ ...documentState, alerts, content, signature });
                     console.log('Stat dec submitted' + res);
                 })
             })
@@ -140,14 +144,20 @@ function CreateDeclaration() {
                         value={documentState.signature}
                         onChange={onChange} />
                 </Form.Item>
-                <Text strong>Declared at {documentState.location} on {<DayJS format="DD MMMM YYYY, h:mm A.">{Date.now()}</DayJS>}</Text>
+                <Input.Group compact>
+                    <Text strong>Declared at  *</Text><Paragraph strong
+                        value={documentState.location}
+                        editable={{ onChange: changeLocation }}>
+                        {documentState.location}
+                    </Paragraph><Text strong> , on {<DayJS format="DD MMMM YYYY, h:mm A.">{Date.now()}</DayJS>}</Text>
+                </Input.Group>
                 <Form.Item
                     name="Submit">
                     <Button
                         type="primary"
                         shape="round"
                         icon={<SendOutlined />}
-                        htmlType="submit" >Submit</Button>
+                        htmlType="submit" > Submit</Button>
                 </Form.Item>
             </Space>
         </Form>

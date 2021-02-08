@@ -44,13 +44,12 @@ function Login() {
         });
     };
 
-    const handleSubmit = async () => {
+    const handleSubmit = () => {
         const user = {
             email: formState.email,
             password: formState.password,
         };
-        try {
-            const response = await loginUser(user);
+        loginUser(user).then((response) => {
             // Set token to localStorage
             const token = response.data;
             // Set token to Auth header
@@ -60,14 +59,10 @@ function Login() {
             // Set current user
             appDispatch({ type: SET_CURRENT_USER, payload: decodedToken });
             history.push('/user');
-        } catch (error) {
+        }).catch((error) => {
             let alerts = { type: error.response.data.type, message: error.response.data.message };
             setFormState({ ...formState, alerts });
-            appDispatch({
-                type: GET_ERRORS,
-                payload: error,
-            });
-        }
+        })
     };
 
     const onFinishFailed = (errorInfo) => {

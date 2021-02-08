@@ -88,8 +88,22 @@ router.post('/api/login', (req, res) => {
             }
         })
         .catch(err => {
+            console.log(err);
             res.send({ type: 'error', message: 'There was a problem. Please try again' });
         })
 })
+
+router.post('/api/document', (req, res) => {
+    User.findOneAndUpdate({
+        // searches database for user with same IOTA address
+        IOTA_address: req.body.IOTA_address
+        // updates documents with returned hash 
+    }, { $push: { documents: req.body.hash } },
+        { new: true }
+    ).then(response => {
+        res.send({ type: 'success', message: 'Your document has been saved' });
+    })
+})
+
 
 module.exports = router;

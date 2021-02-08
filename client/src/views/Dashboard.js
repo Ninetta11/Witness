@@ -27,7 +27,6 @@ function Dashboard() {
 
     const handleDocumentSelect = (e) => {
         const hash = e.key;
-
         API.extractFromBlockchain(hash).then((document) => {
             const content = document.message
             setDocumentState({ ...documentState, hash, content })
