@@ -1,11 +1,12 @@
 import DayJS from 'react-dayjs';
 import { Form, Input, Button, Typography, Space, Alert } from 'antd';
 import { PlusOutlined, SendOutlined } from '@ant-design/icons';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAppContext } from '../../store';
 import { saveDocument } from '../../utils/documentFunctions';
 import generateMarkdown from '../../utils/generateMarkdown';
 import API from '../../utils/blockchainAPI';
+import { getLocation } from '../../utils/geocodingAPI';
 
 const { ErrorBoundary } = Alert;
 const { TextArea } = Input;
@@ -21,7 +22,27 @@ function CreateDeclaration() {
         date: Date.now(),
         location: '',
         alerts: ''
-    })
+    });
+
+    useEffect(() => {
+        getCurrentLocation()
+    });
+
+    const getCurrentLocation = () => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition);
+        } else {
+            let location = state.user.suburb;
+            setDocumentState({ ...documentState, location });
+        }
+    }
+
+    const showPosition = (position) => {
+        getLocation(position.coords.latitude, position.coords.longitude).then((location) => {
+            setDocumentState({ ...documentState, location });
+            console.log(documentState.location)
+        })
+    }
 
     const onChange = (event) => {
         setDocumentState({ ...documentState, [event.target.name]: event.target.value });
@@ -119,7 +140,7 @@ function CreateDeclaration() {
                         value={documentState.signature}
                         onChange={onChange} />
                 </Form.Item>
-                <Text strong>Declared at { } on {<DayJS format="DD MMMM YYYY, h:mm A.">{Date.now()}</DayJS>}</Text>
+                <Text strong>Declared at {documentState.location} on {<DayJS format="DD MMMM YYYY, h:mm A.">{Date.now()}</DayJS>}</Text>
                 <Form.Item
                     name="Submit">
                     <Button
