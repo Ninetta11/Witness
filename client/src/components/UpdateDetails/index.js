@@ -15,18 +15,50 @@ const layout = {
 function UpdateDetails() {
     const [state, appDispatch] = useAppContext();
 
-    const [updateState, setUpdateState] = useState({
-        alerts: ''
-    })
-
-    const onUpdate = (value) => {
-        console.log(value);
-    }
+    const [formState, setFormState] = useState({
+        alerts: '',
+    });
 
     const updateStreetNo = (value) => {
+        let name = 'street_no';
+        onUpdate(name, value)
+    }
+
+    const updateStreet = (value) => {
+        let name = 'street';
+        onUpdate(name, value)
+    }
+
+    const updateSuburb = (value) => {
+        let name = 'suburb';
+        onUpdate(name, value)
+    }
+
+    const updateState = (value) => {
+        let name = 'state';
+        onUpdate(name, value)
+    }
+
+    const updatePostcode = (value) => {
+        let name = 'postcode';
+        onUpdate(name, value)
+    }
+
+    const updateOccupation = (value) => {
+        let name = 'occupation';
+        onUpdate(name, value)
+    }
+
+    const updatePassword = (value) => {
+        let name = 'occupation';
+        // will need to decrypt first and then recrypt to save
+        onUpdate(name, value)
+    }
+
+    const onUpdate = (name, value) => {
         const details = {
             email: state.user.email,
-            name: 'street_no',
+            name: name,
             value: value
         }
         updateUserDetails(details)
@@ -34,12 +66,12 @@ function UpdateDetails() {
                 console.log(res);
                 let alerts = { type: res.data.type, message: res.data.message };
                 appDispatch({ type: REFRESH_DETAILS, payload: res.data.details });
-                setUpdateState({ ...updateState, alerts });
+                setFormState({ ...formState, alerts });
                 console.log('details updated' + res);
             })
             .catch((error) => {
                 let alerts = { type: error.response.data.type, message: error.response.data.message };
-                setUpdateState({ ...updateState, alerts });
+                setFormState({ ...formState, alerts });
             })
     }
 
@@ -51,10 +83,10 @@ function UpdateDetails() {
         >
             <Title level={2} style={{ paddingBottom: '25px' }}>Update Details</Title>
             <ErrorBoundary>
-                {updateState.alerts ?
+                {formState.alerts ?
                     <Alert
-                        message={updateState.alerts.message}
-                        type={updateState.alerts.type}
+                        message={formState.alerts.message}
+                        type={formState.alerts.type}
                         showIcon
                     />
                     :
@@ -71,7 +103,6 @@ function UpdateDetails() {
                             noStyle
                             rules={[{ required: true, message: 'Please enter a street number' }]}>
                             <Paragraph
-                                name={["address", "street_no"]}
                                 value={state.user.street_no}
                                 editable={{ onChange: updateStreetNo }}>
                                 {state.user.street_no}
@@ -82,7 +113,7 @@ function UpdateDetails() {
                             noStyle
                             rules={[{ required: true, message: 'Please enter a street' }]}>
                             <Paragraph
-                                editable={{ onChange: onUpdate }}>
+                                editable={{ onChange: updateStreet }}>
                                 {state.user.street}
                             </Paragraph>
                         </Form.Item>
@@ -91,7 +122,7 @@ function UpdateDetails() {
                             noStyle
                             rules={[{ required: true, message: 'Please enter a suburb' }]}>
                             <Paragraph
-                                editable={{ onChange: onUpdate }}>
+                                editable={{ onChange: updateSuburb }}>
                                 {state.user.suburb}
                             </Paragraph>
                         </Form.Item>
@@ -100,7 +131,7 @@ function UpdateDetails() {
                             noStyle
                             rules={[{ required: true, message: 'Please enter a state' }]}>
                             <Paragraph
-                                editable={{ onChange: onUpdate }}>
+                                editable={{ onChange: updateState }}>
                                 {state.user.state}
                             </Paragraph>
                         </Form.Item>
@@ -109,7 +140,7 @@ function UpdateDetails() {
                             noStyle
                             rules={[{ required: true, message: 'Please enter a postcode' }]}>
                             <Paragraph
-                                editable={{ onChange: onUpdate }}>
+                                editable={{ onChange: updatePostcode }}>
                                 {state.user.postcode}
                             </Paragraph>
                         </Form.Item>
@@ -122,7 +153,7 @@ function UpdateDetails() {
                     rules={[{ required: true, message: 'Please enter an occupation' }]}
                 >
                     <Paragraph
-                        editable={{ onChange: onUpdate }}>
+                        editable={{ onChange: updateOccupation }}>
                         {state.user.occupation}
                     </Paragraph>
                 </Form.Item>
@@ -132,7 +163,7 @@ function UpdateDetails() {
                     name="password"
                     rules={[{ required: true, message: 'Please enter a password' }]}>
                     <Paragraph
-                        editable={{ onChange: onUpdate }}>
+                        editable={{ onChange: updatePassword }}>
                         {state.user.password}
                     </Paragraph>
                 </Form.Item>
