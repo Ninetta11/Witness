@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Layout, Row, Col, Typography, Image, Button } from 'antd';
 import { RightCircleOutlined } from '@ant-design/icons';
+import './style.css'
 
 const { Content } = Layout;
 const { Title } = Typography;
@@ -8,8 +9,8 @@ const { Title } = Typography;
 
 function Home() {
     return (
-        <Layout style={{ backgroundColor: 'white' }}>
-            <Content className="content" style={{ marginTop: '100px' }}>
+        <Layout className="content" style={{ backgroundColor: 'white' }}>
+            <Content style={{ marginTop: '100px' }}>
                 <Row>
                     <Col span={10} offset={4}>
                         <Title>Catch Phrase Here</Title>

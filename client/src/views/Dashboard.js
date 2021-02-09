@@ -9,6 +9,7 @@ import Request from '../components/Request';
 import { useAppContext } from '../store';
 import { useLoginCheck } from '../utils/setAuthToken';
 import API from '../utils/blockchainAPI';
+import './style.css'
 
 const { Content, Sider, Footer } = Layout;
 const { SubMenu } = Menu;
@@ -34,7 +35,7 @@ function Dashboard() {
     }
 
     return (
-        <Layout>
+        <Layout className="content" >
             <Router>
                 <Sider className="site-layout-background" width={250} breakpoint="lg"
                     collapsedWidth="0"
@@ -61,7 +62,7 @@ function Dashboard() {
                         < Menu.Item key="4" icon={<MailOutlined />}><Link to="/user/request">Request Document</Link></Menu.Item>
                     </Menu>
                 </Sider >
-                <Content className="content" style={{ marginTop: '50px' }}>
+                <Content style={{ marginTop: '50px' }}>
                     <Row>
                         <Col span={20} offset={2}>
                             <Switch>

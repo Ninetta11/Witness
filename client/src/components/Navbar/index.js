@@ -37,7 +37,7 @@ function Navbar() {
             mode="horizontal"
             style={{ backgroundColor: '#274156', textAlign: 'right' }}
             defaultSelectedKeys={['2']}>
-            <MenuItem>
+            <MenuItem><Link to='/user'>
                 <span className="avatar-item">
                     <Avatar
                         size="large"
@@ -45,11 +45,12 @@ function Navbar() {
                         style={{ marginRight: '10px' }}
                     /><Text
                         style={{ fontSize: '18px', color: '#d4b483' }}> Welcome {state.user.first_name} </Text>
-                </span></MenuItem>
+                </span></Link></MenuItem>
             < Menu.Item
                 key="5" icon={<LogoutOutlined />}
                 id="logoutBtn"
-                onClick={handleLogOut}>Logout</Menu.Item>
+                onClick={handleLogOut}>Logout
+                </Menu.Item>
         </Menu>
     )
 

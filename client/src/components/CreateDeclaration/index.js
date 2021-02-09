@@ -1,4 +1,5 @@
 import DayJS from 'react-dayjs';
+import dayjs from 'dayjs';
 import { Form, Input, Button, Typography, Space, Alert } from 'antd';
 import { PlusOutlined, SendOutlined } from '@ant-design/icons';
 import { useState, useEffect } from 'react';
@@ -20,7 +21,7 @@ function CreateDeclaration() {
     const [documentState, setDocumentState] = useState({
         content: '',
         signature: '',
-        date: Date.now(),
+        date: dayjs().format('DD MMMM YYYY, h:mm A'),
         location: '',
         alerts: ''
     });
@@ -68,7 +69,8 @@ function CreateDeclaration() {
             signature: documentState.signature,
             date: documentState.date,
             location: documentState.location
-        }
+        };
+        console.log(details.date);
         const declaration = generateMarkdown(details);
         let content = '';
         let signature = '';
