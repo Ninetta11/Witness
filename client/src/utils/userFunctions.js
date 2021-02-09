@@ -27,3 +27,11 @@ export const loginUser = (userData) => {
 export const getUsers = () => {
     return axios.get('/api/displayusers').then((res) => res.data);
 };
+
+export const updateUserDetails = (userData) => {
+    return axios.post('/api/update', {
+        email: userData.email,
+        name: userData.name,
+        value: userData.value
+    })
+};

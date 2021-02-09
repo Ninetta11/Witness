@@ -91,7 +91,6 @@ function Signup() {
             // compares all current registered user emails against inputted email
             var alreadyRegisteredUser = data
                 .find((element) => element.email === registerState.email)
-
             // if email does not exist in the database
             if (!alreadyRegisteredUser) {
                 // generate random seed for new user 
@@ -104,7 +103,6 @@ function Signup() {
                         // registers user and redirects to login page
                         registerUser(userData)
                             .then((res) => {
-                                console.log(res);
                                 alerts = { type: res.data.type, message: res.data.message };
                                 setRegisterState({ ...registerState, alerts });
                                 console.log('Form submitted' + res);
@@ -121,8 +119,6 @@ function Signup() {
             alerts = { type: error.response.data.type, message: error.response.data.message };
             setRegisterState({ ...registerState, alerts });
         })
-
-
     };
 
     const onFinishFailed = (errorInfo) => {

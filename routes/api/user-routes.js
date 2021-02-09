@@ -100,10 +100,31 @@ router.post('/api/document', (req, res) => {
         // updates documents with returned hash 
     }, { $push: { documents: req.body.hash } },
         { new: true }
-    ).then(response => {
-        res.send({ type: 'success', message: 'Your document has been saved' });
-    })
+    )
+        .then(response => {
+            res.send({ type: 'success', message: 'Your statutory declaration has been submitted and saved', details: response });
+        })
+        .catch(err => {
+            console.log(err);
+            res.send({ type: 'error', message: 'There was a problem. Please try again' });
+        })
 })
 
+router.post('/api/update', (req, res) => {
+    User.findOneAndUpdate({
+        // searches database for user with same IOTA address
+        email: req.body.email
+        // updates documents with returned hash 
+    }, { $set: { [req.body.name]: req.body.value } },
+        { new: true }
+    )
+        .then(response => {
+            res.send({ type: 'success', message: 'Your details have been updated', details: response });
+        })
+        .catch(err => {
+            console.log(err);
+            res.send({ type: 'error', message: 'There was a problem. Please try again' });
+        })
+})
 
 module.exports = router;

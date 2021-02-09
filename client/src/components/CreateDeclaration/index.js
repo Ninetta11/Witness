@@ -7,6 +7,7 @@ import { saveDocument } from '../../utils/documentFunctions';
 import generateMarkdown from '../../utils/generateMarkdown';
 import API from '../../utils/blockchainAPI';
 import { getLocation } from '../../utils/geocodingAPI';
+import { REFRESH_DETAILS } from '../../utils/types';
 
 const { ErrorBoundary } = Alert;
 const { TextArea } = Input;
@@ -52,7 +53,6 @@ function CreateDeclaration() {
     };
 
     const onSubmit = () => {
-        let alerts = {};
         const details = {
             first_name: state.user.first_name,
             last_name: state.user.last_name,
@@ -74,14 +74,19 @@ function CreateDeclaration() {
         let signature = '';
         API.sendToBlockchain(details.IOTA_address, details.IOTA_seed, declaration)
             .then((hash) => {
-                console.log(hash);
                 details.hash = hash;
                 // send returned hash to database
-                saveDocument(details).then((res) => {
-                    alerts = { type: 'success', message: 'Your statutory declaration has been submitted and saved' };
-                    setDocumentState({ ...documentState, alerts, content, signature });
-                    console.log('Stat dec submitted' + res);
-                })
+                saveDocument(details)
+                    .then((res) => {
+                        let alerts = { type: res.data.type, message: res.data.message };
+                        appDispatch({ type: REFRESH_DETAILS, payload: res.data.details });
+                        setDocumentState({ ...documentState, alerts, content, signature });
+                        console.log('Stat dec submitted' + res);
+                    })
+                    .catch((error) => {
+                        let alerts = { type: error.response.data.type, message: error.response.data.message };
+                        setDocumentState({ ...documentState, alerts });
+                    })
             })
     }
 

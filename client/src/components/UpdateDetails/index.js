@@ -1,6 +1,10 @@
-import { Form, Space, Input, Typography } from 'antd';
+import { useState } from 'react';
+import { Form, Space, Input, Alert, Typography } from 'antd';
 import { useAppContext } from '../../store';
+import { updateUserDetails } from '../../utils/userFunctions';
+import { REFRESH_DETAILS } from '../../utils/types';
 
+const { ErrorBoundary } = Alert;
 const { Paragraph, Title } = Typography;
 const layout = {
     labelCol: { span: 7, },
@@ -11,15 +15,52 @@ const layout = {
 function UpdateDetails() {
     const [state, appDispatch] = useAppContext();
 
+    const [updateState, setUpdateState] = useState({
+        alerts: ''
+    })
+
+    const onUpdate = (value) => {
+        console.log(value);
+    }
+
+    const updateStreetNo = (value) => {
+        const details = {
+            email: state.user.email,
+            name: 'street_no',
+            value: value
+        }
+        updateUserDetails(details)
+            .then((res) => {
+                console.log(res);
+                let alerts = { type: res.data.type, message: res.data.message };
+                appDispatch({ type: REFRESH_DETAILS, payload: res.data.details });
+                setUpdateState({ ...updateState, alerts });
+                console.log('details updated' + res);
+            })
+            .catch((error) => {
+                let alerts = { type: error.response.data.type, message: error.response.data.message };
+                setUpdateState({ ...updateState, alerts });
+            })
+    }
+
     return (
         <Form
             {...layout}
             name="basic"
             initialValues={{ remember: true }}
-        // onFinish={onFinish}
-        // onFinishFailed={onFinishFailed}
         >
             <Title level={2} style={{ paddingBottom: '25px' }}>Update Details</Title>
+            <ErrorBoundary>
+                {updateState.alerts ?
+                    <Alert
+                        message={updateState.alerts.message}
+                        type={updateState.alerts.type}
+                        showIcon
+                    />
+                    :
+                    <br></br>
+                }
+            </ErrorBoundary>
             <Space direction="vertical">
                 <Form.Item
                     label="Address:"
@@ -30,7 +71,9 @@ function UpdateDetails() {
                             noStyle
                             rules={[{ required: true, message: 'Please enter a street number' }]}>
                             <Paragraph
-                                editable={{ onChange: appDispatch("SET_STREET_NUMBER") }}>
+                                name={["address", "street_no"]}
+                                value={state.user.street_no}
+                                editable={{ onChange: updateStreetNo }}>
                                 {state.user.street_no}
                             </Paragraph>
                         </Form.Item>
@@ -39,7 +82,7 @@ function UpdateDetails() {
                             noStyle
                             rules={[{ required: true, message: 'Please enter a street' }]}>
                             <Paragraph
-                                editable={{ onChange: appDispatch("SET_STREET") }}>
+                                editable={{ onChange: onUpdate }}>
                                 {state.user.street}
                             </Paragraph>
                         </Form.Item>
@@ -48,7 +91,7 @@ function UpdateDetails() {
                             noStyle
                             rules={[{ required: true, message: 'Please enter a suburb' }]}>
                             <Paragraph
-                                editable={{ onChange: appDispatch("SET_SUBURB") }}>
+                                editable={{ onChange: onUpdate }}>
                                 {state.user.suburb}
                             </Paragraph>
                         </Form.Item>
@@ -57,7 +100,7 @@ function UpdateDetails() {
                             noStyle
                             rules={[{ required: true, message: 'Please enter a state' }]}>
                             <Paragraph
-                                editable={{ onChange: appDispatch("SET_STATE") }}>
+                                editable={{ onChange: onUpdate }}>
                                 {state.user.state}
                             </Paragraph>
                         </Form.Item>
@@ -66,7 +109,7 @@ function UpdateDetails() {
                             noStyle
                             rules={[{ required: true, message: 'Please enter a postcode' }]}>
                             <Paragraph
-                                editable={{ onChange: appDispatch("SET_POSTCODE") }}>
+                                editable={{ onChange: onUpdate }}>
                                 {state.user.postcode}
                             </Paragraph>
                         </Form.Item>
@@ -79,7 +122,7 @@ function UpdateDetails() {
                     rules={[{ required: true, message: 'Please enter an occupation' }]}
                 >
                     <Paragraph
-                        editable={{ onChange: appDispatch("SET_OCCUPATION") }}>
+                        editable={{ onChange: onUpdate }}>
                         {state.user.occupation}
                     </Paragraph>
                 </Form.Item>
@@ -89,7 +132,7 @@ function UpdateDetails() {
                     name="password"
                     rules={[{ required: true, message: 'Please enter a password' }]}>
                     <Paragraph
-                        editable={{ onChange: appDispatch("SET_PASSWORD") }}>
+                        editable={{ onChange: onUpdate }}>
                         {state.user.password}
                     </Paragraph>
                 </Form.Item>
