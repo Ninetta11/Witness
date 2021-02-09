@@ -1,6 +1,6 @@
-import { HashRouter as Router, Route, Link } from 'react-router-dom';
+import { HashRouter as Router, Route } from 'react-router-dom';
 import { StoreProvider } from './store';
-import { Row, Col, Layout } from 'antd';
+import { Layout } from 'antd';
 import Home from './views/Home';
 import Dashboard from './views/Dashboard';
 import Login from './components/Login';
@@ -16,12 +16,7 @@ function App() {
             <StoreProvider>
                 <Layout>
                     <Header className="header" style={{ backgroundColor: '#274156' }}>
-                        <Row>
-                            <Col span={8}>
-                                <Link to="/"><h1 style={{ color: '#d4b483' }} >Witness</h1></Link>
-                            </Col>
-                            <Navbar />
-                        </Row>
+                        <Navbar />
                     </Header>
                     <Route exact path={["/", "/home"]}>
                         <Home />

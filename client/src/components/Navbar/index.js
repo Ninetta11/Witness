@@ -1,8 +1,9 @@
 import { Link, useHistory } from 'react-router-dom';
-import { Col, Menu, Typography, Avatar } from 'antd';
+import { Row, Col, Menu, Typography, Avatar } from 'antd';
 import { UserOutlined, LogoutOutlined, } from '@ant-design/icons';
 import { useAppContext } from '../../store';
 import { useLoginCheck, logout } from '../../utils/setAuthToken';
+import MenuItem from 'antd/lib/menu/MenuItem';
 
 const { Text } = Typography;
 
@@ -36,14 +37,15 @@ function Navbar() {
             mode="horizontal"
             style={{ backgroundColor: '#274156', textAlign: 'right' }}
             defaultSelectedKeys={['2']}>
-            <span className="avatar-item">
-                <Avatar
-                    size="large"
-                    icon={<UserOutlined />}
-                    style={{ marginRight: '10px' }}
-                /><Text
-                    style={{ fontSize: '18px', color: '#d4b483' }}> Welcome {state.user.first_name} </Text>
-            </span>
+            <MenuItem>
+                <span className="avatar-item">
+                    <Avatar
+                        size="large"
+                        icon={<UserOutlined />}
+                        style={{ marginRight: '10px' }}
+                    /><Text
+                        style={{ fontSize: '18px', color: '#d4b483' }}> Welcome {state.user.first_name} </Text>
+                </span></MenuItem>
             < Menu.Item
                 key="5" icon={<LogoutOutlined />}
                 id="logoutBtn"
@@ -52,9 +54,14 @@ function Navbar() {
     )
 
     return (
-        <Col span={8} offset={8}>
-            { state.isAuthenticated ? userLink : loginRegLink}
-        </Col>
+        <Row>
+            <Col span={8}>
+                <Link onClick={handleLogOut} to="/"><h1 style={{ color: '#d4b483' }} >Witness</h1></Link>
+            </Col>
+            <Col span={8} offset={8}>
+                {state.isAuthenticated ? userLink : loginRegLink}
+            </Col>
+        </Row>
     )
 }
 

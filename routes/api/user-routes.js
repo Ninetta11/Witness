@@ -110,6 +110,21 @@ router.post('/api/document', (req, res) => {
         })
 })
 
+router.get('/api/displayusers', (req, res) => {
+    User.find()
+        .then(response => {
+            if (response) {
+                res.json(response)
+            }
+            else {
+                res.status(400).json({ error: "Users do not exist" });
+            }
+        })
+        .catch(err => {
+            res.send('error: ' + err);
+        })
+})
+
 router.post('/api/update', (req, res) => {
     User.findOneAndUpdate({
         // searches database for user with same IOTA address
