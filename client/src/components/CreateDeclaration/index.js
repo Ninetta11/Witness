@@ -27,6 +27,8 @@ function CreateDeclaration() {
         alerts: ''
     });
 
+    const [form] = Form.useForm();
+
     useEffect(() => {
         getCurrentLocation()
     }, []);
@@ -73,8 +75,6 @@ function CreateDeclaration() {
             location: documentState.location
         };
         const declaration = generateMarkdown(details);
-        let content = '';
-        let signature = '';
         API.sendToBlockchain(details.IOTA_address, details.IOTA_seed, declaration)
             .then((hash) => {
                 details.hash = hash;
@@ -82,8 +82,9 @@ function CreateDeclaration() {
                 saveDocument(details)
                     .then((res) => {
                         let alerts = { type: res.data.type, message: res.data.message };
+                        setDocumentState({ ...documentState, alerts });
+                        form.resetFields();
                         appDispatch({ type: REFRESH_DETAILS, payload: res.data.details });
-                        setDocumentState({ ...documentState, alerts, content, signature });
                         console.log('Stat dec submitted' + res);
                     })
                     .catch((error) => {
@@ -95,6 +96,7 @@ function CreateDeclaration() {
 
     return (
         <Form
+            form={form}
             layout="horizontal"
             onFinish={onSubmit}
         >
