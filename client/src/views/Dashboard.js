@@ -53,7 +53,7 @@ function Dashboard() {
                         <SubMenu key="sub2" icon={<FileOutlined />} title="Documents">
                             {(state.user.documents ?
                                 state.user.documents.map(document =>
-                                    <Menu.Item key={document} onClick={handleDocumentSelect}><Link to="/user/document">{document}</Link></Menu.Item>)
+                                    <Menu.Item key={document.hash} onClick={handleDocumentSelect}><Link to="/user/document">{document.title}</Link></Menu.Item>)
                                 :
                                 <Menu.Item key="noDocuments">You have no documents</Menu.Item>
                             )}

@@ -90,7 +90,7 @@ function UpdateDetails() {
                         showIcon
                     />
                     :
-                    <br></br>
+                    <div></div>
                 }
             </ErrorBoundary>
             <Space direction="vertical">

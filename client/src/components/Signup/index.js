@@ -349,7 +349,7 @@ function Signup() {
                                     showIcon
                                 />
                                 :
-                                <br></br>
+                                <div></div>
                             }
                         </ErrorBoundary>
 

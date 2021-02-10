@@ -1,7 +1,7 @@
 import { Typography, Divider } from 'antd';
-import { useState, useEffect } from 'react';
 
 const { Title, Text } = Typography;
+
 
 function DisplayDeclaration({ hash, content }) {
     return (
