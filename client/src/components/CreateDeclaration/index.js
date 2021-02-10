@@ -37,15 +37,16 @@ function CreateDeclaration() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(showPosition);
         } else {
-            let location = state.user.suburb;
+            let location = state.user.suburb + ', ' + state.user.state;
             setDocumentState({ ...documentState, location });
         }
     }
 
     const showPosition = (position) => {
-        getLocation(position.coords.latitude, position.coords.longitude).then((location) => {
-            setDocumentState({ ...documentState, location });
-        })
+        getLocation(position.coords.latitude, position.coords.longitude)
+            .then((location) => {
+                setDocumentState({ ...documentState, location });
+            })
     }
 
     const onChange = (event) => {
@@ -81,9 +82,9 @@ function CreateDeclaration() {
                 // send returned hash to database
                 saveDocument(details)
                     .then((res) => {
+                        form.resetFields();
                         let alerts = { type: res.data.type, message: res.data.message };
                         setDocumentState({ ...documentState, alerts });
-                        form.resetFields();
                         appDispatch({ type: REFRESH_DETAILS, payload: res.data.details });
                         console.log('Stat dec submitted' + res);
                     })

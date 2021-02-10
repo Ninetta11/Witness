@@ -1,5 +1,5 @@
 import { isEmpty } from 'lodash';
-import { GET_ERRORS, SET_CURRENT_USER, USER_LOADING, REFRESH_DETAILS } from '../utils/types';
+import { SET_CURRENT_USER, USER_LOADING, REFRESH_DETAILS } from '../utils/types';
 import jwt_decode from 'jwt-decode';
 
 const getToken = () => {
@@ -36,9 +36,5 @@ export function appReducer(state = appInitialState, action) {
                 ...state,
                 user: action.payload,
             }
-        case GET_ERRORS:
-            return action.payload;
-        default:
-            return state;
     }
 }
