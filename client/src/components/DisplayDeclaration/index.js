@@ -2,7 +2,7 @@ import { Typography, Button, Divider } from 'antd';
 import { FilePdfFilled, SendOutlined } from '@ant-design/icons';
 import { saveToPDF } from '../../utils/documentFunctions';
 
-const { Title, Text } = Typography;
+const { Title, Text, Paragraph } = Typography;
 
 
 function DisplayDeclaration({ title, hash, content }) {
@@ -20,10 +20,7 @@ function DisplayDeclaration({ title, hash, content }) {
             <Text >Document Title: {title}</Text>
             <Title level={2} style={{ textAlign: 'center', paddingBottom: '25px' }}>Statutory Declaration</Title>
             {content.split('#').map((section) =>
-                <div>
-                    <Title level={5}>{section}</Title>
-                    <Divider />
-                </div>
+                <Paragraph style={{ fontSize: '20px' }}>{section}</Paragraph>
             )}
             <div style={{ textAlign: 'center' }}>
                 <Button
