@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
-import { Layout, Row, Col, Typography, Image, Button, } from 'antd';
+import { Layout, Row, Col, Typography, Image, Button } from 'antd';
 import { RightCircleOutlined } from '@ant-design/icons';
 import './style.css'
 
-const { Content } = Layout;
+const { Content, Footer } = Layout;
 const { Title, Paragraph } = Typography;
 
 
@@ -24,14 +24,14 @@ function Home() {
                         <Image src='/assets/images/doc.png' style={{ marginBottom: '50px' }} />
                     </Col>
                 </Row>
-                <Row>
-                    <Col span={15} style={{ backgroundColor: "#3939" }}>
+                <Row >
+                    <Col xs={{ span: 24 }} sm={{ span: 24 }} md={{ span: 15 }} lg={{ span: 15 }} style={{ backgroundColor: "#3939" }}>
                         <div style={{ margin: '75px', fontSize: '18px' }}>
                             <Row>
                                 <Col span={3}>
                                     <Image src='/assets/images/pen.png' height='50px' width='50px' />
                                 </Col>
-                                <Col span={21}>
+                                <Col span={21} >
                                     <Title level={3} >What does Witness do?</Title>
                                     <Paragraph>Witness allows you to create a Statutory Declaration in seconds, instantaneously saving it to the IOTA blockchain creating an immutable record that cannot be doctored, deleted or edited, eliminating the need for a certified witness. </Paragraph>
 
@@ -58,7 +58,7 @@ function Home() {
                             </Row>
                         </div>
                     </Col>
-                    <Col span={9} style={{ backgroundColor: '#AA3939' }}>
+                    <Col xs={{ span: 24 }} sm={{ span: 24 }} md={{ span: 9 }} lg={{ span: 9 }} style={{ backgroundColor: '#AA3939' }}>
                         <div style={{ margin: '75px', fontSize: '18px' }}>
                             <Image src='/assets/images/iotalogo.svg' style={{ marginBottom: '25px' }} /><br></br>
                             <Paragraph style={{ color: 'white' }}>IOTA is the first distributed ledger built for the “Internet of Everything” - a network for exchanging value and data between humans and machines.</Paragraph>
@@ -69,6 +69,11 @@ function Home() {
                     </Col>
                 </Row>
             </Content>
+            <Footer style={{
+                textAlign: 'center', fontSize: '10px', width: "100%",
+            }}>
+                <h2>Witness ©2021 Created by Nina Welsh</h2>
+            </Footer>
         </Layout >
     )
 };
