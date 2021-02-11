@@ -153,7 +153,6 @@ function CreateDeclaration() {
                                 :
                                 <div></div>
                         }
-
                         < Form.Item
                             label="Title:"
                             name="title"
