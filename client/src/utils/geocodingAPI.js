@@ -1,12 +1,12 @@
 import axios from "axios";
 
-//const API_KEY = 'AIzaSyCHR4pzxUoksFuNAA1Wkp0Xs7qmdn9wlKI';
+const API_KEY = 'AIzaSyCHR4pzxUoksFuNAA1Wkp0Xs7qmdn9wlKI';
 
 export const getLocation = (lat, long) => {
     return new Promise((function (resolve, reject) {
         const options = {
             method: 'GET',
-            url: `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${long}&key=${GOOGLE_API_KEY}`,
+            url: `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${long}&key=${API_KEY}`,
         };
 
         axios.request(options)
