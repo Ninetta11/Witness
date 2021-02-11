@@ -1,10 +1,9 @@
 import { useState } from 'react';
-import { Form, Space, Input, Alert, Typography } from 'antd';
+import { Form, Space, Input, Typography, message } from 'antd';
 import { useAppContext } from '../../store';
 import { updateUserDetails } from '../../utils/userFunctions';
 import { REFRESH_DETAILS } from '../../utils/types';
 
-const { ErrorBoundary } = Alert;
 const { Paragraph, Title } = Typography;
 const layout = {
     labelCol: { span: 7, },
@@ -82,17 +81,11 @@ function UpdateDetails() {
             initialValues={{ remember: true }}
         >
             <Title level={2} style={{ paddingBottom: '25px' }}>Update Details</Title>
-            <ErrorBoundary>
-                {formState.alerts ?
-                    <Alert
-                        message={formState.alerts.message}
-                        type={formState.alerts.type}
-                        showIcon
-                    />
-                    :
-                    <div></div>
-                }
-            </ErrorBoundary>
+            {formState.alerts ?
+                message[formState.alerts.type](formState.alerts.message)
+                :
+                <div></div>
+            }
             <Space direction="vertical">
                 <Form.Item
                     label="Address:"

@@ -1,6 +1,5 @@
 import { Form, Space, Input, Button, Select, Typography } from 'antd';
 import { SendOutlined } from '@ant-design/icons';
-import 'antd/dist/antd.css';
 import TextArea from 'antd/lib/input/TextArea';
 import { useAppContext } from '../../store';
 

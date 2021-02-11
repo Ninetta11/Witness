@@ -1,6 +1,6 @@
 import DayJS from 'react-dayjs';
 import dayjs from 'dayjs';
-import { Form, Input, Button, Typography, Space, Alert, Result } from 'antd';
+import { Form, Input, Button, Typography, Space, Result, message } from 'antd';
 import { FilePdfFilled, PlusOutlined, SendOutlined, CloseOutlined } from '@ant-design/icons';
 import { useState, useEffect } from 'react';
 import { useAppContext } from '../../store';
@@ -11,7 +11,6 @@ import { getLocation } from '../../utils/geocodingAPI';
 import { REFRESH_DETAILS } from '../../utils/types';
 import { saveToPDF } from '../../utils/documentFunctions';
 
-const { ErrorBoundary } = Alert;
 const { TextArea } = Input;
 const { Title, Text, Paragraph } = Typography;
 
@@ -118,6 +117,11 @@ function CreateDeclaration() {
             onFinish={onSubmit}
         >
             <Space direction="vertical">
+                {documentState.errors ?
+                    message[documentState.errors.type](documentState.errors.message).then(setDocumentState({ ...documentState, errors: '' }))
+                    :
+                    <div></div>
+                }
                 <Title level={2} style={{ textAlign: 'center', paddingBottom: '25px' }}>Statutory Declaration</Title>
 
                 {documentState.alerts ?
@@ -142,17 +146,6 @@ function CreateDeclaration() {
                         </div></Result>
                     :
                     <div>
-                        {
-                            documentState.errors ?
-                                <ErrorBoundary>
-                                    <Alert
-                                        message={documentState.alerts.message}
-                                        type={documentState.alerts.type}
-                                        showIcon
-                                    />           </ErrorBoundary>
-                                :
-                                <div></div>
-                        }
                         < Form.Item
                             label="Title:"
                             name="title"

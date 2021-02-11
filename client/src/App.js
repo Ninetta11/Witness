@@ -1,3 +1,4 @@
+import 'antd/dist/antd.css';
 import { HashRouter as Router, Route } from 'react-router-dom';
 import { StoreProvider } from './store';
 import { Layout } from 'antd';

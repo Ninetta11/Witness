@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
-import { Layout, Row, Col, Form, Input, Button, Alert, Typography } from 'antd';
+import { Layout, Row, Col, Form, Input, Button, Typography, message } from 'antd';
 import { RightCircleOutlined } from '@ant-design/icons';
 import { SET_CURRENT_USER } from '../../utils/types';
 import { useAppContext } from '../../store';
 import { loginUser } from '../../utils/userFunctions';
 import { setAuthToken } from '../../utils/setAuthToken';
 
-const { ErrorBoundary } = Alert;
 const { Content } = Layout;
 const { Title } = Typography;
 const layout = {
@@ -73,6 +72,11 @@ function Login() {
 
     return (
         <Content className="content" style={{ marginTop: '50px' }}>
+            {formState.alerts ?
+                message[formState.alerts.type](formState.alerts.message).then(setFormState({ ...formState, alerts: '' }))
+                :
+                <div></div>
+            }
             <Row>
                 <Col span={12} offset={6}>
                     <Form
@@ -80,22 +84,9 @@ function Login() {
                         {...layout}
                         name="basic"
                         initialValues={{ remember: true, }}
-                        onFinish={handleSubmit}
                         onFinishFailed={onFinishFailed}
                     >
                         <Title level={2} style={{ textAlign: 'center', paddingBottom: '25px' }}>Log in</Title>
-
-                        <ErrorBoundary >
-                            {formState.alerts ?
-                                <Alert
-                                    message={formState.alerts.message}
-                                    type={formState.alerts.type}
-                                    showIcon
-                                />
-                                :
-                                <br></br>
-                            }
-                        </ErrorBoundary>
 
                         <Form.Item
                             label="Email"
@@ -129,7 +120,7 @@ function Login() {
                         </Form.Item>
 
                         <Form.Item {...tailLayout}>
-                            <Button type="primary" shape="round" icon={<RightCircleOutlined />} htmlType="submit">
+                            <Button type="primary" shape="round" icon={<RightCircleOutlined />} htmlType="submit" onClick={handleSubmit}>
                                 Login
                             </Button>
                         </Form.Item>

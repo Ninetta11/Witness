@@ -4,7 +4,7 @@ import { RightCircleOutlined } from '@ant-design/icons';
 import './style.css'
 
 const { Content } = Layout;
-const { Title, Text, Paragraph } = Typography;
+const { Title, Paragraph } = Typography;
 
 
 function Home() {

@@ -1,4 +1,4 @@
-import { Layout, Row, Col, Form, Input, Button, Select, Typography, Alert } from 'antd';
+import { Layout, Row, Col, Form, Input, Button, Select, Typography, message } from 'antd';
 import { RightCircleOutlined } from '@ant-design/icons';
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
@@ -7,7 +7,6 @@ import states from '../../data/states.json';
 import occupations from '../../data/occupationlist.json';
 import API from '../../utils/blockchainAPI';
 
-const { ErrorBoundary } = Alert;
 const { Option } = Select;
 const { Content } = Layout;
 const { Title } = Typography;
@@ -114,8 +113,12 @@ function Signup() {
                             })
                     })
             }
+            else {
+                // If user already exists, alerts user
+                alerts = { type: 'error', message: 'User already existed. Please login' };
+                setRegisterState({ ...registerState, alerts });
+            }
         }).catch((error) => {
-            // If user already exists, alerts user
             alerts = { type: error.response.data.type, message: error.response.data.message };
             setRegisterState({ ...registerState, alerts });
         })
@@ -130,6 +133,11 @@ function Signup() {
 
     return (
         <Content className="content" style={{ marginTop: '50px' }}>
+            {registerState.alerts ?
+                message[registerState.alerts.type](registerState.alerts.message).then(setRegisterState({ ...registerState, alerts: '' }))
+                :
+                <div></div>
+            }
             <Row>
                 <Col span={12} offset={6}>
                     <Form
@@ -340,18 +348,6 @@ function Signup() {
                         ><Input.Password
                                 placeholder="Confirm Password" />
                         </Form.Item>
-
-                        <ErrorBoundary>
-                            {registerState.alerts ?
-                                <Alert
-                                    message={registerState.alerts.message}
-                                    type={registerState.alerts.type}
-                                    showIcon
-                                />
-                                :
-                                <div></div>
-                            }
-                        </ErrorBoundary>
 
                         <Form.Item {...tailLayout}>
                             <Button type="primary" shape="round" icon={<RightCircleOutlined />} htmlType="submit" >

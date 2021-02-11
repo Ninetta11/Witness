@@ -117,12 +117,13 @@ router.get('/api/displayusers', (req, res) => {
                 res.json(response)
             }
             else {
-                res.status(400).json({ error: "Users do not exist" });
+                res.status(400).send({ type: 'error', message: "Users do not exist" });
             }
         })
         .catch(err => {
-            res.send('error: ' + err);
-        })
+            console.log(err);
+            res.status(400).send({ type: 'error', message: 'There was a problem. Please try again' });
+        });
 })
 
 router.post('/api/update', (req, res) => {
