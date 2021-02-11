@@ -1,5 +1,5 @@
 import { Link, useHistory } from 'react-router-dom';
-import { Row, Col, Menu, Typography, Avatar } from 'antd';
+import { Row, Col, Menu, Typography, Avatar, Image } from 'antd';
 import { UserOutlined, LogoutOutlined, } from '@ant-design/icons';
 import { useAppContext } from '../../store';
 import { useLoginCheck, logout } from '../../utils/setAuthToken';
@@ -57,7 +57,7 @@ function Navbar() {
     return (
         <Row>
             <Col span={8}>
-                <Link onClick={handleLogOut} to="/"><h1 style={{ color: '#d4b483' }} >Witness</h1></Link>
+                <Link onClick={handleLogOut} to="/"><Image src='/assets/images/logo.png' height='65px' width='150px' /></Link>
             </Col>
             <Col span={8} offset={8}>
                 {state.isAuthenticated ? userLink : loginRegLink}
