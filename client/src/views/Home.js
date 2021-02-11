@@ -29,7 +29,7 @@ function Home() {
                         <div style={{ margin: '75px', fontSize: '18px' }}>
                             <Row>
                                 <Col span={3}>
-                                    <Image src='/assets/images/pen.png' height='50px' width='50px' />
+                                    <Image src='/assets/images/pen.png' preview={false} height='50px' width='50px' />
                                 </Col>
                                 <Col span={21} >
                                     <Title level={3} >What does Witness do?</Title>
@@ -39,7 +39,7 @@ function Home() {
                             </Row>
                             <Row>
                                 <Col span={3}>
-                                    <Image src='/assets/images/pen.png' height='50px' width='50px' />
+                                    <Image src='/assets/images/pen.png' preview={false} height='50px' width='50px' />
                                 </Col>
                                 <Col span={21}>
                                     <Title level={3}>How does it work?</Title>
@@ -48,7 +48,7 @@ function Home() {
                             </Row>
                             <Row>
                                 <Col span={3}>
-                                    <Image src='/assets/images/pen.png' height='50px' width='50px' />
+                                    <Image src='/assets/images/pen.png' preview={false} height='50px' width='50px' />
                                 </Col>
                                 <Col span={21}>
                                     <Title level={3}>How much does it cost?</Title>
@@ -60,7 +60,7 @@ function Home() {
                     </Col>
                     <Col xs={{ span: 24 }} sm={{ span: 24 }} md={{ span: 9 }} lg={{ span: 9 }} style={{ backgroundColor: '#AA3939' }}>
                         <div style={{ margin: '75px', fontSize: '18px' }}>
-                            <Image src='/assets/images/iotalogo.svg' style={{ marginBottom: '25px' }} /><br></br>
+                            <Image src='/assets/images/iotalogo.svg' style={{ marginBottom: '25px' }} preview={false} /><br></br>
                             <Paragraph style={{ color: 'white' }}>IOTA is the first distributed ledger built for the “Internet of Everything” - a network for exchanging value and data between humans and machines.</Paragraph>
                             <Paragraph style={{ color: 'white' }}>The IOTA network is built for the Internet of Things, with tamper-proof data, feeless micro transactions and low resource requirements</Paragraph>
                             <Paragraph style={{ color: 'white' }}>The Tangle is IOTA's network. It immutably records the exchange of data and value. It ensures that the information is trustworthy and cannot be tampered with nor destroyed.</Paragraph>

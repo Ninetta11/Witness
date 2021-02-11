@@ -57,7 +57,7 @@ function Navbar() {
     return (
         <Row>
             <Col span={8}>
-                <Link onClick={handleLogOut} to="/"><Image src='/assets/images/logo.png' height='65px' width='150px' /></Link>
+                <Link onClick={handleLogOut} to="/"><Image src='/assets/images/logo.png' preview={false} height='65px' width='150px' /></Link>
             </Col>
             <Col span={8} offset={8}>
                 {state.isAuthenticated ? userLink : loginRegLink}
