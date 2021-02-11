@@ -8,7 +8,7 @@ import Login from './components/Login';
 import Signup from './components/Signup';
 import Navbar from './components/Navbar';
 
-const { Header } = Layout;
+const { Header, Footer } = Layout;
 
 
 function App() {
@@ -33,6 +33,10 @@ function App() {
                     </Route>
                 </Layout>
             </StoreProvider>
+            <Footer
+                style={{ textAlign: 'center', fontSize: '10px', width: "100%", }}>
+                <h2>Witness ©2021 Created by Nina Welsh</h2>
+            </Footer>
         </Router>
     )
 }

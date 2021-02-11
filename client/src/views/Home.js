@@ -3,17 +3,17 @@ import { Layout, Row, Col, Typography, Image, Button } from 'antd';
 import { RightCircleOutlined } from '@ant-design/icons';
 import './style.css'
 
-const { Content, Footer } = Layout;
+const { Content } = Layout;
 const { Title, Paragraph } = Typography;
 
 
 function Home() {
     return (
-        <Layout className="content" style={{ backgroundColor: 'white' }}>
-            <Content style={{ marginTop: '80px' }}>
+        <Layout style={{ backgroundColor: 'white' }}>
+            <Content className="content">
                 <Row>
                     <Col span={10} offset={4}>
-                        <Title>Eliminate physical documents and replace in-person verification with Blockchain technology.</Title>
+                        <Title>Eliminate physical documents and replace human verification with Blockchain technology.</Title>
                         <div style={{ marginBottom: '80px' }}>
                             <Link to="/login"><Button type="primary" shape="round" icon={<RightCircleOutlined />} size="large" >
                                 Create a Statutory Declaration today
@@ -64,16 +64,11 @@ function Home() {
                             <Paragraph style={{ color: 'white' }}>IOTA is the first distributed ledger built for the “Internet of Everything” - a network for exchanging value and data between humans and machines.</Paragraph>
                             <Paragraph style={{ color: 'white' }}>The IOTA network is built for the Internet of Things, with tamper-proof data, feeless micro transactions and low resource requirements</Paragraph>
                             <Paragraph style={{ color: 'white' }}>The Tangle is IOTA's network. It immutably records the exchange of data and value. It ensures that the information is trustworthy and cannot be tampered with nor destroyed.</Paragraph>
-                            <Link to='iota.org'><Paragraph style={{ color: 'white', fontSize: '25px' }}>iota.org</Paragraph></Link>
+                            <a href='//iota.org'><Paragraph style={{ color: 'white', fontSize: '25px' }}>iota.org</Paragraph></a>
                         </div>
                     </Col>
                 </Row>
             </Content>
-            <Footer style={{
-                textAlign: 'center', fontSize: '10px', width: "100%",
-            }}>
-                <h2>Witness ©2021 Created by Nina Welsh</h2>
-            </Footer>
         </Layout >
     )
 };

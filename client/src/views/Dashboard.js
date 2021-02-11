@@ -37,7 +37,7 @@ function Dashboard() {
     }
 
     return (
-        <Layout className="content" >
+        <Layout >
             <Router>
                 <Sider className="site-layout-background" width={250} breakpoint="lg"
                     collapsedWidth="0"
@@ -64,7 +64,7 @@ function Dashboard() {
                         < Menu.Item key="4" icon={<MailOutlined />}><Link to="/user/request">Request Document</Link></Menu.Item>
                     </Menu>
                 </Sider >
-                <Content style={{ marginTop: '50px' }}>
+                <Content className="content" >
                     <Row>
                         <Col span={20} offset={2}>
                             <Switch>

@@ -71,7 +71,7 @@ function Login() {
     };
 
     return (
-        <Content className="content" style={{ marginTop: '50px' }}>
+        <Content className="content">
             {formState.alerts ?
                 message[formState.alerts.type](formState.alerts.message).then(setFormState({ ...formState, alerts: '' }))
                 :

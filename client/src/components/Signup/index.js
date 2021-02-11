@@ -132,7 +132,7 @@ function Signup() {
     };
 
     return (
-        <Content className="content" style={{ marginTop: '50px' }}>
+        <Content className="content" >
             {registerState.alerts ?
                 message[registerState.alerts.type](registerState.alerts.message).then(setRegisterState({ ...registerState, alerts: '' }))
                 :
