@@ -21,16 +21,18 @@ function Dashboard() {
 
     const [documentState, setDocumentState] = useState({
         hash: '',
-        content: ''
+        content: '',
+        title: ''
     });
 
     useLoginCheck(appDispatch);
 
     const handleDocumentSelect = (e) => {
         const hash = e.key;
+        const title = e.item.props.name;
         API.extractFromBlockchain(hash).then((document) => {
             const content = document.message;
-            setDocumentState({ ...documentState, hash, content })
+            setDocumentState({ ...documentState, hash, content, title })
         })
     }
 
@@ -53,7 +55,7 @@ function Dashboard() {
                         <SubMenu key="sub2" icon={<FileOutlined />} title="Documents">
                             {(state.user.documents ?
                                 state.user.documents.map(document =>
-                                    <Menu.Item key={document.hash} onClick={handleDocumentSelect}><Link to="/user/document">{document.title}</Link></Menu.Item>)
+                                    <Menu.Item name={document.title} key={document.hash} onClick={handleDocumentSelect}><Link to="/user/document">{document.title}</Link></Menu.Item>)
                                 :
                                 <Menu.Item key="noDocuments">You have no documents</Menu.Item>
                             )}
@@ -72,6 +74,7 @@ function Dashboard() {
                                 <Route exact path="/user/document">
                                     <DisplayDeclaration
                                         hash={documentState.hash}
+                                        title={documentState.title}
                                         content={documentState.content} />
                                 </Route>
                                 <Route exact path="/user/declaration">
