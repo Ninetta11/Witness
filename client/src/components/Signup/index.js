@@ -1,4 +1,4 @@
-import { Layout, Row, Col, Form, Input, Button, Select, Typography, message } from 'antd';
+import { Layout, Row, Col, Form, Input, Button, Select, Typography, message, AutoComplete } from 'antd';
 import { RightCircleOutlined } from '@ant-design/icons';
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
@@ -51,7 +51,7 @@ function Signup() {
     };
 
     // updates global state when data is selected from any of the select options
-    const OnSelect = (value) => {
+    const onSelect = (value) => {
         (value.key.length > 3) ?
             setRegisterState({ ...registerState, occupation: value.key })
             :
@@ -246,7 +246,7 @@ function Signup() {
                             style={{ width: 120 }}
                             labelInValue
                             name="state"
-                            onChange={OnSelect}>
+                            onChange={onSelect}>
                                 {states.map(state =>
                                     <Option value={state}>{state}</Option>
                                 )}
@@ -283,7 +283,7 @@ function Signup() {
                             labelInValue
                             name="occupation"
                             placeholder="Select an occupation"
-                            onChange={OnSelect}
+                            onChange={onSelect}
                             filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}>
                                 {occupations.map(occupation =>
                                     <Option value={occupation}>{occupation}</Option>

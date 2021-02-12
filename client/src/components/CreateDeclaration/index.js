@@ -1,18 +1,18 @@
 import DayJS from 'react-dayjs';
 import dayjs from 'dayjs';
-import { Form, Input, Button, Typography, Space, Result, message } from 'antd';
+import { Form, Input, Button, Typography, Space, Result, AutoComplete, Spin, message } from 'antd';
 import { FilePdfFilled, PlusOutlined, SendOutlined, CloseOutlined } from '@ant-design/icons';
 import { useState, useEffect } from 'react';
 import { useAppContext } from '../../store';
-import { saveDocument } from '../../utils/documentFunctions';
+import { saveDocument, saveToPDF } from '../../utils/documentFunctions';
 import generateMarkdown from '../../utils/generateMarkdown';
 import API from '../../utils/blockchainAPI';
 import { getLocation } from '../../utils/geocodingAPI';
 import { REFRESH_DETAILS } from '../../utils/types';
-import { saveToPDF } from '../../utils/documentFunctions';
 
 const { TextArea } = Input;
 const { Title, Text, Paragraph } = Typography;
+const { Option } = AutoComplete;
 
 
 function CreateDeclaration() {
@@ -26,7 +26,8 @@ function CreateDeclaration() {
         location: '',
         declaration: '',
         alerts: '',
-        errors: ''
+        errors: '',
+        loading: false
     });
 
     const [form] = Form.useForm();
@@ -39,7 +40,7 @@ function CreateDeclaration() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(showPosition);
         } else {
-            let location = state.user.suburb + ', ' + state.user.state;
+            const location = state.user.suburb + ', ' + state.user.state;
             setDocumentState({ ...documentState, location });
         }
     }
@@ -48,11 +49,18 @@ function CreateDeclaration() {
         getLocation(position.coords.latitude, position.coords.longitude)
             .then((location) => {
                 setDocumentState({ ...documentState, location });
+            }).catch((error) => {
+                const location = state.user.suburb + ', ' + state.user.state;
+                setDocumentState({ ...documentState, location });
             })
     }
 
     const onChange = (event) => {
         setDocumentState({ ...documentState, [event.target.name]: event.target.value });
+    };
+
+    const onSelect = (value) => {
+        setDocumentState({ ...documentState, signature: value });
     };
 
     const changeLocation = (value) => {
@@ -73,6 +81,7 @@ function CreateDeclaration() {
     }
 
     const onSubmit = () => {
+        setDocumentState({ ...documentState, loading: true });
         const details = {
             title: documentState.title,
             first_name: state.user.first_name,
@@ -98,14 +107,14 @@ function CreateDeclaration() {
                 saveDocument(details)
                     .then((res) => {
                         let alerts = { type: res.data.type, message: res.data.message, hash: details.hash };
-                        setDocumentState({ ...documentState, alerts, declaration });
+                        setDocumentState({ ...documentState, alerts, declaration, loading: false });
                         form.resetFields();
                         appDispatch({ type: REFRESH_DETAILS, payload: res.data.details });
                         console.log('Stat dec submitted' + res);
                     })
                     .catch((error) => {
                         let errors = { type: error.response.data.type, message: error.response.data.message };
-                        setDocumentState({ ...documentState, errors });
+                        setDocumentState({ ...documentState, errors, loading: false });
                     })
             })
     }
@@ -117,13 +126,12 @@ function CreateDeclaration() {
             onFinish={onSubmit}
         >
             <Space direction="vertical">
+                <Title level={2} style={{ textAlign: 'center', paddingBottom: '25px' }}>Statutory Declaration</Title>
                 {documentState.errors ?
                     message[documentState.errors.type](documentState.errors.message).then(setDocumentState({ ...documentState, errors: '' }))
                     :
                     <div></div>
                 }
-                <Title level={2} style={{ textAlign: 'center', paddingBottom: '25px' }}>Statutory Declaration</Title>
-
                 {documentState.alerts ?
                     <Result
                         status={documentState.alerts.type}
@@ -161,9 +169,15 @@ function CreateDeclaration() {
                                 value={documentState.title}
                                 onChange={onChange} />
                         </Form.Item>
+
                         <Text>I, <strong>{state.user.first_name} {state.user.last_name}</strong> residing at <strong>{state.user.street_no} {state.user.street}, {state.user.suburb} {state.user.state} {state.user.postcode}</strong> and having the occupation of <strong>{state.user.occupation}</strong>, make the following statutory declaration under the <strong>Oaths and Affirmations Act 2018:</strong></Text>
                         <br></br>
                         <Text type="secondary">Set out matter declared to in numbered paragraphs.</Text>
+                        {documentState.loading ?
+                            <Space size='middle'>
+                                <Spin size='large'></Spin>
+                            </Space>
+                            : null}
                         <Form.Item
                             label="1."
                             name="content"
@@ -179,6 +193,7 @@ function CreateDeclaration() {
                                 value={documentState.content}
                                 onChange={onChange} />
                         </Form.Item>
+
                         <Form.Item
                             name="Add">
                             <Button
@@ -186,7 +201,9 @@ function CreateDeclaration() {
                                 shape="round"
                                 icon={<PlusOutlined />}>Add paragraph</Button>
                         </Form.Item>
+
                         <Text strong>I declare that the contents of this statutory declaration are true and correct and I make it knowing that making a statutory declaration that I know to be untrue is an offence.</Text>
+
                         <Form.Item
                             label="Signature:"
                             name="signature"
@@ -195,13 +212,17 @@ function CreateDeclaration() {
                                     required: true,
                                     message: "Enter your Full Name to sign your declaration"
                                 }
-                            ]}><Input
+                            ]}><AutoComplete
                                 name="signature"
                                 style={{ width: 250 }}
-                                placeholder="Sign Here"
-                                value={documentState.signature}
-                                onChange={onChange} />
+                                placeholder="Sign here"
+                                onChange={onSelect}
+                            ><Option value={state.user.first_name + ' ' + state.user.last_name}>
+                                    {state.user.first_name + ' ' + state.user.last_name}
+                                </Option>
+                            </AutoComplete>
                         </Form.Item>
+
                         <Input.Group compact>
                             <Text strong>Declared at  *</Text><Paragraph strong
                                 value={documentState.location}

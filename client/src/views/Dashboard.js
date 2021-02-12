@@ -11,7 +11,7 @@ import { useLoginCheck } from '../utils/setAuthToken';
 import API from '../utils/blockchainAPI';
 import './style.css'
 
-const { Content, Sider, Footer } = Layout;
+const { Content, Sider } = Layout;
 const { SubMenu } = Menu;
 
 
@@ -55,7 +55,11 @@ function Dashboard() {
                         <SubMenu key="sub2" icon={<FileOutlined />} title="Documents">
                             {(state.user.documents ?
                                 state.user.documents.map(document =>
-                                    <Menu.Item name={document.title} key={document.hash} onClick={handleDocumentSelect}><Link to="/user/document">{document.title}</Link></Menu.Item>)
+                                    <Menu.Item
+                                        name={document.title}
+                                        key={document.hash}
+                                        onClick={handleDocumentSelect}
+                                    ><Link to="/user/document">{document.title}</Link></Menu.Item>)
                                 :
                                 <Menu.Item key="noDocuments">You have no documents</Menu.Item>
                             )}
@@ -87,13 +91,6 @@ function Dashboard() {
                         </Col>
                     </Row>
                 </Content>
-                <Footer style={{
-                    position: "fixed",
-                    left: "0",
-                    bottom: "0", textAlign: 'center', fontSize: '10px', width: "100%",
-                }}>
-                    <h2>Witness ©2021 Created by Nina Welsh</h2>
-                </Footer>
             </Router>
         </Layout >
     )

@@ -21,4 +21,3 @@ export const getLocation = (lat, long) => {
             });
     }))
 }
-

@@ -1,4 +1,4 @@
-import { Typography, Button, Divider } from 'antd';
+import { Typography, Button, Space, Spin } from 'antd';
 import { FilePdfFilled, SendOutlined } from '@ant-design/icons';
 import { saveToPDF } from '../../utils/documentFunctions';
 
@@ -19,10 +19,15 @@ function DisplayDeclaration({ title, hash, content }) {
         <div>
             <Text >Document Title: {title}</Text>
             <Title level={2} style={{ textAlign: 'center', paddingBottom: '25px' }}>Statutory Declaration</Title>
-            {content.split('#').map((section) =>
-                <Paragraph style={{ fontSize: '20px' }}>{section}</Paragraph>
-            )}
-            <div style={{ textAlign: 'center' }}>
+            {!content ?
+                <Space size='middle'>
+                    <Spin size='large'></Spin>
+                </Space>
+                :
+                content.split('#').map((section) =>
+                    <Paragraph style={{ fontSize: '20px' }}>{section}</Paragraph>)
+            }
+            < div style={{ textAlign: 'center' }}>
                 <Button
                     type="primary"
                     icon={<FilePdfFilled />}
@@ -35,7 +40,7 @@ function DisplayDeclaration({ title, hash, content }) {
                     icon={<SendOutlined />}
                     onClick={handleFileSend}>Send via email</Button>
             </div>
-        </div>
+        </div >
     )
 }
 
