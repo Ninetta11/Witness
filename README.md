@@ -1,13 +1,14 @@
 # Witness
-[![Version](https://badge.fury.io/gh/tterb%2FHyde.svg)](https://badge.fury.io/gh/tterb%2FHyde)
-[![NPM Version](https://img.shields.io/npm/v/npm.svg?style=flat)]()
+[![Version](https://badge.fury.io/gh/tterb%2FHyde.svg)](https://badge.fury.io/gh/tterb%2FHyde/1.0.0)
+ ![APACHE](https://img.shields.io/badge/license-APACHE-green)
+ [![NPM Version](https://img.shields.io/npm/v/npm.svg?style=flat)]()
 
   ## Table of Contents
   1. [Description](#description)
   2. [Motivation](#motivation)
   3. [Demonstration](#demonstration)
-  4. [Build status](#build status)
-  5. [Key Technologies](#key technologies)
+  4. [Build status](#buildstatus)
+  5. [Key Technologies](#keytechnologies)
   6. [Installation](#installation)
   5. [Usage](#usage)
   6. [License](#license)
