@@ -1,6 +1,6 @@
 # Witness
-[![Version](https://badge.fury.io/gh/tterb%2FHyde.svg)](https://badge.fury.io/gh/tterb%2FHyde)
- ![APACHE](https://img.shields.io/badge/license-APACHE-green)
+[![Version](https://badge.fury.io/docker/v/1/0/0)
+![APACHE](https://img.shields.io/badge/license-APACHE-green)
  [![NPM Version](https://img.shields.io/npm/v/npm.svg?style=flat)]()
 
   ## Table of Contents
