@@ -13,7 +13,7 @@
   8. [License](#license)
   9. [Questions](#questions)
   
-  ## Description
+## Description
 Witness allows you to create a Statutory Declaration in seconds, instantaneously saving it to the IOTA blockchain creating an immutable record that cannot be doctored, deleted or edited, eliminating the need for a certified witness.
 ## Motivation
 * To showcase a real world potential application of blockchain technology. 
@@ -36,8 +36,8 @@ Requires NPM, otherwise working on Heroku
 ## Usage
 Please visit the <a href="https://project3-witness.herokuapp.com/">site</a> hosted on Heroku<hr>
 
-  ## License 
-  This project is licensed under the APACHE license.
+## License 
+This project is licensed under the APACHE license.
 
-  ## Questions
-  If you have any questions about this repo, open an issue or contact me directly at [ninawelsh1@outlook.com](mailto:ninawelsh1@outlook.com). You can find more of my work at [Ninetta11](https://www.github.com/Ninetta11).
+## Questions
+If you have any questions about this repo, open an issue or contact me directly at [ninawelsh1@outlook.com](mailto:ninawelsh1@outlook.com). You can find more of my work at [Ninetta11](https://www.github.com/Ninetta11).
