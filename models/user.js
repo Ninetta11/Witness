@@ -1,12 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-//const document = require('./document');
-
-const documentSchema = new Schema({
-  // the hash received back from the blockchain as confirmation of record
-  hash: { type: Schema.Types.Mixed, immutable: true },
-  title: { type: Schema.Types.Mixed, immutable: true }
-});
+const DocumentSchema = require('./document');
 
 const UserSchema = new Schema({
   first_name: { type: String, required: true, maxlength: 30 },
@@ -21,7 +15,7 @@ const UserSchema = new Schema({
   password: { type: Schema.Types.Mixed, required: true },
   IOTA_address: { type: Schema.Types.Mixed, required: true, immutable: true },
   IOTA_seed: { type: Schema.Types.Mixed, required: true, immutable: true },
-  documents: [documentSchema],
+  documents: [DocumentSchema],
   date: { type: Date, default: Date.now }
 });
 

@@ -93,23 +93,6 @@ router.post('/api/login', (req, res) => {
         })
 })
 
-router.post('/api/document', (req, res) => {
-    User.findOneAndUpdate({
-        // searches database for user with same IOTA address
-        IOTA_address: req.body.IOTA_address
-        // updates documents with returned hash 
-    }, { $push: { documents: { hash: req.body.hash, title: req.body.title } } },
-        { new: true }
-    )
-        .then(response => {
-            res.status(200).send({ type: 'success', message: 'Your statutory declaration has been submitted and saved', details: response });
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(400).send({ type: 'error', message: 'There was a problem. Please try again' });
-        })
-})
-
 router.get('/api/displayusers', (req, res) => {
     User.find()
         .then(response => {
@@ -140,6 +123,23 @@ router.post('/api/update', (req, res) => {
         .catch(err => {
             console.log(err);
             res.send({ type: 'error', message: 'There was a problem. Please try again' });
+        })
+})
+
+router.post('/api/document', (req, res) => {
+    User.findOneAndUpdate({
+        // searches database for user with same IOTA address
+        IOTA_address: req.body.IOTA_address
+        // updates documents with returned hash 
+    }, { $push: { documents: { hash: req.body.hash, title: req.body.title } } },
+        { new: true }
+    )
+        .then(response => {
+            res.status(200).send({ type: 'success', message: 'Your statutory declaration has been submitted and saved', details: response });
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(400).send({ type: 'error', message: 'There was a problem. Please try again' });
         })
 })
 
