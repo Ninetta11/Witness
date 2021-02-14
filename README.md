@@ -31,10 +31,10 @@ Minimum Viable Product. Ready for use, but requiring further testing and feedbac
 * Node Express
 
 ## Installation
-Requires NPM, otherwise working on Heroku
+Requires NPM, otherwise working on Heroku.
 
 ## Usage
-Please visit the <a href="https://project3-witness.herokuapp.com/">site</a> hosted on Heroku<hr>
+Please visit the <a href="https://project3-witness.herokuapp.com/">site</a> hosted on Heroku.
 
 ## License 
 This project is licensed under the APACHE license.
