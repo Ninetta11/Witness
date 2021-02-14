@@ -1,5 +1,5 @@
 # Witness
-[![Version](https://badge.fury.io/docker/v/1/0/0)
+![VERSION](https://img.shields.io/docker/v/1/0/0?logoColor=green)
 ![APACHE](https://img.shields.io/badge/license-APACHE-green)
  [![NPM Version](https://img.shields.io/npm/v/npm.svg?style=flat)]()
 
