@@ -48,6 +48,7 @@ function Register() {
             ...registerState,
             address: googlevalue.value.description,
         });
+        console.log(registerState.address);
     }, [googlevalue.value.description]);
 
     // updates global state when data is entered into any of the inputs
@@ -55,10 +56,10 @@ function Register() {
         setRegisterState({ ...registerState, [event.target.name]: event.target.value });
     };
 
-    const addAddress = (event) => {
-        console.log(event);
-        setValue({ ...googlevalue, event })
-    }
+    // const addAddress = (event) => {
+    //     console.log(event);
+    //     setRegisterState({ ...registerState, address: event.value.description })
+    // }
 
     // updates global state when data is selected from any of the select options
     const onSelect = (value) => {
@@ -199,7 +200,7 @@ function Register() {
                                 //value={registerState.address.value.description}
                                 selectProps={{
                                     googlevalue,
-                                    onChange: addAddress,
+                                    //   onChange: addAddress,
                                 }}
                             />
                         </Form.Item>
