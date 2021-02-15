@@ -195,7 +195,7 @@ function Register() {
                                     googlevalue,
                                     onChange: { setValue },
                                 }}
-                                value={googlevalue}
+                                value={registerState.address}
                             />
                         </Form.Item>
 
