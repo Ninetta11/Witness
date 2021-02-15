@@ -19,9 +19,14 @@ Witness allows you to create a Statutory Declaration in seconds, instantaneously
 * To showcase a real world potential application of blockchain technology. 
 * To eliminate physical documents and replace human verification with Blockchain technology.
 ## Demonstration
+### Login
 ![login](https://user-images.githubusercontent.com/65838273/107894964-9bca6c00-6f85-11eb-887d-254901411759.gif)
-![viewstatdec](https://user-images.githubusercontent.com/65838273/107894976-a553d400-6f85-11eb-8117-18b12c4b40a7.gif)
 
+### Create
+![createstatdec](https://user-images.githubusercontent.com/65838273/107895188-93266580-6f86-11eb-9ea4-d667ea11549a.gif)
+
+### View
+![viewstatdec](https://user-images.githubusercontent.com/65838273/107894976-a553d400-6f85-11eb-8117-18b12c4b40a7.gif)
 
 ## Build status
 Minimum Viable Product. Ready for use, but requiring further testing and feedback.
