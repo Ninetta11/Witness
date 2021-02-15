@@ -195,6 +195,7 @@ function Register() {
                                     googlevalue,
                                     onChange: { setValue },
                                 }}
+                                value={googlevalue}
                             />
                         </Form.Item>
 
