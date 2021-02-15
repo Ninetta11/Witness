@@ -1,11 +1,12 @@
 import { Layout, Row, Col, Form, Input, Button, Select, Typography, message, AutoComplete } from 'antd';
 import { RightCircleOutlined } from '@ant-design/icons';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { registerUser, getUsers } from '../../utils/userFunctions';
 import states from '../../data/states.json';
 import occupations from '../../data/occupationlist.json';
 import API from '../../utils/blockchainAPI';
+import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
 
 const { Option } = Select;
 const { Content } = Layout;
@@ -28,6 +29,8 @@ const tailLayout = {
 function Signup() {
     const history = useHistory();
 
+    const [googlevalue, setValue] = useState({ value: { description: "" } });
+
     const [registerState, setRegisterState] = useState({
         first_name: '',
         last_name: '',
@@ -38,12 +41,23 @@ function Signup() {
         suburb: '',
         street: '',
         street_no: '',
+        address: googlevalue.value.description,
         occupation: '',
         IOTA_seed: '',
         IOTA_address: '',
         alerts: '',
         formIsValid: true,
     });
+
+    useEffect(() => {
+
+        setRegisterState({
+
+            ...registerState,
+            address: googlevalue.value.description,
+
+        });
+    }, [googlevalue.value.description]);
 
     // updates global state when data is entered into any of the inputs
     const onChange = (event) => {
@@ -268,6 +282,27 @@ function Signup() {
                                 value={registerState.postcode}
                                 onChange={onChange} />
                         </Form.Item>
+
+                        <Form.Item
+                            name="address"
+                            label="Address"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Please enter your address!',
+                                },
+                            ]}
+                        ><GooglePlacesAutocomplete
+                                apiKey="AIzaSyCHR4pzxUoksFuNAA1Wkp0Xs7qmdn9wlKI&callback=initAutocomplete&libraries=places&v=weekly"
+                                selectProps={{
+                                    googlevalue,
+                                    onChange: { setValue },
+                                }}
+                            />
+                        </Form.Item>
+
+
+
 
                         <Form.Item
                             name="occupation"

@@ -50,7 +50,7 @@ export default {
         }))
     },
 
-    generateNewAddress: function (seed) {
+    generateNewAddress: (seed) => {
         return new Promise((function (resolve, reject) {
             iota.getNewAddress(seed, { index: 0, securityLevel: securityLevel, total: 1 })
                 .then(address => {

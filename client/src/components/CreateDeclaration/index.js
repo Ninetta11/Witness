@@ -33,6 +33,7 @@ function CreateDeclaration() {
     const [form] = Form.useForm();
 
     useEffect(() => {
+        // something is wrong here - need to fix
         getCurrentLocation()
     }, []);
 
