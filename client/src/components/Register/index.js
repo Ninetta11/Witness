@@ -1,4 +1,4 @@
-import { Layout, Row, Col, Form, Input, Button, Select, Typography, message, AutoComplete } from 'antd';
+import { Layout, Row, Col, Form, Input, Button, Select, Typography, message } from 'antd';
 import { RightCircleOutlined, UserAddOutlined } from '@ant-design/icons';
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
@@ -195,7 +195,7 @@ function Register() {
                                     googlevalue,
                                     onChange: { setValue },
                                 }}
-                                value={registerState.address}
+                                value={registerState.address.value.description}
                             />
                         </Form.Item>
 
