@@ -56,11 +56,6 @@ function Register() {
         setRegisterState({ ...registerState, [event.target.name]: event.target.value });
     };
 
-    // const addAddress = (event) => {
-    //     console.log(event);
-    //     setRegisterState({ ...registerState, address: event.value.description })
-    // }
-
     // updates global state when data is selected from any of the select options
     const onSelect = (value) => {
         setRegisterState({ ...registerState, occupation: value.key })
@@ -197,10 +192,9 @@ function Register() {
                             ]}
                         ><GooglePlacesAutocomplete
                                 apiKey="AIzaSyCHR4pzxUoksFuNAA1Wkp0Xs7qmdn9wlKI&callback=initAutocomplete&libraries=places&v=weekly"
-                                //value={registerState.address.value.description}
+                                value={registerState.address}
                                 selectProps={{
                                     googlevalue,
-                                    //   onChange: addAddress,
                                 }}
                             />
                         </Form.Item>
