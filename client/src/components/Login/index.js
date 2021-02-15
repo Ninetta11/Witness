@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
 import { Layout, Row, Col, Form, Input, Button, Typography, message } from 'antd';
-import { RightCircleOutlined } from '@ant-design/icons';
+import { RightCircleOutlined, LoginOutlined } from '@ant-design/icons';
 import { SET_CURRENT_USER } from '../../utils/types';
 import { useAppContext } from '../../store';
 import { loginUser } from '../../utils/userFunctions';
@@ -86,7 +86,7 @@ function Login() {
                         initialValues={{ remember: true, }}
                         onFinishFailed={onFinishFailed}
                     >
-                        <Title level={2} style={{ textAlign: 'center', paddingBottom: '25px' }}>Log in</Title>
+                        <Title level={2} style={{ textAlign: 'center', paddingBottom: '25px' }} icon={<LoginOutlined />}>Log in</Title>
 
                         <Form.Item
                             label="Email"

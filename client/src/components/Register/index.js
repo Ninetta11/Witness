@@ -1,9 +1,8 @@
 import { Layout, Row, Col, Form, Input, Button, Select, Typography, message, AutoComplete } from 'antd';
-import { RightCircleOutlined } from '@ant-design/icons';
+import { RightCircleOutlined, UserAddOutlined } from '@ant-design/icons';
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { registerUser, getUsers } from '../../utils/userFunctions';
-import states from '../../data/states.json';
 import occupations from '../../data/occupationlist.json';
 import API from '../../utils/blockchainAPI';
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
@@ -26,36 +25,28 @@ const tailLayout = {
     },
 };
 
-function Signup() {
+function Register() {
     const history = useHistory();
-
-    const [googlevalue, setValue] = useState({ value: { description: "" } });
 
     const [registerState, setRegisterState] = useState({
         first_name: '',
         last_name: '',
-        email: '',
-        password: '',
-        state: '',
-        postcode: '',
-        suburb: '',
-        street: '',
-        street_no: '',
         address: googlevalue.value.description,
         occupation: '',
+        email: '',
+        password: '',
         IOTA_seed: '',
         IOTA_address: '',
         alerts: '',
         formIsValid: true,
     });
 
+    const [googlevalue, setValue] = useState({ value: { description: "" } });
+
     useEffect(() => {
-
         setRegisterState({
-
             ...registerState,
             address: googlevalue.value.description,
-
         });
     }, [googlevalue.value.description]);
 
@@ -66,10 +57,7 @@ function Signup() {
 
     // updates global state when data is selected from any of the select options
     const onSelect = (value) => {
-        (value.key.length > 3) ?
-            setRegisterState({ ...registerState, occupation: value.key })
-            :
-            setRegisterState({ ...registerState, state: value.key })
+        setRegisterState({ ...registerState, occupation: value.key })
     };
 
     // generates random seed
@@ -90,14 +78,10 @@ function Signup() {
         const userData = {
             first_name: registerState.first_name,
             last_name: registerState.last_name,
+            address: registerState.address,
+            occupation: registerState.occupation,
             email: registerState.email,
-            password: registerState.password,
-            street_no: registerState.street_no,
-            street: registerState.street,
-            suburb: registerState.suburb,
-            state: registerState.state,
-            postcode: registerState.postcode,
-            occupation: registerState.occupation
+            password: registerState.password
         };
         // current registered user information is pulled from the database
         getUsers().then((data) => {
@@ -150,7 +134,7 @@ function Signup() {
             {registerState.alerts ?
                 message[registerState.alerts.type](registerState.alerts.message).then(setRegisterState({ ...registerState, alerts: '' }))
                 :
-                <div></div>
+                null
             }
             <Row>
                 <Col span={12} offset={6}>
@@ -160,7 +144,7 @@ function Signup() {
                         onFinish={handleSubmit}
                         onFinishFailed={onFinishFailed}
                     >
-                        <Title level={2} style={{ textAlign: 'center', paddingBottom: '25px' }}>Sign up</Title>
+                        <Title level={2} style={{ textAlign: 'center', paddingBottom: '25px' }} icon={<UserAddOutlined />}>Register</Title>
 
                         <Form.Item
                             name="first_name"
@@ -197,93 +181,6 @@ function Signup() {
                         </Form.Item>
 
                         <Form.Item
-                            name="street_no"
-                            label="Street No."
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'Please input your street number!',
-                                },
-                            ]}
-                        ><Input
-                                style={{ width: 120 }}
-                                name="street_no"
-                                value={registerState.street_no}
-                                onChange={onChange} />
-                        </Form.Item>
-
-                        <Form.Item
-                            name="street"
-                            label="Street"
-                            rules={[
-                                {
-                                    type: 'string',
-                                    required: true,
-                                    message: 'Please input your street!',
-                                },
-                            ]}
-                        ><Input
-                                name="street"
-                                placeholder="Enter Street Name"
-                                value={registerState.street}
-                                onChange={onChange}
-                            />
-                        </Form.Item>
-
-                        <Form.Item
-                            name="suburb"
-                            label="Suburb"
-                            rules={[
-                                {
-                                    type: 'string',
-                                    required: true,
-                                    message: 'Please input your suburb!',
-                                },
-                            ]}
-                        ><Input
-                                name="suburb"
-                                placeholder="Enter Suburb"
-                                value={registerState.suburb}
-                                onChange={onChange} />
-                        </Form.Item>
-
-                        <Form.Item
-                            name="state"
-                            label="State"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'Please select your state!',
-                                },
-                            ]}
-                        ><Select
-                            style={{ width: 120 }}
-                            labelInValue
-                            name="state"
-                            onChange={onSelect}>
-                                {states.map(state =>
-                                    <Option value={state}>{state}</Option>
-                                )}
-                            </Select>
-                        </Form.Item>
-
-                        <Form.Item
-                            name="postcode"
-                            label="Postcode"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'Please enter your postcode!',
-                                },
-                            ]}
-                        ><Input
-                                style={{ width: 120 }}
-                                name="postcode"
-                                value={registerState.postcode}
-                                onChange={onChange} />
-                        </Form.Item>
-
-                        <Form.Item
                             name="address"
                             label="Address"
                             rules={[
@@ -300,9 +197,6 @@ function Signup() {
                                 }}
                             />
                         </Form.Item>
-
-
-
 
                         <Form.Item
                             name="occupation"
@@ -396,4 +290,4 @@ function Signup() {
     );
 };
 
-export default Signup;
+export default Register;

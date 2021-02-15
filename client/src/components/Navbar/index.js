@@ -26,7 +26,7 @@ function Navbar() {
             style={{ backgroundColor: '#274156', textAlign: 'right' }}
             defaultSelectedKeys={['2']}>
             <Menu.Item key="1"><Link to="/login">Log in</Link></Menu.Item>
-            <Menu.Item key="2"><Link to="/register">Sign Up</Link></Menu.Item>
+            <Menu.Item key="2"><Link to="/register">Register</Link></Menu.Item>
         </Menu>
     )
 

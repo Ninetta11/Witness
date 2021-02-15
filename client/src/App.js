@@ -5,7 +5,7 @@ import { Layout } from 'antd';
 import Home from './views/Home';
 import Dashboard from './views/Dashboard';
 import Login from './components/Login';
-import Signup from './components/Signup';
+import Register from './components/Register';
 import Navbar from './components/Navbar';
 
 const { Header, Footer } = Layout;
@@ -29,7 +29,7 @@ function App() {
                         <Login />
                     </Route>
                     <Route exact path="/register">
-                        <Signup />
+                        <Register />
                     </Route>
                 </Layout>
             </StoreProvider>

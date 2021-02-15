@@ -23,16 +23,12 @@ router.post('/api/register', (req, res) => {
                 const userData = {
                     first_name: req.body.first_name,
                     last_name: req.body.last_name,
+                    address: req.body.address,
+                    occupation: req.body.occupation,
                     email: req.body.email,
                     password: req.body.password,
                     IOTA_address: req.body.IOTA_address,
                     IOTA_seed: req.body.IOTA_seed,
-                    state: req.body.state,
-                    postcode: req.body.postcode,
-                    suburb: req.body.suburb,
-                    street: req.body.street,
-                    street_no: req.body.street_no,
-                    occupation: req.body.occupation,
                     created: today
                 }
                 bcrypt.hash(req.body.password, 10, (err, hash) => {
@@ -61,16 +57,12 @@ router.post('/api/login', (req, res) => {
                         _id: response._id,
                         first_name: response.first_name,
                         last_name: response.last_name,
+                        address: response.address,
+                        occupation: response.occupation,
                         email: response.email,
                         password: response.password,
                         IOTA_address: response.IOTA_address,
                         IOTA_seed: response.IOTA_seed,
-                        state: response.state,
-                        postcode: response.postcode,
-                        suburb: response.suburb,
-                        street: response.street,
-                        street_no: response.street_no,
-                        occupation: response.occupation,
                         documents: response.documents
                     }
                     let token = jwt.sign(payload, process.env.SECRET_KEY, {
