@@ -28,6 +28,8 @@ const tailLayout = {
 function Register() {
     const history = useHistory();
 
+    const [googlevalue, setValue] = useState({ value: { description: "" } });
+
     const [registerState, setRegisterState] = useState({
         first_name: '',
         last_name: '',
@@ -40,8 +42,6 @@ function Register() {
         alerts: '',
         formIsValid: true,
     });
-
-    const [googlevalue, setValue] = useState({ value: { description: "" } });
 
     useEffect(() => {
         setRegisterState({
