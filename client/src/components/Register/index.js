@@ -49,7 +49,7 @@ function Register() {
             address: googlevalue.value.description,
         });
         console.log(registerState.address);
-    }, [googlevalue.value.description]);
+    }, []);
 
     // updates global state when data is entered into any of the inputs
     const onChange = (event) => {
