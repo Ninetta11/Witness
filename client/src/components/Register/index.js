@@ -31,7 +31,7 @@ function Register() {
     const [registerState, setRegisterState] = useState({
         first_name: '',
         last_name: '',
-        address: googlevalue.value.description,
+        address: googlevalue,
         occupation: '',
         email: '',
         password: '',
