@@ -196,7 +196,7 @@ function Register() {
                             ]}
                         ><GooglePlacesAutocomplete
                                 apiKey="AIzaSyCHR4pzxUoksFuNAA1Wkp0Xs7qmdn9wlKI&callback=initAutocomplete&libraries=places&v=weekly"
-                                value={registerState.address.value.description}
+                                //value={registerState.address.value.description}
                                 selectProps={{
                                     googlevalue,
                                     onChange: { addAddress },
