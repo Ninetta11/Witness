@@ -199,7 +199,7 @@ function Register() {
                                 //value={registerState.address.value.description}
                                 selectProps={{
                                     googlevalue,
-                                    onChange: { addAddress },
+                                    onChange: addAddress,
                                 }}
                             />
                         </Form.Item>
