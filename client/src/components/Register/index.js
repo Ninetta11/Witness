@@ -1,15 +1,15 @@
-import { Layout, Row, Col, Form, Input, Button, Select, Typography, message } from 'antd';
+import './style.css';
+import { Layout, Row, Col, Form, Button, Typography, Steps, message } from 'antd';
 import { RightCircleOutlined, UserAddOutlined } from '@ant-design/icons';
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
+import RegisterSteps from '../RegisterSteps';
 import { registerUser, getUsers } from '../../utils/userFunctions';
-import occupations from '../../data/occupationlist.json';
 import API from '../../utils/blockchainAPI';
-import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
 
-const { Option } = Select;
 const { Content } = Layout;
-const { Title } = Typography;
+const { Step } = Steps;
+const { Title, Text } = Typography;
 const layout = {
     labelCol: {
         span: 8,
@@ -24,6 +24,7 @@ const tailLayout = {
         span: 16,
     },
 };
+
 
 function Register() {
     const history = useHistory();
@@ -43,13 +44,42 @@ function Register() {
         formIsValid: true,
     });
 
+    const steps = [
+        {
+            title: 'First Name',
+            name: 'first_name'
+        },
+        {
+            title: 'Last Name',
+            name: 'last_name'
+        },
+        {
+            title: 'Address',
+            name: 'address'
+        },
+        {
+            title: 'Occupation',
+            name: 'occupation'
+        },
+        {
+            title: 'Email',
+            name: 'email'
+        },
+        {
+            title: 'Password',
+            name: 'password'
+        }
+    ];
+
+    const [current, setCurrent] = React.useState(0);
+
     useEffect(() => {
         setRegisterState({
             ...registerState,
             address: googlevalue.value.description,
         });
         console.log(registerState.address);
-    }, []);
+    }, [googlevalue.value.description]);
 
     // updates global state when data is entered into any of the inputs
     const onChange = (event) => {
@@ -75,6 +105,7 @@ function Register() {
 
     // on form submit
     const handleSubmit = () => {
+        console.log(registerState);
         let alerts = '';
         const userData = {
             first_name: registerState.first_name,
@@ -124,11 +155,28 @@ function Register() {
     };
 
     const onFinishFailed = (errorInfo) => {
-        let alerts = {};
-        alerts = { type: 'error', message: 'Please complete all form fields' };
+        let alerts = { type: 'error', message: 'Please complete all form fields' };
         setRegisterState({ ...registerState, alerts });
         console.log('Failed:', errorInfo);
     };
+
+    const next = () => {
+        setCurrent(current + 1);
+    };
+
+    const prev = () => {
+        setCurrent(current - 1);
+    };
+
+    const handleProgress = (currentStep) => {
+        if (registerState[currentStep]) {
+            next()
+        }
+        else {
+            let alerts = { type: 'error', message: 'Please complete all form fields' };
+            setRegisterState({ ...registerState, alerts });
+        }
+    }
 
     return (
         <Content className="content" >
@@ -138,152 +186,49 @@ function Register() {
                 null
             }
             <Row>
-                <Col span={12} offset={6}>
+                <Col span={18} offset={3}>
                     <Form
                         noValidate
                         {...layout}
                         onFinish={handleSubmit}
-                        onFinishFailed={onFinishFailed}
                     >
-                        <Title level={2} style={{ textAlign: 'center', paddingBottom: '25px' }} icon={<UserAddOutlined />}>Register</Title>
+                        <Title level={2} style={{ textAlign: 'center', paddingBottom: '25px' }} ><Text icon={<UserAddOutlined />} ></Text>Register</Title>
 
-                        <Form.Item
-                            name="first_name"
-                            label="First Name"
-                            rules={[
-                                {
-                                    type: 'string',
-                                    required: true,
-                                    message: 'Please input your first name!',
-                                },
-                            ]}
-                        ><Input
-                                name="first_name"
-                                placeholder="Enter First Name"
-                                value={registerState.first_name}
-                                onChange={onChange} />
+                        <Steps current={current}>
+                            {steps.map(item => (
+                                <Step key={item.title} title={item.title} />
+                            ))}
+                        </Steps>
+
+                        <div className="steps-content">
+                            <RegisterSteps
+                                step={steps[current].title}
+                                googlevalue={googlevalue}
+                                setValue={setValue}
+                                registerState={registerState}
+                                setRegisterState={setRegisterState}
+                                onChange={onChange}
+                                onSelect={onSelect} />
+                        </div>
+
+                        <Form.Item className="steps-action" {...tailLayout}>
+                            {current > 0 && (
+                                <Button style={{ margin: '0 8px' }} onClick={() => prev()}>
+                                    Previous
+                                </Button>
+                            )}
+                            {current === steps.length - 1 && (
+                                <Button type="primary" icon={<RightCircleOutlined />} htmlType="submit" >
+                                    Complete
+                                </Button>
+                            )}
+                            {current < steps.length - 1 && (
+                                <Button type="primary" onClick={() => handleProgress(steps[current].name)}>
+                                    Next
+                                </Button>
+                            )}
                         </Form.Item>
 
-                        <Form.Item
-                            name="last_name"
-                            label="Last Name"
-                            rules={[
-                                {
-                                    type: 'string',
-                                    required: true,
-                                    message: 'Please input your last name!',
-                                },
-                            ]}
-                        ><Input
-                                name="last_name"
-                                placeholder="Enter Last Name"
-                                value={registerState.last_name}
-                                onChange={onChange} />
-                        </Form.Item>
-
-                        <Form.Item
-                            name="address"
-                            label="Address"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'Please enter your address!',
-                                },
-                            ]}
-                        ><GooglePlacesAutocomplete
-                                apiKey="AIzaSyCHR4pzxUoksFuNAA1Wkp0Xs7qmdn9wlKI&callback=initAutocomplete&libraries=places&v=weekly"
-                                value={registerState.address}
-                                selectProps={{
-                                    googlevalue,
-                                }}
-                            />
-                        </Form.Item>
-
-                        <Form.Item
-                            name="occupation"
-                            label="Occupation"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'Please select your occupation!',
-                                },
-                            ]}
-                        ><Select
-                            showSearch
-                            labelInValue
-                            name="occupation"
-                            placeholder="Select an occupation"
-                            onChange={onSelect}
-                            filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}>
-                                {occupations.map(occupation =>
-                                    <Option value={occupation}>{occupation}</Option>
-                                )}
-                            </Select>
-                        </Form.Item>
-
-                        <Form.Item
-                            name="email"
-                            label="Email"
-                            rules={[
-                                {
-                                    type: 'email',
-                                    required: true,
-                                    message: 'Please input your email!',
-                                },
-                            ]}
-                        ><Input
-                                name="email"
-                                placeholder="Enter Email Address"
-                                value={registerState.email}
-                                onChange={onChange} />
-                        </Form.Item>
-
-                        <Form.Item
-                            name="password"
-                            label="Password"
-                            rules={[
-                                {
-                                    min: 8,
-                                    required: true,
-                                    message: 'Please input a valid password',
-                                },
-                            ]}
-                        ><Input.Password
-                                name="password"
-                                placeholder="Must contain min 8 mixed characters"
-                                value={registerState.password}
-                                onChange={onChange} />
-                        </Form.Item>
-
-                        <Form.Item
-                            name="confirm"
-                            label="Confirm Password"
-                            dependencies={['password']}
-                            hasFeedback
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'Please confirm your password!',
-                                },
-                                ({ getFieldValue }) => ({
-                                    validator(_, value) {
-                                        if (!value || getFieldValue('password') === value) {
-                                            return Promise.resolve();
-                                        }
-
-                                        return Promise.reject('The two passwords that you entered do not match!');
-                                    },
-                                }),
-                            ]}
-                        ><Input.Password
-                                placeholder="Confirm Password" />
-                        </Form.Item>
-
-                        <Form.Item {...tailLayout}>
-                            <Button type="primary" shape="round" icon={<RightCircleOutlined />} htmlType="submit" >
-                                Sign up
-                            </Button>
-                        </Form.Item>
                     </Form>
                 </Col>
             </Row>

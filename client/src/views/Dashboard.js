@@ -9,7 +9,7 @@ import Request from '../components/Request';
 import { useAppContext } from '../store';
 import { useLoginCheck } from '../utils/setAuthToken';
 import API from '../utils/blockchainAPI';
-import './style.css'
+import './style.css';
 
 const { Content, Sider } = Layout;
 const { SubMenu } = Menu;

@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Layout, Row, Col, Typography, Image, Button } from 'antd';
 import { RightCircleOutlined } from '@ant-design/icons';
-import './style.css'
+import './style.css';
 
 const { Content } = Layout;
 const { Title, Paragraph } = Typography;

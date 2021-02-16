@@ -15,7 +15,7 @@ function App() {
     return (
         <Router>
             <StoreProvider>
-                <Layout>
+                <Layout style={{ backgroundColor: 'white' }}>
                     <Header className="header" style={{ backgroundColor: '#274156' }}>
                         <Navbar />
                     </Header>
