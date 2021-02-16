@@ -4,7 +4,7 @@ export const registerUser = (userData) => {
     return axios.post('/api/register', {
         first_name: userData.first_name,
         last_name: userData.last_name,
-        address: userData.street_no,
+        address: userData.address,
         occupation: userData.occupation,
         email: userData.email,
         password: userData.password,
@@ -22,6 +22,7 @@ export const loginUser = (userData) => {
 
 export const getUsers = () => {
     return axios.get('/api/displayusers')
+        .then((res) => res.data)
 };
 
 export const updateUserDetails = (userData) => {

@@ -1,6 +1,6 @@
 import { Link, useHistory } from 'react-router-dom';
 import { Row, Col, Menu, Typography, Avatar, Image } from 'antd';
-import { UserOutlined, LogoutOutlined, } from '@ant-design/icons';
+import { UserOutlined, LogoutOutlined, UserAddOutlined, LoginOutlined } from '@ant-design/icons';
 import { useAppContext } from '../../store';
 import { useLoginCheck, logout } from '../../utils/setAuthToken';
 import MenuItem from 'antd/lib/menu/MenuItem';
@@ -25,8 +25,8 @@ function Navbar() {
             mode="horizontal"
             style={{ backgroundColor: '#274156', textAlign: 'right' }}
             defaultSelectedKeys={['2']}>
-            <Menu.Item key="1"><Link to="/login">Log in</Link></Menu.Item>
-            <Menu.Item key="2"><Link to="/register">Register</Link></Menu.Item>
+            <Menu.Item key="1" icon={<LoginOutlined />}><Link to="/login">Log in</Link></Menu.Item>
+            <Menu.Item key="2" icon={<UserAddOutlined />}><Link to="/register">Register</Link></Menu.Item>
         </Menu>
     )
 

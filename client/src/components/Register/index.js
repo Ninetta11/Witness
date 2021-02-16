@@ -78,7 +78,6 @@ function Register() {
             ...registerState,
             address: googlevalue.value.description,
         });
-        console.log(registerState.address);
     }, [googlevalue.value.description]);
 
     // updates global state when data is entered into any of the inputs
@@ -105,7 +104,6 @@ function Register() {
 
     // on form submit
     const handleSubmit = () => {
-        console.log(registerState);
         let alerts = '';
         const userData = {
             first_name: registerState.first_name,
@@ -149,15 +147,10 @@ function Register() {
                 setRegisterState({ ...registerState, alerts });
             }
         }).catch((error) => {
+            console.log(error);
             alerts = { type: error.response.data.type, message: error.response.data.message };
             setRegisterState({ ...registerState, alerts });
         })
-    };
-
-    const onFinishFailed = (errorInfo) => {
-        let alerts = { type: 'error', message: 'Please complete all form fields' };
-        setRegisterState({ ...registerState, alerts });
-        console.log('Failed:', errorInfo);
     };
 
     const next = () => {
@@ -192,7 +185,10 @@ function Register() {
                         {...layout}
                         onFinish={handleSubmit}
                     >
-                        <Title level={2} style={{ textAlign: 'center', paddingBottom: '25px' }} ><Text icon={<UserAddOutlined />} ></Text>Register</Title>
+                        <div style={{ textAlign: 'center', fontSize: '30px' }} >
+                            <UserAddOutlined />
+                            <Title level={2} style={{ paddingBottom: '25px' }} >Register</Title>
+                        </div>
 
                         <Steps current={current}>
                             {steps.map(item => (
@@ -211,9 +207,9 @@ function Register() {
                                 onSelect={onSelect} />
                         </div>
 
-                        <Form.Item className="steps-action" {...tailLayout}>
+                        <div className="steps-action" {...tailLayout}>
                             {current > 0 && (
-                                <Button style={{ margin: '0 8px' }} onClick={() => prev()}>
+                                <Button onClick={() => prev()}>
                                     Previous
                                 </Button>
                             )}
@@ -223,11 +219,11 @@ function Register() {
                                 </Button>
                             )}
                             {current < steps.length - 1 && (
-                                <Button type="primary" onClick={() => handleProgress(steps[current].name)}>
+                                <Button type="primary" style={{ margin: '0 8px' }} onClick={() => handleProgress(steps[current].name)}>
                                     Next
                                 </Button>
                             )}
-                        </Form.Item>
+                        </div>
 
                     </Form>
                 </Col>
