@@ -57,7 +57,7 @@ function Login() {
             const decodedToken = jwt_decode(token);
             // Set current user
             appDispatch({ type: SET_CURRENT_USER, payload: decodedToken });
-            history.push('/user');
+            history.push('/user/declaration');
         }).catch((error) => {
             let alerts = { type: error.response.data.type, message: error.response.data.message };
             setFormState({ ...formState, alerts });
