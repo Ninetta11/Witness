@@ -133,7 +133,7 @@ function Register() {
                                 alerts = { type: res.data.type, message: res.data.message };
                                 setRegisterState({ ...registerState, alerts });
                                 console.log('Form submitted' + res);
-                                history.push('/user/declaration');
+                                history.push('/user');
                             })
                             .catch((error) => {
                                 alerts = { type: error.response.data.type, message: error.response.data.message };
