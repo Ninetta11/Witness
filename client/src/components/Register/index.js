@@ -85,11 +85,6 @@ function Register() {
         setRegisterState({ ...registerState, [event.target.name]: event.target.value });
     };
 
-    // updates global state when data is selected from any of the select options
-    const onSelect = (value) => {
-        setRegisterState({ ...registerState, occupation: value.key })
-    };
-
     // generates random seed
     const generateSeed = () => {
         // IOTA seed must be 81 characters and can include letters and the number 9
@@ -203,13 +198,12 @@ function Register() {
                                 setValue={setValue}
                                 registerState={registerState}
                                 setRegisterState={setRegisterState}
-                                onChange={onChange}
-                                onSelect={onSelect} />
+                                onChange={onChange} />
                         </div>
 
                         <div className="steps-action" {...tailLayout}>
                             {current > 0 && (
-                                <Button onClick={() => prev()}>
+                                <Button style={{ margin: '0 8px' }} onClick={() => prev()}>
                                     Previous
                                 </Button>
                             )}
@@ -219,7 +213,7 @@ function Register() {
                                 </Button>
                             )}
                             {current < steps.length - 1 && (
-                                <Button type="primary" style={{ margin: '0 8px' }} onClick={() => handleProgress(steps[current].name)}>
+                                <Button type="primary" onClick={() => handleProgress(steps[current].name)}>
                                     Next
                                 </Button>
                             )}

@@ -11,8 +11,7 @@ function RegisterSteps({
     googlevalue,
     setValue,
     registerState,
-    onChange,
-    onSelect
+    onChange
 }) {
     switch (step) {
         case "First Name":
@@ -36,7 +35,8 @@ function RegisterSteps({
         case "Occupation":
             return (
                 <Occupation
-                    onSelect={onSelect} />
+                    registerState={registerState}
+                    onChange={onChange} />
             )
         case "Email":
             return (
