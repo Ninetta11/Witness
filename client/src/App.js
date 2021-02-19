@@ -4,7 +4,6 @@ import { StoreProvider } from './store';
 import { Layout } from 'antd';
 import Home from './views/Home';
 import Dashboard from './views/Dashboard';
-import Login from './components/Login';
 import Register from './components/Register';
 import Navbar from './components/Navbar';
 
@@ -24,9 +23,6 @@ function App() {
                     </Route>
                     <Route exact path="/user" >
                         <Dashboard />
-                    </Route>
-                    <Route exact path="/login">
-                        <Login />
                     </Route>
                     <Route exact path="/register">
                         <Register />

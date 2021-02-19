@@ -4,6 +4,8 @@ import { UserOutlined, LogoutOutlined, UserAddOutlined, LoginOutlined } from '@a
 import { useAppContext } from '../../store';
 import { useLoginCheck, logout } from '../../utils/setAuthToken';
 import MenuItem from 'antd/lib/menu/MenuItem';
+import Login from '../Login';
+import { useState } from 'react';
 
 const { Text } = Typography;
 
@@ -18,6 +20,21 @@ function Navbar() {
         history.push('/');
     };
 
+    const [modalState, setModalState] = useState({
+        loading: false,
+        visible: false,
+    })
+
+    const showModal = () => {
+        setModalState({
+            visible: true,
+        });
+    };
+
+    const handleCancel = () => {
+        setModalState({ visible: false });
+    };
+
     const loginRegLink = (
         <Menu
             className="menu"
@@ -25,7 +42,7 @@ function Navbar() {
             mode="horizontal"
             style={{ backgroundColor: '#274156', textAlign: 'right' }}
             defaultSelectedKeys={['2']}>
-            <Menu.Item key="1" icon={<LoginOutlined />}><Link to="/login">Log in</Link></Menu.Item>
+            <Menu.Item key="1" icon={<LoginOutlined />} onClick={showModal}>Log in</Menu.Item>
             <Menu.Item key="2" icon={<UserAddOutlined />}><Link to="/register">Register</Link></Menu.Item>
         </Menu>
     )
@@ -55,14 +72,21 @@ function Navbar() {
     )
 
     return (
-        <Row>
-            <Col span={8}>
-                <Link onClick={handleLogOut} to="/"><Image src='/assets/images/logo.png' preview={false} height='65px' width='150px' /></Link>
-            </Col>
-            <Col span={8} offset={8}>
-                {state.isAuthenticated ? userLink : loginRegLink}
-            </Col>
-        </Row>
+        <div>
+            <Row>
+                <Col span={8}>
+                    <Link onClick={handleLogOut} to="/"><Image src='/assets/images/logo.png' preview={false} height='65px' width='150px' /></Link>
+                </Col>
+                <Col span={8} offset={8}>
+                    {state.isAuthenticated ? userLink : loginRegLink}
+                </Col>
+            </Row>
+            <Login
+                modalState={modalState}
+                setModalState={setModalState}
+                handleCancel={handleCancel}
+            />
+        </div>
     )
 }
 

@@ -1,0 +1,26 @@
+[
+    {
+        "title": "First Name",
+        "name": "first_name"
+    },
+    {
+        "title": "Last Name",
+        "name": "last_name"
+    },
+    {
+        "title": "Address",
+        "name": "address"
+    },
+    {
+        "title": "Occupation",
+        "name": "occupation"
+    },
+    {
+        "title": "Email",
+        "name": "email"
+    },
+    {
+        "title": "Password",
+        "name": "password"
+    }
+]

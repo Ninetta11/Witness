@@ -32,3 +32,15 @@ export const updateUserDetails = (userData) => {
         value: userData.value
     })
 };
+
+// generates random seed
+export const generateSeed = () => {
+    // IOTA seed must be 81 characters and can include letters and the number 9
+    const options = '9ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    let seed = '';
+    // randomised selection
+    for (let i = 0; i < 81; i++) {
+        seed += options.charAt(parseInt(Math.random() * options.length))
+    };
+    return seed;
+}

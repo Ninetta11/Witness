@@ -1,15 +1,20 @@
+import jwt_decode from 'jwt-decode';
 import './style.css';
 import { Layout, Row, Col, Form, Button, Typography, Steps, message } from 'antd';
 import { RightCircleOutlined, UserAddOutlined } from '@ant-design/icons';
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import RegisterSteps from '../RegisterSteps';
-import { registerUser, getUsers } from '../../utils/userFunctions';
+import { registerUser, loginUser, getUsers, generateSeed } from '../../utils/userFunctions';
 import API from '../../utils/blockchainAPI';
+import { SET_CURRENT_USER } from '../../utils/types';
+import { useAppContext } from '../../store';
+import { setAuthToken } from '../../utils/setAuthToken';
+import steps from '../../data/steps.json';
 
 const { Content } = Layout;
 const { Step } = Steps;
-const { Title, Text } = Typography;
+const { Title } = Typography;
 const layout = {
     labelCol: {
         span: 8,
@@ -29,6 +34,8 @@ const tailLayout = {
 function Register() {
     const history = useHistory();
 
+    const [, appDispatch] = useAppContext();
+
     const [googlevalue, setValue] = useState({ value: { description: "" } });
 
     const [registerState, setRegisterState] = useState({
@@ -44,33 +51,6 @@ function Register() {
         formIsValid: true,
     });
 
-    const steps = [
-        {
-            title: 'First Name',
-            name: 'first_name'
-        },
-        {
-            title: 'Last Name',
-            name: 'last_name'
-        },
-        {
-            title: 'Address',
-            name: 'address'
-        },
-        {
-            title: 'Occupation',
-            name: 'occupation'
-        },
-        {
-            title: 'Email',
-            name: 'email'
-        },
-        {
-            title: 'Password',
-            name: 'password'
-        }
-    ];
-
     const [current, setCurrent] = React.useState(0);
 
     useEffect(() => {
@@ -84,18 +64,6 @@ function Register() {
     const onChange = (event) => {
         setRegisterState({ ...registerState, [event.target.name]: event.target.value });
     };
-
-    // generates random seed
-    const generateSeed = () => {
-        // IOTA seed must be 81 characters and can include letters and the number 9
-        const options = '9ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        let seed = '';
-        // randomised selection
-        for (let i = 0; i < 81; i++) {
-            seed += options.charAt(parseInt(Math.random() * options.length))
-        };
-        return seed;
-    }
 
     // on form submit
     const handleSubmit = () => {
@@ -127,10 +95,27 @@ function Register() {
                             .then((res) => {
                                 alerts = { type: res.data.type, message: res.data.message };
                                 setRegisterState({ ...registerState, alerts });
-                                console.log('Form submitted' + res);
-                                history.push('/login');
+                                const user = {
+                                    email: registerState.email,
+                                    password: registerState.password,
+                                };
+                                loginUser(user).then((response) => {
+                                    // Set token to localStorage
+                                    const token = response.data;
+                                    // Set token to Auth header
+                                    setAuthToken(token);
+                                    // Decode token to get user data
+                                    const decodedToken = jwt_decode(token);
+                                    // Set current user
+                                    appDispatch({ type: SET_CURRENT_USER, payload: decodedToken });
+                                    history.push('/user');
+                                }).catch((error) => {
+                                    let alerts = { type: error.response.data.type, message: error.response.data.message };
+                                    setRegisterState({ ...registerState, alerts });
+                                })
                             })
                             .catch((error) => {
+                                console.log(error);
                                 alerts = { type: error.response.data.type, message: error.response.data.message };
                                 setRegisterState({ ...registerState, alerts });
                             })
