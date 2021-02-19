@@ -5,6 +5,7 @@ import { useAppContext } from '../../store';
 import { useLoginCheck, logout } from '../../utils/setAuthToken';
 import MenuItem from 'antd/lib/menu/MenuItem';
 import Login from '../Login';
+import UserDetails from '../UserDetails';
 import { useState } from 'react';
 
 const { Text } = Typography;
@@ -35,6 +36,18 @@ function Navbar() {
         setModalState({ visible: false });
     };
 
+    const [drawerState, setDrawerState] = useState({
+        visible: false
+    });
+
+    const showDrawer = () => {
+        setDrawerState({ visible: true });
+    };
+
+    const onClose = () => {
+        setDrawerState({ visible: false });
+    };
+
     const loginRegLink = (
         <Menu
             className="menu"
@@ -54,7 +67,7 @@ function Navbar() {
             mode="horizontal"
             style={{ backgroundColor: '#274156', textAlign: 'right' }}
             defaultSelectedKeys={['2']}>
-            <MenuItem><Link to='/user'>
+            <MenuItem onClick={showDrawer}>
                 <span className="avatar-item">
                     <Avatar
                         size="large"
@@ -62,7 +75,7 @@ function Navbar() {
                         style={{ marginRight: '10px' }}
                     /><Text
                         style={{ fontSize: '18px', color: '#d4b483' }}> Welcome {state.user.first_name} </Text>
-                </span></Link></MenuItem>
+                </span></MenuItem>
         </Menu>
     )
 
@@ -76,6 +89,9 @@ function Navbar() {
                     {state.isAuthenticated ? userLink : loginRegLink}
                 </Col>
             </Row>
+            <UserDetails
+                drawerState={drawerState}
+                onClose={onClose} />
             <Login
                 modalState={modalState}
                 setModalState={setModalState}
