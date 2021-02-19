@@ -15,7 +15,7 @@ function Home() {
                     <Col span={10} offset={4}>
                         <Title>Eliminate physical documents and replace human verification with Blockchain technology.</Title>
                         <div style={{ marginBottom: '80px' }}>
-                            <Link to="/login"><Button type="primary" shape="round" icon={<RightCircleOutlined />} size="large" >
+                            <Link to="/register"><Button type="primary" shape="round" icon={<RightCircleOutlined />} size="large" >
                                 Create a Statutory Declaration today
                         </Button></Link>
                         </div>

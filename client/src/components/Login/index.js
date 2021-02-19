@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
 import { Modal, Button, Form, Input, message } from 'antd';
-import { RightCircleOutlined, LoginOutlined } from '@ant-design/icons';
 import { SET_CURRENT_USER } from '../../utils/types';
 import { useAppContext } from '../../store';
 import { loginUser } from '../../utils/userFunctions';
@@ -56,12 +55,6 @@ function Login({
         })
     };
 
-    const onFinishFailed = (errorInfo) => {
-        let alerts = { type: 'error', message: 'Please complete all form fields' };
-        setFormState({ ...formState, alerts });
-        console.log('Failed:', errorInfo);
-    };
-
     return (
         <div>
             {formState.alerts ?
@@ -84,17 +77,10 @@ function Login({
             >
                 <Form
                     noValidate
-                    initialValues={{ remember: true, }}
-                    onFinishFailed={onFinishFailed}>
+                    initialValues={{ remember: true, }}>
                     <Form.Item
                         label="Email"
                         name="email"
-                        rules={[
-                            {
-                                required: true,
-                                message: 'Please input your email!',
-                            },
-                        ]}
                     ><Input
                             name="email"
                             value={formState.email}
@@ -104,12 +90,6 @@ function Login({
                     <Form.Item
                         label="Password"
                         name="password"
-                        rules={[
-                            {
-                                required: true,
-                                message: 'Please input your password!',
-                            },
-                        ]}
                     ><Input.Password
                             name="password"
                             value={formState.password}

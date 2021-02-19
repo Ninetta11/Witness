@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { BrowserRouter as Router, Route, Link, Switch, useHistory } from 'react-router-dom';
 import { Row, Col, Layout, Menu } from 'antd';
-import { UserOutlined, FileOutlined, IdcardOutlined, FileAddOutlined, MailOutlined } from '@ant-design/icons';
+import { UserOutlined, FileOutlined, IdcardOutlined, FileAddOutlined, MailOutlined, LogoutOutlined } from '@ant-design/icons';
 import CreateDeclaration from '../components/CreateDeclaration';
 import UpdateDetails from '../components/UpdateDetails';
 import DisplayDeclaration from '../components/DisplayDeclaration';
 import Request from '../components/Request';
 import { useAppContext } from '../store';
-import { useLoginCheck } from '../utils/setAuthToken';
+import { useLoginCheck, logout } from '../utils/setAuthToken';
 import API from '../utils/blockchainAPI';
 import './style.css';
 
@@ -17,6 +17,7 @@ const { SubMenu } = Menu;
 
 function Dashboard() {
     const history = useHistory();
+
     const [state, appDispatch] = useAppContext();
 
     const [documentState, setDocumentState] = useState({
@@ -26,6 +27,11 @@ function Dashboard() {
     });
 
     useLoginCheck(appDispatch);
+
+    const handleLogOut = (e) => {
+        logout(appDispatch);
+        history.push('/');
+    };
 
     const handleDocumentSelect = (e) => {
         const hash = e.key;
@@ -66,6 +72,11 @@ function Dashboard() {
                         </SubMenu>
                         < Menu.Item key="3" icon={<FileAddOutlined />}><Link to="/user/declaration">Create New Document</Link></Menu.Item>
                         < Menu.Item key="4" icon={<MailOutlined />}><Link to="/user/request">Request Document</Link></Menu.Item>
+                        < Menu.Item
+                            key="5" icon={<LogoutOutlined />}
+                            id="logoutBtn"
+                            onClick={handleLogOut}>Logout
+                </Menu.Item>
                     </Menu>
                 </Sider >
                 <Content className="content" >

@@ -1,6 +1,6 @@
 import { Link, useHistory } from 'react-router-dom';
 import { Row, Col, Menu, Typography, Avatar, Image } from 'antd';
-import { UserOutlined, LogoutOutlined, UserAddOutlined, LoginOutlined } from '@ant-design/icons';
+import { UserOutlined, UserAddOutlined, LoginOutlined } from '@ant-design/icons';
 import { useAppContext } from '../../store';
 import { useLoginCheck, logout } from '../../utils/setAuthToken';
 import MenuItem from 'antd/lib/menu/MenuItem';
@@ -63,11 +63,6 @@ function Navbar() {
                     /><Text
                         style={{ fontSize: '18px', color: '#d4b483' }}> Welcome {state.user.first_name} </Text>
                 </span></Link></MenuItem>
-            < Menu.Item
-                key="5" icon={<LogoutOutlined />}
-                id="logoutBtn"
-                onClick={handleLogOut}>Logout
-                </Menu.Item>
         </Menu>
     )
 
