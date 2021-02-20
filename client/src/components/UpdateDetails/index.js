@@ -18,6 +18,8 @@ function UpdateDetails() {
         alerts: '',
     });
 
+    const [googlevalue, setValue] = useState({ value: { description: "" } });
+
     const updateStreetNo = (value) => {
         let name = 'street_no';
         onUpdate(name, value)

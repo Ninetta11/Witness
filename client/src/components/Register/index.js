@@ -1,9 +1,9 @@
+import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
 import './style.css';
 import { Layout, Row, Col, Form, Button, Typography, Steps, message } from 'antd';
 import { RightCircleOutlined, UserAddOutlined } from '@ant-design/icons';
-import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
 import RegisterSteps from '../RegisterSteps';
 import { registerUser, loginUser, getUsers, generateSeed } from '../../utils/userFunctions';
 import API from '../../utils/blockchainAPI';

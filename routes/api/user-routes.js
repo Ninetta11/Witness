@@ -102,20 +102,43 @@ router.get('/api/displayusers', (req, res) => {
 })
 
 router.post('/api/update', (req, res) => {
-    User.findOneAndUpdate({
-        // searches database for user with same IOTA address
-        email: req.body.email
-        // updates documents with returned hash 
-    }, { $set: { [req.body.name]: req.body.value } },
-        { new: true }
-    )
-        .then(response => {
-            res.send({ type: 'success', message: 'Your details have been updated', details: response });
+    let value = '';
+    if (req.body.name === 'password') {
+        bcrypt.hash(req.body.value, 10, (err, hash) => {
+            if (err) throw err;
+            value = hash;
+            User.findOneAndUpdate({
+                // searches database for user with same email
+                email: req.body.email
+                // updates documents with returned hash 
+            }, { $set: { [req.body.name]: value } },
+                { new: true }
+            )
+                .then(response => {
+                    res.send({ type: 'success', message: 'Your details have been updated', details: response });
+                })
+                .catch(err => {
+                    console.log(err);
+                    res.send({ type: 'error', message: 'There was a problem. Please try again' });
+                })
         })
-        .catch(err => {
-            console.log(err);
-            res.send({ type: 'error', message: 'There was a problem. Please try again' });
-        })
+    }
+    else {
+        User.findOneAndUpdate({
+            // searches database for user with same email
+            email: req.body.email
+            // updates documents with returned hash 
+        }, { $set: { [req.body.name]: req.body.value } },
+            { new: true }
+        )
+            .then(response => {
+                res.send({ type: 'success', message: 'Your details have been updated', details: response });
+            })
+            .catch(err => {
+                console.log(err);
+                res.send({ type: 'error', message: 'There was a problem. Please try again' });
+            })
+    }
 })
 
 router.post('/api/document', (req, res) => {
