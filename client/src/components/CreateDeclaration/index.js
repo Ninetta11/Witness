@@ -171,9 +171,12 @@ function CreateDeclaration() {
                                 onChange={onChange} />
                         </Form.Item>
 
-                        <Text>I, <strong>{state.user.first_name} {state.user.last_name}</strong> residing at <strong>{state.user.street_no} {state.user.street}, {state.user.suburb} {state.user.state} {state.user.postcode}</strong> and having the occupation of <strong>{state.user.occupation}</strong>, make the following statutory declaration under the <strong>Oaths and Affirmations Act 2018:</strong></Text>
-                        <br></br>
-                        <Text type="secondary">Set out matter declared to in numbered paragraphs.</Text>
+                        <Paragraph>I, <strong>{state.user.first_name} {state.user.last_name}</strong> residing at <strong>{state.user.address}
+                        </strong> and having the occupation of <strong>{state.user.occupation}
+                            </strong>, make the following statutory declaration under the
+                        <strong>Oaths and Affirmations Act 2018:</strong></Paragraph>
+
+                        <Paragraph type="secondary">Set out matter declared to in numbered paragraphs.</Paragraph>
                         {documentState.loading ?
                             <Space size='middle'>
                                 <Spin size='large'></Spin>
@@ -203,7 +206,7 @@ function CreateDeclaration() {
                                 icon={<PlusOutlined />}>Add paragraph</Button>
                         </Form.Item>
 
-                        <Text strong>I declare that the contents of this statutory declaration are true and correct and I make it knowing that making a statutory declaration that I know to be untrue is an offence.</Text>
+                        <Paragraph strong>I declare that the contents of this statutory declaration are true and correct and I make it knowing that making a statutory declaration that I know to be untrue is an offence.</Paragraph>
 
                         <Form.Item
                             label="Signature:"
