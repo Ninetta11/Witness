@@ -1,53 +1,63 @@
-import { Form, Space, Input, Button, Select, Typography } from 'antd';
+import { useState } from 'react';
+import { Form, Button } from 'react-bootstrap';
 import { SendOutlined } from '@ant-design/icons';
-import TextArea from 'antd/lib/input/TextArea';
 import { useAppContext } from '../../store';
-
-const { Title, Text } = Typography;
-const { Option } = Select;
+import { requestDocument } from '../../utils/documentFunctions';
 
 
 function Request() {
     const [state, appDispatch] = useAppContext();
 
+    const [formState, setFormState] = useState({
+        alerts: '',
+        errors: '',
+        loading: false
+    });
+
     return (
-        <Form
-            layout="horizontal"
-        >
-            <Space direction="vertical">
-                <Title level={2} style={{ paddingBottom: '25px' }}>Request a Statutory Declaration</Title>
-                <Text>Fill in the details below and an email with a link will be sent to the intended receipient.</Text>
-                <br></br>
-                <Input.Group compact>
-                    <Form.Item label="To:" name="receipent_name">
-                        <Input style={{ width: 250 }} placeholder="First Name" />
-                        <Input style={{ width: 250 }} placeholder="Last Name" />
-                    </Form.Item>
-                    <Form.Item label="Email:" name="receipent_email">
-                        <Input style={{ width: 500 }} placeholder="address@email.com.au" />
-                    </Form.Item>
-                    <Form.Item label="Type:" name="category">
-                        <Select style={{ width: 500 }} defaultValue="Certification of Injury or Illness">
-                            <Option value="Certification of Injury or Illness">Certification of Injury or Illness</Option>
-                            <Option value="Certification of Injury/Illness/Death of Family Member">Certification of Injury/Illness/Death of Family Member</Option>
-                            <Option value="Confirmation of Personal Details">Confirmation of Personal Details</Option>
-                            <Option value="Confirmation of Financial Expenditure">Confirmation of Financial Expenditure</Option>
-                            <Option value="Statement as Witness to Event">Statement as Witness to Event</Option>
-                            <Option value="Statement as to Involvement in an Event">Statement as to Involvement in an Event</Option>
-                            <Option value="Contractual Agreement">Contractual Agreement</Option>
-                            <Option value="Other">Other</Option>
-                        </Select>
-                    </Form.Item>
-                    <Form.Item label="Additional Information/ Requirements:" name="details">
-                        <TextArea style={{ width: 500 }} row={5} />
-                    </Form.Item>
-                </Input.Group>
-                <Form.Item name="Submit">
-                    <Button type="primary" shape="round" icon={<SendOutlined />}>Submit</Button>
-                </Form.Item>
-            </Space>
+        <Form onSubmit={requestDocument}>
+            <h2 style={{ paddingBottom: '25px' }}>Request a Statutory Declaration</h2>
+            <p>Fill in the details below and an email with a link will be sent to the intended receipient.</p>
+
+            <Form.Group controlId="from_name">
+                <Form.Label>From</Form.Label>
+                <Form.Control name="from_name" readOnly defaultValue={state.user.first_name + ' ' + state.user.last_name} />
+            </Form.Group>
+
+            <Form.Group controlId="to_name">
+                <Form.Label>To</Form.Label>
+                <Form.Control type="text" name="to_name" placeholder="Enter recipient name" />
+            </Form.Group>
+
+            <Form.Group controlId="to_email">
+                <Form.Label>Email address</Form.Label>
+                <Form.Control type="email" name="to_email" placeholder="name@example.com" />
+            </Form.Group>
+
+            <Form.Group controlId="document_type">
+                <Form.Label>Document type</Form.Label>
+                <Form.Control as="select" name="document_type" >
+                    <option>Certification of Injury or Illness</option>
+                    <option>Certification of Injury/Illness/Death of Family Member</option>
+                    <option>Confirmation of Personal Details</option>
+                    <option>Confirmation of Financial Expenditure</option>
+                    <option>Statement as Witness to Event</option>
+                    <option>Statement as to Involvement in an Event</option>
+                    <option>Contractual Agreement</option>
+                    <option>Other</option>
+                </Form.Control>
+            </Form.Group>
+
+            <Form.Group controlId="message">
+                <Form.Label>Additional Information/ Requirements</Form.Label>
+                <Form.Control name="message" as="textarea" rows={3} />
+            </Form.Group>
+
+            <Button variant="primary" type="submit">
+                Submit <SendOutlined />
+            </Button>
         </Form>
     )
-}
+};
 
 export default Request;
