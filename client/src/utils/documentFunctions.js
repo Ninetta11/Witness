@@ -18,23 +18,26 @@ export const saveToPDF = (title, content) => {
     doc.save(title + '.pdf');
 }
 
-export const requestDocument = (event) => {
-    console.log(event.target);
-    event.preventDefault();
-    emailjs.sendForm('service_g08r9gt', 'template_mxutnel', event.target, 'user_0NKMgomXkCiFBTZolgjDK')
-        .then((result) => {
-            console.log(result.text);
-        }, (error) => {
-            console.log(error.text);
-        });
+export const sendRequestEmail = (event) => {
+    return new Promise((function (resolve, reject) {
+        event.preventDefault();
+        emailjs.sendForm('service_g08r9gt', 'template_mxutnel', event.target, 'user_0NKMgomXkCiFBTZolgjDK')
+            .then((result) => {
+                resolve({ type: 'success', message: 'Your request has been sent.' });
+            }, (error) => {
+                reject({ type: 'error', message: 'There was a problem sending your request. Please check your details and try again.' });
+            });
+    }))
 }
 
-export const sendDocument = (event) => {
-    event.preventDefault();
-    emailjs.sendForm('service_g08r9gt', 'template_gev2269', event.target, 'user_0NKMgomXkCiFBTZolgjDK')
-        .then((result) => {
-            console.log(result.text);
-        }, (error) => {
-            console.log(error.text);
-        });
+export const sendDocumentEmail = (event) => {
+    return new Promise((function (resolve, reject) {
+        event.preventDefault();
+        emailjs.sendForm('service_g08r9gt', 'template_gev2269', event.target, 'user_0NKMgomXkCiFBTZolgjDK')
+            .then((result) => {
+                resolve({ type: 'success', message: 'Your document has been sent.' });
+            }, (error) => {
+                reject({ type: 'error', message: 'There was a problem sending your document. Please try again.' });
+            });
+    }))
 }
