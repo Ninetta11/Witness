@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
-import { Result, message } from 'antd';
+import { Result, Space, Spin, message } from 'antd';
 import { SendOutlined, CloseOutlined } from '@ant-design/icons';
 import { useAppContext } from '../../store';
 import { sendRequestEmail } from '../../utils/documentFunctions';
@@ -60,6 +60,14 @@ function Request() {
                             <Form.Label>From</Form.Label>
                             <Form.Control name="from_name" readOnly defaultValue={state.user.first_name + ' ' + state.user.last_name} />
                         </Form.Group>
+
+                        {formState.loading ?
+                            <div style={{ textAlign: 'center' }}>
+                                <Space size='middle'>
+                                    <Spin size='large'></Spin>
+                                </Space>
+                            </div>
+                            : null}
 
                         <Form.Group controlId="to_name">
                             <Form.Label>To</Form.Label>

@@ -177,11 +177,15 @@ function CreateDeclaration() {
                         <strong>Oaths and Affirmations Act 2018:</strong></Paragraph>
 
                         <Paragraph type="secondary">Set out matter declared to in numbered paragraphs.</Paragraph>
+
                         {documentState.loading ?
-                            <Space size='middle'>
-                                <Spin size='large'></Spin>
-                            </Space>
+                            <div style={{ textAlign: 'center' }}>
+                                <Space size='middle'>
+                                    <Spin size='large'></Spin>
+                                </Space>
+                            </div>
                             : null}
+
                         <Form.Item
                             label="1."
                             name="content"
@@ -234,6 +238,7 @@ function CreateDeclaration() {
                                 {documentState.location}
                             </Paragraph><Text strong> , on {<DayJS format="DD MMMM YYYY, h:mm A.">{Date.now()}</DayJS>}</Text>
                         </Input.Group>
+
                         <Form.Item
                             name="Submit">
                             <Button
