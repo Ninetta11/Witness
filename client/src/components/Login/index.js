@@ -81,6 +81,13 @@ function Login({
                     <Form.Item
                         label="Email"
                         name="email"
+                        rules={[
+                            {
+                                type: 'email',
+                                required: true,
+                                message: 'Please input your email!',
+                            },
+                        ]}
                     ><Input
                             name="email"
                             value={formState.email}
@@ -90,6 +97,12 @@ function Login({
                     <Form.Item
                         label="Password"
                         name="password"
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Please input a valid password',
+                            },
+                        ]}
                     ><Input.Password
                             name="password"
                             value={formState.password}

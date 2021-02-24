@@ -1,35 +1,51 @@
 import { useState } from 'react';
-import { Form, Button } from 'react-bootstrap';
-import { Result, Space, Spin, message } from 'antd';
+import { Form, Space, Input, Button, Select, Typography, Result, Spin, message } from 'antd';
 import { SendOutlined, CloseOutlined } from '@ant-design/icons';
-import SendDeclaration from '../SendDeclaration';
 import { useAppContext } from '../../store';
 import { sendRequestEmail } from '../../utils/documentFunctions';
 
+const { Title, Paragraph } = Typography;
+const { Option } = Select;
+const { TextArea } = Input;
 
 function RequestDeclaration() {
     const [state, appDispatch] = useAppContext();
 
     const [formState, setFormState] = useState({
+        to_name: '',
+        to_email: '',
+        document_type: '',
+        message: '',
         alerts: '',
         errors: '',
         loading: false
     });
+
+    const onChange = (event) => {
+        setFormState({ ...formState, [event.target.name]: event.target.value });
+    };
+
+    const onSelect = (value) => {
+        setFormState({ ...formState, document_type: value });
+    };
 
     const handleCloseMessage = () => {
         let alerts = '';
         setFormState({ ...formState, alerts });
     }
 
-    const requestDocument = (event) => {
+    const requestDocument = () => {
         setFormState({ ...formState, loading: true });
-        sendRequestEmail(event).then((res) => {
-            let alerts = { type: res.type, message: res.message };
-            setFormState({ ...formState, alerts: res, loading: false });
-        }).catch((error) => {
-            let errors = { type: error.type, message: error.message };
-            setFormState({ ...formState, errors, loading: false });
-        })
+        sendRequestEmail(state.user.first_name, state.user.last_name, formState.to_email, formState.to_name, formState.document_type, formState.message)
+            .then((res) => {
+                let to_name = '';
+                let to_email = '';
+                let document_type = '';
+                let message = '';
+                setFormState({ ...formState, to_name, to_email, document_type, message, alerts: res, loading: false });
+            }).catch((error) => {
+                setFormState({ ...formState, errors: error, loading: false });
+            })
     }
 
     return (
@@ -40,6 +56,15 @@ function RequestDeclaration() {
                     :
                     <div></div>
             }
+
+            {formState.loading ?
+                <div style={{ textAlign: 'center' }}>
+                    <Space size='middle'>
+                        <Spin size='large'></Spin>
+                    </Space>
+                </div>
+                : null}
+
             {
                 formState.alerts ?
                     <Result
@@ -53,59 +78,85 @@ function RequestDeclaration() {
                         </div></Result>
                     :
 
-                    <Form onSubmit={requestDocument}>
-                        <h2 style={{ paddingBottom: '25px' }}>Request a Statutory Declaration</h2>
-                        <p>Fill in the details below and an email with a link will be sent to the intended receipient.</p>
+                    <Form
+                        layout="horizontal"
+                        onFinish={requestDocument}
+                    >
+                        <Space direction="vertical">
+                            <Title level={2} style={{ paddingBottom: '25px' }}>Request a Statutory Declaration</Title>
+                            <Paragraph>Fill in the details below and an email with a link will be sent to the intended receipient.</Paragraph>
 
-                        <Form.Group controlId="from_name">
-                            <Form.Label>From</Form.Label>
-                            <Form.Control name="from_name" readOnly defaultValue={state.user.first_name + ' ' + state.user.last_name} />
-                        </Form.Group>
+                            <Input.Group compact>
 
-                        {formState.loading ?
-                            <div style={{ textAlign: 'center' }}>
-                                <Space size='middle'>
-                                    <Spin size='large'></Spin>
-                                </Space>
-                            </div>
-                            : null}
+                                <Form.Item
+                                    label="To:"
+                                    name="to_name"
+                                    rules={[
+                                        {
+                                            type: 'string',
+                                            required: true,
+                                            message: "Please enter your recipients name!"
+                                        }
+                                    ]}
+                                >
+                                    <Input
+                                        name="to_name"
+                                        style={{ width: 250 }}
+                                        placeholder="Name"
+                                        value={formState.to_name}
+                                        onChange={onChange} />
+                                </Form.Item>
 
-                        <Form.Group controlId="to_name">
-                            <Form.Label>To</Form.Label>
-                            <Form.Control type="text" name="to_name" placeholder="Enter recipient name" />
-                        </Form.Group>
+                                <Form.Item
+                                    label="Email:"
+                                    name="to_email"
+                                    rules={[
+                                        {
+                                            type: 'email',
+                                            required: true,
+                                            message: 'Please enter your recipients email!',
+                                        },
+                                    ]}>
+                                    <Input
+                                        name="to_email"
+                                        style={{ width: 500 }}
+                                        placeholder="address@email.com.au"
+                                        value={formState.to_email}
+                                        onChange={onChange} />
+                                </Form.Item>
 
-                        <Form.Group controlId="to_email">
-                            <Form.Label>Email address</Form.Label>
-                            <Form.Control type="email" name="to_email" placeholder="name@example.com" />
-                        </Form.Group>
+                                <Form.Item label="Type:" name="document_type">
+                                    <Select style={{ width: 500 }} defaultValue="Select a Document Type" onChange={onSelect}>
+                                        <Option value="Certification of Injury or Illness">Certification of Injury or Illness</Option>
+                                        <Option value="Certification of Injury/Illness/Death of Family Member">Certification of Injury/Illness/Death of Family Member</Option>
+                                        <Option value="Confirmation of Personal Details">Confirmation of Personal Details</Option>
+                                        <Option value="Confirmation of Financial Expenditure">Confirmation of Financial Expenditure</Option>
+                                        <Option value="Statement as Witness to Event">Statement as Witness to Event</Option>
+                                        <Option value="Statement as to Involvement in an Event">Statement as to Involvement in an Event</Option>
+                                        <Option value="Contractual Agreement">Contractual Agreement</Option>
+                                        <Option value="Other">Other</Option>
+                                    </Select>
+                                </Form.Item>
 
-                        <Form.Group controlId="document_type">
-                            <Form.Label>Document type</Form.Label>
-                            <Form.Control as="select" name="document_type" >
-                                <option>Certification of Injury or Illness</option>
-                                <option>Certification of Injury/Illness/Death of Family Member</option>
-                                <option>Confirmation of Personal Details</option>
-                                <option>Confirmation of Financial Expenditure</option>
-                                <option>Statement as Witness to Event</option>
-                                <option>Statement as to Involvement in an Event</option>
-                                <option>Contractual Agreement</option>
-                                <option>Other</option>
-                            </Form.Control>
-                        </Form.Group>
+                                <Form.Item label="Additional Information/ Requirements:" name="message">
+                                    <TextArea
+                                        name="message"
+                                        style={{ width: 500 }}
+                                        row={5}
+                                        value={formState.message}
+                                        onChange={onChange} />
+                                </Form.Item>
 
-                        <Form.Group controlId="message">
-                            <Form.Label>Additional Information/ Requirements</Form.Label>
-                            <Form.Control name="message" as="textarea" rows={3} />
-                        </Form.Group>
+                            </Input.Group>
 
-                        <Button variant="primary" type="submit">
-                            Send <SendOutlined />
-                        </Button>
+                            <Form.Item name="Submit">
+                                <Button type="primary" shape="round" icon={<SendOutlined />} htmlType="submit" >Submit</Button>
+                            </Form.Item>
+                        </Space>
                     </Form>
             }
         </div>
     )
-};
+}
 
 export default RequestDeclaration;

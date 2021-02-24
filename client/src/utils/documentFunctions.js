@@ -13,15 +13,21 @@ export const saveDocument = (documentData) => {
 
 export const saveToPDF = (title, content) => {
     const doc = new jsPDF();
-
     doc.text(content, 10, 10);
     doc.save(title + '.pdf');
 }
 
-export const sendRequestEmail = (event) => {
+export const sendRequestEmail = (first_name, last_name, to_email, to_name, document_type, message) => {
     return new Promise((function (resolve, reject) {
-        event.preventDefault();
-        emailjs.sendForm('service_g08r9gt', 'template_mxutnel', event.target, 'user_0NKMgomXkCiFBTZolgjDK')
+        emailjs.send('service_g08r9gt', 'template_mxutnel', {
+            from_name: first_name + " " + last_name,
+            to_email: to_email,
+            to_name: to_name,
+            document_type: document_type,
+            message: message,
+            content: 'none'
+        },
+            'user_0NKMgomXkCiFBTZolgjDK')
             .then((result) => {
                 resolve({ type: 'success', message: 'Your request has been sent.' });
             }, (error) => {
