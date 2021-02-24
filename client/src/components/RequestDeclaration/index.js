@@ -2,11 +2,12 @@ import { useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import { Result, Space, Spin, message } from 'antd';
 import { SendOutlined, CloseOutlined } from '@ant-design/icons';
+import SendDeclaration from '../SendDeclaration';
 import { useAppContext } from '../../store';
 import { sendRequestEmail } from '../../utils/documentFunctions';
 
 
-function Request() {
+function RequestDeclaration() {
     const [state, appDispatch] = useAppContext();
 
     const [formState, setFormState] = useState({
@@ -99,13 +100,12 @@ function Request() {
                         </Form.Group>
 
                         <Button variant="primary" type="submit">
-                            Submit <SendOutlined />
+                            Send <SendOutlined />
                         </Button>
                     </Form>
-
             }
         </div>
     )
 };
 
-export default Request;
+export default RequestDeclaration;

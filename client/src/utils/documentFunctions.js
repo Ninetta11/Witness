@@ -30,14 +30,14 @@ export const sendRequestEmail = (event) => {
     }))
 }
 
-export const sendDocumentEmail = (first_name, last_name, title, hash, content) => {
+export const sendDocumentEmail = (to_email, to_name, message, first_name, last_name, title, hash) => {
     return new Promise((function (resolve, reject) {
         emailjs.send('service_g08r9gt', 'template_gev2269', {
             from_name: first_name + " " + last_name,
-            to_name: 'Nina',
-            to_email: 'ninawelsh1@outlook.com',
+            to_name: to_name,
+            to_email: to_email,
             document_title: title + "- " + hash,
-            content: content
+            message: message,
         },
             'user_0NKMgomXkCiFBTZolgjDK')
             .then((result) => {

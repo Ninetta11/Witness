@@ -1,23 +1,33 @@
+import React, { useState } from 'react';
 import { Typography, Button, Space, Spin } from 'antd';
 import { FilePdfFilled, SendOutlined } from '@ant-design/icons';
-import { useAppContext } from '../../store';
-import { saveToPDF, sendDocumentEmail } from '../../utils/documentFunctions';
+import { saveToPDF } from '../../utils/documentFunctions';
+import SendDeclaration from '../SendDeclaration';
 
 const { Title, Text, Paragraph } = Typography;
 
 
 function DisplayDeclaration({ title, hash, content }) {
-    const [state, appDispatch] = useAppContext();
-
 
     const handleFileSave = () => {
         saveToPDF(title, content)
     }
 
-    const handleFileSend = () => {
-        const encodeData = window.btoa(content)
-        sendDocumentEmail(state.user.first_name, state.user.last_name, title, hash, encodeData)
-    }
+    const [modalState, setModalState] = useState({
+        loading: false,
+        visible: false,
+    })
+
+    const showModal = () => {
+        setModalState({
+            visible: true,
+        });
+    };
+
+    const handleCancel = () => {
+        setModalState({ visible: false });
+    };
+
 
     return (
         <div>
@@ -44,8 +54,16 @@ function DisplayDeclaration({ title, hash, content }) {
                 <Button
                     type="primary"
                     icon={<SendOutlined />}
-                    onClick={handleFileSend}>Send via email</Button>
+                    onClick={showModal}>Send via email</Button>
             </div>
+
+            <SendDeclaration
+                modalState={modalState}
+                setModalState={setModalState}
+                handleCancel={handleCancel}
+                title={title}
+                hash={hash}
+            />
         </div >
     )
 }

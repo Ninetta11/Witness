@@ -5,7 +5,7 @@ import { UserOutlined, FileOutlined, IdcardOutlined, FileAddOutlined, MailOutlin
 import CreateDeclaration from '../components/CreateDeclaration';
 import UserDetails from '../components/UserDetails';
 import DisplayDeclaration from '../components/DisplayDeclaration';
-import Request from '../components/Request';
+import RequestDeclaration from '../components/RequestDeclaration';
 import { useAppContext } from '../store';
 import { useLoginCheck, logout } from '../utils/setAuthToken';
 import API from '../utils/blockchainAPI';
@@ -109,7 +109,7 @@ function Dashboard() {
                                     <CreateDeclaration />
                                 </Route>
                                 <Route exact path="/user/request">
-                                    <Request />
+                                    <RequestDeclaration />
                                 </Route>
                             </Switch>
                         </Col>
