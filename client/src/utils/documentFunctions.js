@@ -30,10 +30,16 @@ export const sendRequestEmail = (event) => {
     }))
 }
 
-export const sendDocumentEmail = (event) => {
+export const sendDocumentEmail = (first_name, last_name, title, hash, content) => {
     return new Promise((function (resolve, reject) {
-        event.preventDefault();
-        emailjs.sendForm('service_g08r9gt', 'template_gev2269', event.target, 'user_0NKMgomXkCiFBTZolgjDK')
+        emailjs.send('service_g08r9gt', 'template_gev2269', {
+            from_name: first_name + " " + last_name,
+            to_name: 'Nina',
+            to_email: 'ninawelsh1@outlook.com',
+            document_title: title + "- " + hash,
+            content: content
+        },
+            'user_0NKMgomXkCiFBTZolgjDK')
             .then((result) => {
                 resolve({ type: 'success', message: 'Your document has been sent.' });
             }, (error) => {
