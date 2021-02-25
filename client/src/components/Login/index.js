@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
-import { Modal, Button, Form, Input, message } from 'antd';
+import { Modal, Button, Form, message } from 'antd';
+import Email from '../InputItems/Email';
+import Password from '../InputItems/Password';
 import { SET_CURRENT_USER } from '../../utils/types';
 import { useAppContext } from '../../store';
 import { loginUser } from '../../utils/userFunctions';
@@ -10,17 +12,16 @@ import { setAuthToken } from '../../utils/setAuthToken';
 function Login({
     modalState,
     setModalState,
-    handleCancel,
 }) {
     const history = useHistory();
+
+    const [, appDispatch] = useAppContext();
 
     const [formState, setFormState] = useState({
         email: '',
         password: '',
         alerts: ''
     });
-
-    const [, appDispatch] = useAppContext();
 
     const onChange = (e) => {
         setFormState({
@@ -55,12 +56,16 @@ function Login({
         })
     };
 
+    const handleCancel = () => {
+        setModalState({ visible: false });
+    };
+
     return (
         <div>
             {formState.alerts ?
                 message[formState.alerts.type](formState.alerts.message).then(setFormState({ ...formState, alerts: '' }))
                 :
-                <div></div>
+                null
             }
 
             <Modal
@@ -78,36 +83,21 @@ function Login({
                 <Form
                     noValidate
                     initialValues={{ remember: true, }}>
-                    <Form.Item
-                        label="Email"
-                        name="email"
-                        rules={[
-                            {
-                                type: 'email',
-                                required: true,
-                                message: 'Please input your email!',
-                            },
-                        ]}
-                    ><Input
-                            name="email"
-                            value={formState.email}
-                            onChange={onChange} />
-                    </Form.Item>
 
-                    <Form.Item
-                        label="Password"
-                        name="password"
+                    <Email
+                        value={formState.email}
+                        onChange={onChange} />
+
+                    <Password
+                        value={formState.password}
+                        onChange={onChange}
                         rules={[
                             {
                                 required: true,
-                                message: 'Please input a valid password',
-                            },
-                        ]}
-                    ><Input.Password
-                            name="password"
-                            value={formState.password}
-                            onChange={onChange} />
-                    </Form.Item>
+                                message: 'Please input a valid password'
+                            }
+                        ]} />
+
                 </Form>
             </Modal>
 

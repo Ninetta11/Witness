@@ -1,23 +1,23 @@
 import React, { useState } from 'react';
-import { Modal, Button, Form, Input, message } from 'antd';
+import { Modal, Button, Form, message } from 'antd';
 import { SendOutlined, CloseOutlined } from '@ant-design/icons';
+import FullName from '../InputItems/FullName';
+import Email from '../InputItems/Email';
+import Message from '../InputItems/Message';
 import { useAppContext } from '../../store';
 import { sendDocumentEmail } from '../../utils/documentFunctions';
 
-const { TextArea } = Input;
-
-
 function SendDeclaration({
     modalState,
-    handleCancel,
+    setModalState,
     title,
     hash
 }) {
-    const [state, appDispatch] = useAppContext();
+    const [state] = useAppContext();
 
     const [formState, setFormState] = useState({
-        to_email: '',
-        to_name: '',
+        email: '',
+        name: '',
         message: '',
         alerts: ''
     });
@@ -29,16 +29,21 @@ function SendDeclaration({
         });
     };
 
+    const handleCancel = () => {
+        setModalState({ visible: false });
+    };
+
     const handleFileSend = () => {
         //const encodeData = window.btoa(content)
-        sendDocumentEmail(formState.to_email, formState.to_name, formState.message, state.user.first_name, state.user.last_name, title, hash).then((res) => {
-            let alerts = { type: res.type, message: res.message };
-            setFormState({ ...formState, alerts: res, loading: false });
-            handleCancel()
-        }).catch((error) => {
-            let alerts = { type: error.type, message: error.message };
-            setFormState({ ...formState, alerts, loading: false });
-        })
+        sendDocumentEmail(formState.email, formState.name, formState.message, state.user.first_name, state.user.last_name, title, hash)
+            .then((res) => {
+                let alerts = { type: res.type, message: res.message };
+                setFormState({ ...formState, alerts: res, loading: false });
+                handleCancel()
+            }).catch((error) => {
+                let alerts = { type: error.type, message: error.message };
+                setFormState({ ...formState, alerts, loading: false });
+            })
     }
 
     return (
@@ -57,53 +62,25 @@ function SendDeclaration({
             {formState.alerts ?
                 message[formState.alerts.type](formState.alerts.message).then(setFormState({ ...formState, alerts: '' }))
                 :
-                <div></div>
+                null
             }
 
             <Form
                 noValidate
                 initialValues={{ remember: true, }}>
 
-                <Form.Item
-                    label="Name"
-                    name="to_name"
-                    rules={[
-                        {
-                            required: true,
-                            message: "Enter recipient's name"
-                        }
-                    ]}
-                ><Input
-                        name="to_name"
-                        value={formState.to_name}
-                        onChange={onChange} />
-                </Form.Item>
+                <FullName
+                    value={formState.name}
+                    onChange={onChange} />
 
-                <Form.Item
-                    label="Email"
-                    name="to_email"
-                    rules={[
-                        {
-                            required: true,
-                            message: "Enter recipient's email"
-                        }
-                    ]}
-                ><Input
-                        name="to_email"
-                        value={formState.to_email}
-                        onChange={onChange} />
-                </Form.Item>
+                <Email
+                    value={formState.email}
+                    onChange={onChange} />
 
-                <Form.Item
+                <Message
                     label="Message"
-                    name="message"
-                ><TextArea
-                        name="message"
-                        rows={3}
-                        value={formState.message}
-                        onChange={onChange} />
-                </Form.Item>
-
+                    value={formState.message}
+                    onChange={onChange} />
             </Form>
         </Modal>
     )

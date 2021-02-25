@@ -1,29 +1,29 @@
 import { Form, Input } from 'antd';
 
 
-function FirstName({
-    registerState,
+function LastName({
+    value,
     onChange,
 }) {
     return (
         <Form.Item
-            name="first_name"
-            label="First Name"
+            name="last_name"
+            label="Last Name"
             rules={[
                 {
                     type: 'string',
                     required: true,
-                    message: 'Please input your first name!',
+                    message: 'Please input your last name!',
                 },
             ]}
         ><Input
-                name="first_name"
-                placeholder="Enter First Name"
-                value={registerState.first_name}
+                name="last_name"
+                placeholder="Enter Last Name"
+                value={value}
                 onChange={onChange}
             />
         </Form.Item>
     )
 }
 
-export default FirstName;
+export default LastName;

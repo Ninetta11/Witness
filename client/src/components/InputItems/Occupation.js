@@ -2,7 +2,7 @@ import { Form, Input } from 'antd';
 
 
 function Occupation({
-    registerState,
+    value,
     onChange
 }) {
     return (
@@ -19,7 +19,7 @@ function Occupation({
         ><Input
                 name="occupation"
                 placeholder="Enter your occupation"
-                value={registerState.occupation}
+                value={value}
                 onChange={onChange}
             />
         </Form.Item>

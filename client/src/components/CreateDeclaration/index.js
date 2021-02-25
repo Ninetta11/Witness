@@ -1,18 +1,24 @@
-import DayJS from 'react-dayjs';
+import { useState } from 'react';
 import dayjs from 'dayjs';
-import { Form, Input, Button, Typography, Space, Result, AutoComplete, Spin, message } from 'antd';
-import { FilePdfFilled, PlusOutlined, SendOutlined, CloseOutlined } from '@ant-design/icons';
-import { useState, useEffect } from 'react';
+import { Form, Button, Typography, Space, Result, message } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
+import Spinner from '../ActionItems/Spinner';
+import DocumentTitle from '../InputItems/DocumentTitle';
+import Declaration from '../InputItems/Declaration';
+import DeclaredAt from '../InputItems/DeclaredAt';
+import Signature from '../InputItems/Signature';
+import SaveFileButton from '../Buttons/SaveFileButton';
+import SendviaEmailButton from '../Buttons/SendviaEmailButton';
+import SubmitButton from '../Buttons/SubmitButton';
+import CloseButton from '../Buttons/CloseButton';
+import SendDeclaration from '../SendDeclaration';
 import { useAppContext } from '../../store';
-import { saveDocument, saveToPDF } from '../../utils/documentFunctions';
+import { saveDocument } from '../../utils/documentFunctions';
 import generateMarkdown from '../../utils/generateMarkdown';
 import API from '../../utils/blockchainAPI';
-import { getLocation } from '../../utils/geocodingAPI';
 import { REFRESH_DETAILS } from '../../utils/types';
 
-const { TextArea } = Input;
-const { Title, Text, Paragraph } = Typography;
-const { Option } = AutoComplete;
+const { Title, Paragraph } = Typography;
 
 
 function CreateDeclaration() {
@@ -25,61 +31,22 @@ function CreateDeclaration() {
         date: dayjs().format('DD MMMM YYYY, h:mm A'),
         location: '',
         declaration: '',
+        hash: '',
         alerts: '',
         errors: '',
         loading: false
     });
 
+    const [modalState, setModalState] = useState({
+        loading: false,
+        visible: false,
+    })
+
     const [form] = Form.useForm();
-
-    useEffect(() => {
-        // something is wrong here - need to fix
-        getCurrentLocation()
-    }, []);
-
-    const getCurrentLocation = () => {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(showPosition);
-        } else {
-            const location = state.user.suburb + ', ' + state.user.state;
-            setDocumentState({ ...documentState, location });
-        }
-    }
-
-    const showPosition = (position) => {
-        getLocation(position.coords.latitude, position.coords.longitude)
-            .then((location) => {
-                setDocumentState({ ...documentState, location });
-            }).catch((error) => {
-                const location = state.user.suburb + ', ' + state.user.state;
-                setDocumentState({ ...documentState, location });
-            })
-    }
 
     const onChange = (event) => {
         setDocumentState({ ...documentState, [event.target.name]: event.target.value });
     };
-
-    const onSelect = (value) => {
-        setDocumentState({ ...documentState, signature: value });
-    };
-
-    const changeLocation = (value) => {
-        setDocumentState({ ...documentState, location: value });
-    };
-
-    const handleFileSave = () => {
-        saveToPDF(documentState.title, documentState.declaration)
-    }
-
-    const handleFileSend = () => {
-
-    }
-
-    const handleCloseMessage = () => {
-        let alerts = '';
-        setDocumentState({ ...documentState, alerts });
-    }
 
     const onSubmit = () => {
         setDocumentState({ ...documentState, loading: true });
@@ -104,6 +71,7 @@ function CreateDeclaration() {
         API.sendToBlockchain(details.IOTA_address, details.IOTA_seed, declaration)
             .then((hash) => {
                 details.hash = hash;
+                setDocumentState({ ...documentState, hash: details.hash });
                 // send returned hash to database
                 saveDocument(details)
                     .then((res) => {
@@ -127,80 +95,63 @@ function CreateDeclaration() {
             onFinish={onSubmit}
         >
             <Space direction="vertical">
-                <Title level={2} style={{ textAlign: 'center', paddingBottom: '25px' }}>Statutory Declaration</Title>
                 {documentState.errors ?
                     message[documentState.errors.type](documentState.errors.message).then(setDocumentState({ ...documentState, errors: '' }))
                     :
-                    <div></div>
+                    null
                 }
                 {documentState.alerts ?
-                    <Result
-                        status={documentState.alerts.type}
-                        title={documentState.alerts.message}
-                        subTitle={"Hash: " + documentState.alerts.hash}
-                    ><div style={{ textAlign: 'center' }}><Button
-                        type="primary"
-                        icon={<FilePdfFilled />}
-                        style={{ marginRight: '20px' }}
-                        onClick={handleFileSave}>Save as PDF</Button>
-                            <Button
-                                type="primary"
-                                icon={<SendOutlined />}
-                                style={{ marginRight: '20px' }}
-                                onClick={handleFileSend}>Send via email</Button>
-                            <Button
-                                type="primary"
-                                icon={<CloseOutlined />}
-                                onClick={handleCloseMessage}>Close</Button>
-                        </div></Result>
+                    <div>
+                        <Result
+                            status={documentState.alerts.type}
+                            title={documentState.alerts.message}
+                            subTitle={"Hash: " + documentState.alerts.hash}
+                        ><div style={{ textAlign: 'center' }}>
+                                <SaveFileButton
+                                    title={documentState.title}
+                                    content={documentState.declaration} />
+                                <SendviaEmailButton
+                                    setModalState={setModalState} />
+                                <CloseButton
+                                    setState={setDocumentState} />
+                            </div>
+                        </Result>
+
+                        <SendDeclaration
+                            modalState={modalState}
+                            setModalState={setModalState}
+                            title={documentState.title}
+                            hash={documentState.hash}
+                        />
+                    </div>
                     :
                     <div>
-                        < Form.Item
-                            label="Title:"
-                            name="title"
+                        <Title level={2} style={{ textAlign: 'center', paddingBottom: '25px' }}>Statutory Declaration</Title>
+
+                        <DocumentTitle
+                            value={documentState.title}
+                            onChange={onChange}
                             rules={[
                                 {
                                     required: true,
                                     message: "Enter a Title for your Statutory Declaration"
                                 }
-                            ]}><Input
-                                style={{ width: 250 }}
-                                name="title"
-                                placeholder="Enter a Title"
-                                value={documentState.title}
-                                onChange={onChange} />
-                        </Form.Item>
+                            ]} />
 
                         <Paragraph>I, <strong>{state.user.first_name} {state.user.last_name}</strong> residing at <strong>{state.user.address}
                         </strong> and having the occupation of <strong>{state.user.occupation}
-                            </strong>, make the following statutory declaration under the
-                        <strong>Oaths and Affirmations Act 2018:</strong></Paragraph>
+                            </strong>, make the following statutory declaration under the <strong>Oaths and Affirmations Act 2018:</strong></Paragraph>
 
                         <Paragraph type="secondary">Set out matter declared to in numbered paragraphs.</Paragraph>
 
                         {documentState.loading ?
-                            <div style={{ textAlign: 'center' }}>
-                                <Space size='middle'>
-                                    <Spin size='large'></Spin>
-                                </Space>
-                            </div>
+                            <Spinner />
                             : null}
 
-                        <Form.Item
-                            label="1."
-                            name="content"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: "Enter your declaration"
-                                }
-                            ]}><TextArea
-                                name="content"
-                                placeholder="Enter Declaration Here"
-                                rows={10}
-                                value={documentState.content}
-                                onChange={onChange} />
-                        </Form.Item>
+                        <Declaration
+                            number="1."
+                            value={documentState.content}
+                            onChange={onChange} />
 
                         <Form.Item
                             name="Add">
@@ -212,46 +163,31 @@ function CreateDeclaration() {
 
                         <Paragraph strong>I declare that the contents of this statutory declaration are true and correct and I make it knowing that making a statutory declaration that I know to be untrue is an offence.</Paragraph>
 
-                        <Form.Item
-                            label="Signature:"
-                            name="signature"
+                        <Signature
+                            value={state.user.first_name + ' ' + state.user.last_name}
+                            currentState={documentState}
+                            setCurrentState={setDocumentState}
                             rules={[
                                 {
                                     required: true,
                                     message: "Enter your Full Name to sign your declaration"
                                 }
-                            ]}><AutoComplete
-                                name="signature"
-                                style={{ width: 250 }}
-                                placeholder="Sign here"
-                                onChange={onSelect}
-                            ><Option value={state.user.first_name + ' ' + state.user.last_name}>
-                                    {state.user.first_name + ' ' + state.user.last_name}
-                                </Option>
-                            </AutoComplete>
-                        </Form.Item>
+                            ]}
+                        />
 
-                        <Input.Group compact>
-                            <Text strong>Declared at  *</Text><Paragraph strong
-                                value={documentState.location}
-                                editable={{ onChange: changeLocation }}>
-                                {documentState.location}
-                            </Paragraph><Text strong> , on {<DayJS format="DD MMMM YYYY, h:mm A.">{Date.now()}</DayJS>}</Text>
-                        </Input.Group>
+                        <DeclaredAt
+                            value={documentState.location}
+                            currentState={documentState}
+                            setCurrentState={setDocumentState}
+                        />
 
-                        <Form.Item
-                            name="Submit">
-                            <Button
-                                type="primary"
-                                shape="round"
-                                icon={<SendOutlined />}
-                                htmlType="submit" > Submit</Button>
-                        </Form.Item>
+                        <SubmitButton
+                            text=" Submit" />
+
                     </div>
                 }
             </Space>
         </Form >
-
     )
 };
 

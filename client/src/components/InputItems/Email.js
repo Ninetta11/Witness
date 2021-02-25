@@ -2,7 +2,7 @@ import { Form, Input } from 'antd';
 
 
 function Email({
-    registerState,
+    value,
     onChange
 }) {
     return (
@@ -13,13 +13,13 @@ function Email({
                 {
                     type: 'email',
                     required: true,
-                    message: 'Please input your email!',
+                    message: 'Please enter an email!',
                 },
             ]}
         ><Input
                 name="email"
-                placeholder="Enter Email Address"
-                value={registerState.email}
+                placeholder="address@email.com.au"
+                value={value}
                 onChange={onChange} />
         </Form.Item>
     )

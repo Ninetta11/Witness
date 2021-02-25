@@ -5,7 +5,7 @@ import { Layout, Typography } from 'antd';
 import Home from './views/Home';
 import Dashboard from './views/Dashboard';
 import Register from './components/Register';
-import Navbar from './components/Navbar';
+import Navbar from './components/Navbar/Navbar';
 
 const { Header, Footer } = Layout;
 const { Text } = Typography;

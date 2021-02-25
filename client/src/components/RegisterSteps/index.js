@@ -1,9 +1,10 @@
-import FirstName from '../RegisterItems/FirstName';
-import LastName from '../RegisterItems/LastName';
-import Address from '../RegisterItems/Address';
-import Occupation from '../RegisterItems/Occupation';
-import Email from '../RegisterItems/Email';
-import Password from '../RegisterItems/Password';
+import FirstName from '../InputItems/FirstName';
+import LastName from '../InputItems/LastName';
+import Address from '../InputItems/Address';
+import Occupation from '../InputItems/Occupation';
+import Email from '../InputItems/Email';
+import Password from '../InputItems/Password';
+import PasswordConfirm from '../InputItems/PasswordConfirm';
 
 
 function RegisterSteps({
@@ -17,13 +18,13 @@ function RegisterSteps({
         case "First Name":
             return (
                 <FirstName
-                    registerState={registerState}
+                    value={registerState.first_name}
                     onChange={onChange} />
             )
         case "Last Name":
             return (
                 <LastName
-                    registerState={registerState}
+                    value={registerState.last_name}
                     onChange={onChange} />
             )
         case "Address":
@@ -35,20 +36,34 @@ function RegisterSteps({
         case "Occupation":
             return (
                 <Occupation
-                    registerState={registerState}
+                    value={registerState.occupation}
                     onChange={onChange} />
             )
         case "Email":
             return (
                 <Email
-                    registerState={registerState}
+                    value={registerState.email}
                     onChange={onChange} />
             )
         case "Password":
             return (
-                <Password
-                    registerState={registerState}
-                    onChange={onChange} />
+                <div>
+                    <Password
+                        value={registerState.password}
+                        onChange={onChange}
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Please enter a valid password'
+                            },
+                            {
+                                pattern: '^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*()-]).{8,}$',
+                                message: 'Your password must contain a minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character.'
+                            }
+                        ]}
+                    />
+                    <PasswordConfirm />
+                </div>
             )
     }
 }

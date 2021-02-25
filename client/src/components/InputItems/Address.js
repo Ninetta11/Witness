@@ -2,7 +2,10 @@ import { Form } from 'antd';
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
 import './style.css';
 
-function Address({ googlevalue, setValue }) {
+function Address({
+    googlevalue,
+    setValue
+}) {
     return (
         <Form.Item
             className="step-input"

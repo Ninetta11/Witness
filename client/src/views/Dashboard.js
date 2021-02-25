@@ -41,10 +41,6 @@ function Dashboard() {
         setDrawerState({ visible: true });
     };
 
-    const onClose = () => {
-        setDrawerState({ visible: false });
-    };
-
     const handleDocumentSelect = (e) => {
         const hash = e.key;
         const title = e.item.props.name;
@@ -58,7 +54,7 @@ function Dashboard() {
         <Layout >
             <UserDetails
                 drawerState={drawerState}
-                onClose={onClose} />
+                setDrawerState={setDrawerState} />
             <Router>
                 <Sider className="site-layout-background" width={250} breakpoint="lg"
                     collapsedWidth="0"

@@ -4,15 +4,16 @@ import { UserOutlined, MailOutlined, HomeOutlined, ScheduleOutlined, KeyOutlined
 import { useAppContext } from '../../store';
 import { updateUserDetails } from '../../utils/userFunctions';
 import { REFRESH_DETAILS } from '../../utils/types';
-import Address from '../RegisterItems/Address';
-import Password from '../RegisterItems/Password';
+import Address from '../InputItems/Address';
+import Password from '../InputItems/Password';
+import PasswordConfirm from '../InputItems/PasswordConfirm';
 
 const { Paragraph } = Typography;
 
 
 function UserDetails({
     drawerState,
-    onClose
+    setDrawerState
 }) {
     const [state, appDispatch] = useAppContext();
 
@@ -93,6 +94,10 @@ function UserDetails({
             })
     }
 
+    const onClose = () => {
+        setDrawerState({ visible: false });
+    };
+
     return (
         <Drawer
             title='Account Details'
@@ -101,14 +106,10 @@ function UserDetails({
             visible={drawerState.visible}
             bodyStyle={{ paddingBottom: 80 }}
             footer={
-                < div
-                    style={{
-                        textAlign: 'right',
-                    }}
-                >
+                < div style={{ textAlign: 'right' }}>
                     < Button onClick={onClose} style={{ marginRight: 8 }}>
                         Close
-              </Button >
+                    </Button >
                 </div >
             }
         >
@@ -166,7 +167,20 @@ function UserDetails({
                             <Form>
                                 <Password
                                     onChange={onChange}
-                                    registerState={passwordInputState} />
+                                    registerState={passwordInputState}
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: 'Please enter a valid password'
+                                        },
+                                        {
+                                            pattern: '^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*()-]).{8,}$',
+                                            message: 'Your password must contain a minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character.'
+                                        }
+                                    ]} />
+
+                                <PasswordConfirm />
+
                                 <Button type='primary' style={{ margin: '0 8px' }} onClick={updatePassword}>Update</Button>
                                 <Button onClick={closePasswordInput}>Cancel</Button>
                             </Form>
