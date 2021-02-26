@@ -9,6 +9,7 @@ import { useAppContext } from '../../store';
 import { loginUser } from '../../utils/userFunctions';
 import { setAuthToken } from '../../utils/setAuthToken';
 
+
 function Login({
     modalState,
     setModalState,
@@ -22,6 +23,11 @@ function Login({
         password: '',
         alerts: ''
     });
+
+    const layout = {
+        labelCol: { span: 5 },
+        wrapperCol: { span: 24 },
+    };
 
     const onChange = (e) => {
         setFormState({
@@ -81,6 +87,7 @@ function Login({
                 ]}
             >
                 <Form
+                    {...layout}
                     noValidate
                     initialValues={{ remember: true, }}>
 

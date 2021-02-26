@@ -7,7 +7,7 @@ function FullName({
 }) {
     return (
         <Form.Item
-            label="Name:"
+            label="Name"
             name="name"
             rules={[
                 {
@@ -19,7 +19,6 @@ function FullName({
         >
             <Input
                 name="name"
-                style={{ width: 250 }}
                 placeholder="Name"
                 value={value}
                 onChange={onChange} />

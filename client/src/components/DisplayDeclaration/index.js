@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { Typography, Spin } from 'antd';
+import DocumentBorder from '../DocumentBorder';
 import SaveFileButton from '../Buttons/SaveFileButton';
 import SendviaEmailButton from '../Buttons/SendviaEmailButton';
 import SendDeclaration from '../SendDeclaration';
 
-const { Title, Text, Paragraph } = Typography;
+const { Paragraph } = Typography;
 
 
 function DisplayDeclaration({ title, hash, content }) {
@@ -15,9 +16,9 @@ function DisplayDeclaration({ title, hash, content }) {
     })
 
     return (
-        <div>
-            <Text >Document Title: {title}</Text>
-            <Title level={2} style={{ textAlign: 'center', paddingBottom: '25px' }}>Statutory Declaration</Title>
+        <DocumentBorder
+            title={'Statutory Declaration - ' + title}
+            colour='#1890ff' >
 
             {!content ?
                 <div style={{ textAlign: 'center' }}>
@@ -25,7 +26,7 @@ function DisplayDeclaration({ title, hash, content }) {
                 </div>
                 :
                 content.split('#').map((section) =>
-                    <Paragraph style={{ fontSize: '20px' }}>{section}</Paragraph>)
+                    <Paragraph style={{ fontSize: '16px' }}>{section}</Paragraph>)
             }
 
             < div style={{ textAlign: 'center' }}>
@@ -42,7 +43,7 @@ function DisplayDeclaration({ title, hash, content }) {
                 title={title}
                 hash={hash}
             />
-        </div >
+        </DocumentBorder>
     )
 }
 

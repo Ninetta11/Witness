@@ -2,6 +2,7 @@ import { useState } from 'react';
 import dayjs from 'dayjs';
 import { Form, Button, Typography, Space, Result, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
+import DocumentBorder from '../DocumentBorder';
 import Spinner from '../ActionItems/Spinner';
 import DocumentTitle from '../InputItems/DocumentTitle';
 import Declaration from '../InputItems/Declaration';
@@ -18,7 +19,7 @@ import generateMarkdown from '../../utils/generateMarkdown';
 import API from '../../utils/blockchainAPI';
 import { REFRESH_DETAILS } from '../../utils/types';
 
-const { Title, Paragraph } = Typography;
+const { Paragraph } = Typography;
 
 
 function CreateDeclaration() {
@@ -89,105 +90,111 @@ function CreateDeclaration() {
     }
 
     return (
-        <Form
-            form={form}
-            layout="horizontal"
-            onFinish={onSubmit}
-        >
-            <Space direction="vertical">
-                {documentState.errors ?
-                    message[documentState.errors.type](documentState.errors.message).then(setDocumentState({ ...documentState, errors: '' }))
-                    :
-                    null
-                }
-                {documentState.alerts ?
-                    <div>
-                        <Result
-                            status={documentState.alerts.type}
-                            title={documentState.alerts.message}
-                            subTitle={"Hash: " + documentState.alerts.hash}
-                        ><div style={{ textAlign: 'center' }}>
-                                <SaveFileButton
-                                    title={documentState.title}
-                                    content={documentState.declaration} />
-                                <SendviaEmailButton
-                                    setModalState={setModalState} />
-                                <CloseButton
-                                    setState={setDocumentState} />
+        <div>
+            {documentState.errors ?
+                message[documentState.errors.type](documentState.errors.message).then(setDocumentState({ ...documentState, errors: '' }))
+                :
+                null
+            }
+            {documentState.alerts ?
+                <div>
+                    <Result
+                        status={documentState.alerts.type}
+                        title={documentState.alerts.message}
+                        subTitle={"Hash: " + documentState.alerts.hash}
+                    ><div style={{ textAlign: 'center' }}>
+                            <SaveFileButton
+                                title={documentState.title}
+                                content={documentState.declaration} />
+                            <SendviaEmailButton
+                                setModalState={setModalState} />
+                            <CloseButton
+                                setState={setDocumentState} />
+                        </div>
+                    </Result>
+
+                    <SendDeclaration
+                        modalState={modalState}
+                        setModalState={setModalState}
+                        title={documentState.title}
+                        hash={documentState.hash}
+                    />
+                </div>
+                :
+                <DocumentBorder
+                    title="Statutory Declaration"
+                    colour='#AA3939' >
+                    <Form
+                        form={form}
+                        layout="horizontal"
+                        onFinish={onSubmit}
+                    >
+                        <Space direction="vertical">
+
+                            <div style={{ fontSize: '16px' }}>
+                                <Paragraph>I, <strong>{state.user.first_name} {state.user.last_name}</strong> residing at <strong>{state.user.address}
+                                </strong> and having the occupation of <strong>{state.user.occupation}
+                                    </strong>, make the following statutory declaration under the <strong>Oaths and Affirmations Act 2018:</strong></Paragraph>
+
+                                <Paragraph type="secondary">Set out matter declared to in numbered paragraphs.</Paragraph>
+
+                                {documentState.loading ?
+                                    <Spinner />
+                                    : null}
+
+                                <Declaration
+                                    number="1."
+                                    value={documentState.content}
+                                    onChange={onChange} />
+
+                                {/* <Form.Item
+                                    name="Add">
+                                    <Button
+                                        type="secondary"
+                                        shape="round"
+                                        icon={<PlusOutlined />}>Add paragraph</Button>
+                                </Form.Item> */}
+
+                                <Paragraph strong>I declare that the contents of this statutory declaration are true and correct and I make it knowing that making a statutory declaration that I know to be untrue is an offence.</Paragraph>
+
+                                <Signature
+                                    value={state.user.first_name + ' ' + state.user.last_name}
+                                    currentState={documentState}
+                                    setCurrentState={setDocumentState}
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: "Enter your Full Name to sign your declaration"
+                                        }
+                                    ]}
+                                />
+
+                                <DeclaredAt
+                                    value={documentState.location}
+                                    currentState={documentState}
+                                    setCurrentState={setDocumentState}
+                                />
+                                <br></br>
+                                <DocumentTitle
+                                    value={documentState.title}
+                                    onChange={onChange}
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: "Enter a Title for your Statutory Declaration"
+                                        }
+                                    ]} />
+
+                                <div style={{ textAlign: 'center' }}>
+                                    <SubmitButton
+                                        text=" Submit" />
+                                </div>
                             </div>
-                        </Result>
-
-                        <SendDeclaration
-                            modalState={modalState}
-                            setModalState={setModalState}
-                            title={documentState.title}
-                            hash={documentState.hash}
-                        />
-                    </div>
-                    :
-                    <div>
-                        <Title level={2} style={{ textAlign: 'center', paddingBottom: '25px' }}>Statutory Declaration</Title>
-
-                        <DocumentTitle
-                            value={documentState.title}
-                            onChange={onChange}
-                            rules={[
-                                {
-                                    required: true,
-                                    message: "Enter a Title for your Statutory Declaration"
-                                }
-                            ]} />
-
-                        <Paragraph>I, <strong>{state.user.first_name} {state.user.last_name}</strong> residing at <strong>{state.user.address}
-                        </strong> and having the occupation of <strong>{state.user.occupation}
-                            </strong>, make the following statutory declaration under the <strong>Oaths and Affirmations Act 2018:</strong></Paragraph>
-
-                        <Paragraph type="secondary">Set out matter declared to in numbered paragraphs.</Paragraph>
-
-                        {documentState.loading ?
-                            <Spinner />
-                            : null}
-
-                        <Declaration
-                            number="1."
-                            value={documentState.content}
-                            onChange={onChange} />
-
-                        <Form.Item
-                            name="Add">
-                            <Button
-                                type="secondary"
-                                shape="round"
-                                icon={<PlusOutlined />}>Add paragraph</Button>
-                        </Form.Item>
-
-                        <Paragraph strong>I declare that the contents of this statutory declaration are true and correct and I make it knowing that making a statutory declaration that I know to be untrue is an offence.</Paragraph>
-
-                        <Signature
-                            value={state.user.first_name + ' ' + state.user.last_name}
-                            currentState={documentState}
-                            setCurrentState={setDocumentState}
-                            rules={[
-                                {
-                                    required: true,
-                                    message: "Enter your Full Name to sign your declaration"
-                                }
-                            ]}
-                        />
-
-                        <DeclaredAt
-                            value={documentState.location}
-                            currentState={documentState}
-                            setCurrentState={setDocumentState}
-                        />
-
-                        <SubmitButton
-                            text=" Submit" />
-
-                    </div>
-                }
-            </Space>
-        </Form >
+                        </Space>
+                    </Form >
+                </DocumentBorder >
+            }
+        </div>
     )
 };
 

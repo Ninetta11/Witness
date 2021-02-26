@@ -20,7 +20,7 @@ function Declaration({
             ]}><TextArea
                 name="content"
                 placeholder="Enter Declaration Here"
-                rows={10}
+                rows={5}
                 value={value}
                 onChange={onChange} />
         </Form.Item>

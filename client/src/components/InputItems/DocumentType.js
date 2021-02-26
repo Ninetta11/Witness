@@ -11,8 +11,8 @@ function DocumentType({
     };
 
     return (
-        <Form.Item label="Type:" name="document_type">
-            <Select style={{ width: 500 }} defaultValue="Select a Document Type" onChange={onSelect}>
+        <Form.Item label="Type" name="document_type">
+            <Select defaultValue="Select a Document Type" onChange={onSelect}>
                 <Option value="Certification of Injury or Illness">Certification of Injury or Illness</Option>
                 <Option value="Certification of Injury/Illness/Death of Family Member">Certification of Injury/Illness/Death of Family Member</Option>
                 <Option value="Confirmation of Personal Details">Confirmation of Personal Details</Option>

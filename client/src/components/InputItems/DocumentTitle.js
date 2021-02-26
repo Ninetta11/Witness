@@ -7,7 +7,7 @@ function DocumentTitle({
 }) {
     return (
         < Form.Item
-            label="Title:"
+            label="Save As:"
             name="title"
             rules={rules}><Input
                 style={{ width: 250 }}

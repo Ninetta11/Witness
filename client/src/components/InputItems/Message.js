@@ -11,7 +11,6 @@ function Message({
         <Form.Item label={label} name="message">
             <TextArea
                 name="message"
-                style={{ width: 500 }}
                 row={5}
                 value={value}
                 onChange={onChange} />

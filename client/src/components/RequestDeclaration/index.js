@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Form, Space, Typography, Result, message } from 'antd';
+import DocumentBorder from '../DocumentBorder';
 import FullName from '../InputItems/FullName';
 import Email from '../InputItems/Email';
 import DocumentType from '../InputItems/DocumentType';
@@ -10,11 +11,14 @@ import CloseButton from '../Buttons/CloseButton';
 import { useAppContext } from '../../store';
 import { sendRequestEmail } from '../../utils/documentFunctions';
 
-const { Title, Paragraph } = Typography;
-
+const { Paragraph } = Typography;
+const layout = {
+    labelCol: { span: 4 },
+    wrapperCol: { span: 24 },
+};
 
 function RequestDeclaration() {
-    const [state, appDispatch] = useAppContext();
+    const [state] = useAppContext();
 
     const [formState, setFormState] = useState({
         name: '',
@@ -69,34 +73,41 @@ function RequestDeclaration() {
                     </Result>
                     :
 
-                    <Form
-                        layout="horizontal"
-                        onFinish={requestDocument}
-                    >
-                        <Space direction="vertical">
-                            <Title level={2} style={{ paddingBottom: '25px' }}>Request a Statutory Declaration</Title>
-                            <Paragraph>Fill in the details below and an email with a link will be sent to the intended receipient.</Paragraph>
+                    <DocumentBorder
+                        title="Request a Statutory Declaration"
+                        colour='#3939' >
+                        <div style={{ textAlign: 'center' }}>
+                            <Form
+                                {...layout}
+                                layout="horizontal"
+                                onFinish={requestDocument}
+                            >
+                                <Space direction="vertical">
+                                    <Paragraph>Fill in the details below and an email with a link will be sent to the intended receipient.</Paragraph>
 
-                            <FullName
-                                value={formState.name}
-                                onChange={onChange} />
+                                    <FullName
+                                        value={formState.name}
+                                        onChange={onChange} />
 
-                            <Email
-                                value={formState.email}
-                                onChange={onChange} />
+                                    <Email
+                                        value={formState.email}
+                                        onChange={onChange} />
 
-                            <DocumentType
-                                setState={setFormState} />
+                                    <div style={{ textAlign: 'left' }}>
+                                        <DocumentType
+                                            setState={setFormState} />
+                                    </div>
 
-                            <Message
-                                label="Additional Information/ Requirements"
-                                value={formState.message}
-                                onChange={onChange} />
+                                    <Message
+                                        label="Message"
+                                        value={formState.message}
+                                        onChange={onChange} />
 
-                            <SubmitButton text=" Submit" />
-
-                        </Space>
-                    </Form>
+                                    <SubmitButton text=" Send" />
+                                </Space>
+                            </Form>
+                        </div>
+                    </DocumentBorder>
             }
         </div >
     )
