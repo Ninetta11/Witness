@@ -12,8 +12,13 @@ export const saveDocument = (documentData) => {
 }
 
 export const saveToPDF = (title, content) => {
-    const doc = new jsPDF();
-    doc.text(content, 10, 10);
+    const doc = new jsPDF('p', 'pt', 'letter');
+    let formatContent = 'Statutory Declaration \n';
+    content.split('#').map((section) => {
+        formatContent += section;
+    });
+    const splitText = doc.splitTextToSize(formatContent, 500)
+    doc.text(splitText, 50, 50)
     doc.save(title + '.pdf');
 }
 
