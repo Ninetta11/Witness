@@ -56,11 +56,6 @@ function RequestDeclaration() {
                     :
                     null
             }
-
-            {formState.loading ?
-                <Spinner />
-                : null}
-
             {
                 formState.alerts ?
                     <Result
@@ -84,6 +79,10 @@ function RequestDeclaration() {
                             >
                                 <Space direction="vertical">
                                     <Paragraph>Fill in the details below and an email will be sent to the intended receipient.</Paragraph>
+
+                                    {formState.loading ?
+                                        <Spinner />
+                                        : null}
 
                                     <FullName
                                         value={formState.name}

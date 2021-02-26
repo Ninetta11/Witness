@@ -9,7 +9,7 @@ import DisplayDeclaration from '../components/DisplayDeclaration';
 import RequestDeclaration from '../components/RequestDeclaration';
 import './style.css';
 
-const { Header, Footer } = Layout;
+const { Header, Content, Footer } = Layout;
 const { Text } = Typography;
 
 
@@ -28,24 +28,26 @@ function Dashboard() {
                     documentState={documentState}
                     setDocumentState={setDocumentState} />
             </Header>
-            <Route exact path={["/", "/home"]}>
-                <Home />
-            </Route>
-            <Route exact path="/register">
-                <Register />
-            </Route>
-            <Route exact path={["/user", "/declaration"]}>
-                <CreateDeclaration />
-            </Route>
-            <Route exact path="/request">
-                <RequestDeclaration />
-            </Route>
-            <Route exact path="/document">
-                <DisplayDeclaration
-                    hash={documentState.hash}
-                    title={documentState.title}
-                    content={documentState.content} />
-            </Route>
+            <Content className="content">
+                <Route exact path={["/", "/home"]}>
+                    <Home />
+                </Route>
+                <Route exact path="/register">
+                    <Register />
+                </Route>
+                <Route exact path={["/user", "/declaration"]}>
+                    <CreateDeclaration />
+                </Route>
+                <Route exact path="/request">
+                    <RequestDeclaration />
+                </Route>
+                <Route exact path="/document">
+                    <DisplayDeclaration
+                        hash={documentState.hash}
+                        title={documentState.title}
+                        content={documentState.content} />
+                </Route>
+            </Content>
             <Footer
                 style={{ textAlign: 'center', backgroundColor: 'white', fontSize: '14px', width: "100%", }}>
                 <Text>Witness ©2021 Created by Nina Welsh</Text>

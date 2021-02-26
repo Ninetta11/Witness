@@ -21,7 +21,7 @@ function Home() {
                         </div>
                     </Col>
                     <Col span={6} offset={1}>
-                        <Image src='/assets/images/doc.png' style={{ marginBottom: '50px' }} />
+                        <Image src='/assets/images/doc.png' preview={false} style={{ marginBottom: '50px' }} />
                     </Col>
                 </Row>
                 <Row >
