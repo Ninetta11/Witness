@@ -78,7 +78,7 @@ function RequestDeclaration() {
                                 onFinish={requestDocument}
                             >
                                 <Space direction="vertical">
-                                    <Paragraph>Fill in the details below and an email will be sent to the intended receipient.</Paragraph>
+                                    <Paragraph>Fill in the details below and an email will be sent to the intended recipient.</Paragraph>
 
                                     {formState.loading ?
                                         <Spinner />

@@ -101,7 +101,7 @@ function UserDetails({
     return (
         <Drawer
             title='Account Details'
-            width={720}
+            width={600}
             onClose={onClose}
             visible={drawerState.visible}
             bodyStyle={{ paddingBottom: 80 }}
