@@ -37,7 +37,6 @@ function SendDeclaration({
         //const encodeData = window.btoa(content)
         sendDocumentEmail(formState.email, formState.name, formState.message, state.user.first_name, state.user.last_name, title, hash)
             .then((res) => {
-                let alerts = { type: res.type, message: res.message };
                 setFormState({ ...formState, alerts: res, loading: false });
                 handleCancel()
             }).catch((error) => {

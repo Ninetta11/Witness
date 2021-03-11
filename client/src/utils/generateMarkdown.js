@@ -1,8 +1,8 @@
 // function to generate markdown for declaration
 function generateMarkdown(data) {
   return ` 
-  I, ${data.first_name} ${data.last_name} residing at ${data.street_no} ${data.street}, ${data.suburb} ${data.state} ${data.postcode} 
-  and having the occupation of ${data.occupation}, make the following statutory declaration under the Oaths and Affirmations Act 2018:
+  I, ${data.first_name} ${data.last_name} residing at ${data.address} and having the occupation of 
+  ${data.occupation}, make the following statutory declaration under the Oaths and Affirmations Act 2018:
 #
   1. ${data.content}
 #
